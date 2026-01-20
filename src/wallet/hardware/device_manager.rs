@@ -947,7 +947,7 @@ mod property_tests {
             let rt = tokio::runtime::Runtime::new().unwrap();
             rt.block_on(async {
                 let manager = DeviceManager::new();
-                let mut device = HardwareDevice::ledger("StatusTest");
+                let device = HardwareDevice::ledger("StatusTest");
                 let id = device.id.clone();
                 
                 manager.register_device(device).await;

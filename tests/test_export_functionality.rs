@@ -74,6 +74,9 @@ mod export_functionality_tests {
             created_at: chrono::Utc::now(),
             is_hardware: false,
             derivation_path: Some("m/44'/60'/0'/0/0".to_string()),
+            tags: Vec::new(),
+            last_used: None,
+            transaction_count: 0,
         };
 
         // Validate account properties
@@ -95,6 +98,9 @@ mod export_functionality_tests {
             created_at: chrono::Utc::now(),
             is_hardware: true,
             derivation_path: None,
+            tags: Vec::new(),
+            last_used: None,
+            transaction_count: 0,
         };
 
         assert!(hardware_account.is_hardware);
@@ -131,6 +137,9 @@ mod export_functionality_tests {
                 created_at: chrono::Utc::now(),
                 is_hardware: false,
                 derivation_path: Some("m/44'/60'/0'/0/0".to_string()),
+                tags: Vec::new(),
+                last_used: None,
+                transaction_count: 0,
             },
             SecureAccount {
                 id: "hardware_account".to_string(),
@@ -144,6 +153,9 @@ mod export_functionality_tests {
                 created_at: chrono::Utc::now(),
                 is_hardware: true,
                 derivation_path: None,
+                tags: Vec::new(),
+                last_used: None,
+                transaction_count: 0,
             },
         ];
 

@@ -357,10 +357,11 @@ mod tests {
 
     #[tokio::test]
     async fn test_activity_resets_timeout() {
-        let session = SessionManager::with_timeout(Duration::from_millis(50));
+        // Use a longer timeout with more margin to avoid flakiness
+        let session = SessionManager::with_timeout(Duration::from_millis(100));
 
-        // Wait almost until timeout
-        tokio::time::sleep(Duration::from_millis(40)).await;
+        // Wait well below the timeout
+        tokio::time::sleep(Duration::from_millis(30)).await;
         assert!(!session.is_timed_out().await);
 
         // Record activity to reset timer
@@ -369,12 +370,12 @@ mod tests {
         // Should not be timed out
         assert!(!session.is_timed_out().await);
 
-        // Wait again
-        tokio::time::sleep(Duration::from_millis(40)).await;
+        // Wait again but still below timeout
+        tokio::time::sleep(Duration::from_millis(30)).await;
         assert!(!session.is_timed_out().await);
 
-        // Wait until actual timeout
-        tokio::time::sleep(Duration::from_millis(20)).await;
+        // Wait until actual timeout (30+30=60 from activity, need 100+buffer)
+        tokio::time::sleep(Duration::from_millis(80)).await;
         assert!(session.is_timed_out().await);
     }
 

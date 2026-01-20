@@ -119,6 +119,9 @@ pub async fn load_available_accounts() -> Result<Vec<SecureAccount>, String> {
                             created_at,
                             is_hardware: false,
                             derivation_path: Some(derivation_path),
+                            tags: Vec::new(),
+                            last_used: None,
+                            transaction_count: 0,
                         };
 
                         all_accounts.push(account);

@@ -22,6 +22,7 @@ pub mod hardware;
 pub mod keystore;
 pub mod keystore_format;
 pub mod manager;
+pub mod backup;
 
 pub use account::*;
 pub use account_manager::{

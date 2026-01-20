@@ -46,7 +46,7 @@ pub use wallet_password_validator::*;
 pub use wallet_storage::*;
 
 /// Secure account representation
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct SecureAccount {
     pub id: String,
     pub name: String,
@@ -55,6 +55,12 @@ pub struct SecureAccount {
     pub created_at: chrono::DateTime<chrono::Utc>,
     pub is_hardware: bool,
     pub derivation_path: Option<String>,
+    #[serde(default)]
+    pub tags: Vec<String>,
+    #[serde(default)]
+    pub last_used: Option<i64>,
+    #[serde(default)]
+    pub transaction_count: u64,
 }
 
 impl SecureAccount {
@@ -68,6 +74,9 @@ impl SecureAccount {
             created_at: account_meta.created_at,
             is_hardware: account_meta.is_hardware,
             derivation_path: account_meta.derivation_path.clone(),
+            tags: Vec::new(),
+            last_used: None,
+            transaction_count: 0,
         })
     }
 }

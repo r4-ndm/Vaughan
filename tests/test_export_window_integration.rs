@@ -33,6 +33,9 @@ mod export_window_tests {
                 created_at: chrono::Utc::now(),
                 is_hardware: false,
                 derivation_path: Some("m/44'/60'/0'/0/0".to_string()),
+                tags: Vec::new(),
+                last_used: None,
+                transaction_count: 0,
             },
             SecureAccount {
                 id: "test_account_2".to_string(),
@@ -46,6 +49,9 @@ mod export_window_tests {
                 created_at: chrono::Utc::now(),
                 is_hardware: true,     // Hardware wallet account
                 derivation_path: None, // Hardware wallets may not have derivation paths stored
+                tags: Vec::new(),
+                last_used: None,
+                transaction_count: 0,
             },
         ];
 

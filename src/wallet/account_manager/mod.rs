@@ -21,6 +21,8 @@
 pub mod creation;
 pub mod import;
 pub mod export;
+pub mod metadata;
+pub mod signer_integration;
 
 pub use creation::{AccountCreator, AccountCreationConfig, CreatedAccount, KeyValidation, SeedValidation};
 pub use import::{AccountImporter, FormatDetectionResult, ImportedAccount, ImportMetadata, ImportSourceType, ImportValidationResult};
@@ -495,6 +497,9 @@ mod interface_tests {
                 created_at: Utc::now(),
                 is_hardware: false,
                 derivation_path: Some("m/44'/60'/0'/0/0".to_string()),
+                tags: Vec::new(),
+                last_used: None,
+                transaction_count: 0,
             }
         }
     }
@@ -1099,6 +1104,9 @@ mod property_tests {
                 created_at: Utc::now(),
                 is_hardware: false,
                 derivation_path: Some("m/44'/60'/0'/0/0".to_string()),
+                tags: Vec::new(),
+                last_used: None,
+                transaction_count: 0,
             }
         }
 
@@ -1432,6 +1440,9 @@ mod lock_property_tests {
                 created_at: Utc::now(),
                 is_hardware: false,
                 derivation_path: Some("m/44'/60'/0'/0/0".to_string()),
+                tags: Vec::new(),
+                last_used: None,
+                transaction_count: 0,
             }
         }
 

@@ -46,6 +46,9 @@ fn arb_secure_account(is_seed_based: bool) -> impl Strategy<Value = SecureAccoun
                 created_at: chrono::Utc::now(),
                 is_hardware,
                 derivation_path,
+                tags: Vec::new(),
+                last_used: None,
+                transaction_count: 0,
             }
         })
 }
@@ -286,6 +289,9 @@ mod unit_tests {
             created_at: chrono::Utc::now(),
             is_hardware: false,
             derivation_path: Some("m/44'/60'/0'/0/0".to_string()),
+            tags: Vec::new(),
+            last_used: None,
+            transaction_count: 0,
         };
 
         let accounts = vec![account];
@@ -309,6 +315,9 @@ mod unit_tests {
             created_at: chrono::Utc::now(),
             is_hardware: false,
             derivation_path: Some("m/44'/60'/0'/0/0".to_string()),
+            tags: Vec::new(),
+            last_used: None,
+            transaction_count: 0,
         };
 
         let private_account = SecureAccount {
@@ -323,6 +332,9 @@ mod unit_tests {
             created_at: chrono::Utc::now(),
             is_hardware: false,
             derivation_path: None,
+            tags: Vec::new(),
+            last_used: None,
+            transaction_count: 0,
         };
 
         let accounts = vec![seed_account, private_account];

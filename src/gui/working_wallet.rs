@@ -3848,6 +3848,9 @@ impl WorkingWalletApp {
             created_at: chrono::Utc::now(),
             is_hardware: false,
             derivation_path: Some("m/44'/60'/0'/0/0".to_string()),
+            tags: Vec::new(),
+            last_used: None,
+            transaction_count: 0,
         };
 
         self.state.wallet_mut().available_accounts.push(account.clone());
@@ -4056,6 +4059,9 @@ impl WorkingWalletApp {
                         created_at: chrono::Utc::now(),
                         is_hardware: false,
                         derivation_path: Some("m/44'/60'/0'/0/0".to_string()),
+                        tags: Vec::new(),
+                        last_used: None,
+                        transaction_count: 0,
                     };
 
                     self.state.wallet_mut().available_accounts.push(account.clone());
@@ -4327,6 +4333,9 @@ impl WorkingWalletApp {
             created_at: chrono::Utc::now(),
             is_hardware: false,
             derivation_path: Some("m/44'/60'/0'/0/0".to_string()),
+            tags: Vec::new(),
+            last_used: None,
+            transaction_count: 0,
         };
 
         self.state.wallet_mut().available_accounts.push(account.clone());

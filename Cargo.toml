@@ -40,7 +40,7 @@ hex = "0.4"
 bip39 = "2.0"
 
 # UUID generation
-uuid = { version = "1.6", features = ["v4"] }
+uuid = { version = "1.6", features = ["v4", "serde"] }
 
 # Error handling
 thiserror = "2.0"
@@ -98,6 +98,7 @@ dashmap = "5.5"  # Essential for concurrent maps
 
 # Cryptography for keystore and enhanced seed encryption
 aes-gcm = "0.10"
+hmac = "0.12"
 base64 = "0.22"
 bip32 = { version = "0.5", features = ["secp256k1"] }
 blake3 = "1.5"
@@ -131,6 +132,8 @@ security-framework = "2.9"
 winapi = { version = "0.3", features = ["wincred", "winnt", "errhandlingapi", "memoryapi"] }
 
 # Additional dependencies for secure key management
+rand_chacha = "0.3"
+regex = "1.10"
 
 # Hardware wallet support (optional features) - using Alloy signers
 # Note: These are defined above in the dependencies section

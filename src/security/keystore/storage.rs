@@ -21,6 +21,12 @@ pub struct StoredAccountMeta {
     pub created_at: chrono::DateTime<chrono::Utc>,
     pub is_hardware: bool,
     pub derivation_path: Option<String>,
+    #[serde(default)]
+    pub tags: Vec<String>,
+    #[serde(default)]
+    pub last_used: Option<i64>,
+    #[serde(default)]
+    pub transaction_count: u64,
 }
 
 /// Serializable network metadata for persistent storage
@@ -172,6 +178,9 @@ pub fn load_accounts(
                         created_at: stored.created_at,
                         is_hardware: stored.is_hardware,
                         derivation_path: stored.derivation_path,
+                        tags: stored.tags,
+                        last_used: stored.last_used,
+                        transaction_count: stored.transaction_count,
                     };
                     accounts.insert(stored.address, account);
                     tracing::info!(
@@ -215,6 +224,9 @@ pub fn save_accounts(accounts: &HashMap<alloy::primitives::Address, SecureAccoun
             created_at: account.created_at,
             is_hardware: account.is_hardware,
             derivation_path: account.derivation_path.clone(),
+            tags: account.tags.clone(),
+            last_used: account.last_used,
+            transaction_count: account.transaction_count,
         })
         .collect();
 

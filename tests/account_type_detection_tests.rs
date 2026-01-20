@@ -43,6 +43,9 @@ fn arb_secure_account() -> impl Strategy<Value = SecureAccount> {
                 created_at: chrono::Utc::now(),
                 is_hardware,
                 derivation_path,
+                tags: Vec::new(),
+                last_used: None,
+                transaction_count: 0,
             }
         })
 }
@@ -131,6 +134,9 @@ mod unit_tests {
             created_at: chrono::Utc::now(),
             is_hardware: false,
             derivation_path: Some("m/44'/60'/0'/0/0".to_string()),
+            tags: Vec::new(),
+            last_used: None,
+            transaction_count: 0,
         };
 
         assert_eq!(get_account_type(&account), AccountType::SeedBased);
@@ -151,6 +157,9 @@ mod unit_tests {
             created_at: chrono::Utc::now(),
             is_hardware: false,
             derivation_path: None,
+            tags: Vec::new(),
+            last_used: None,
+            transaction_count: 0,
         };
 
         assert_eq!(get_account_type(&account), AccountType::PrivateKey);

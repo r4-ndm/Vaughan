@@ -146,6 +146,15 @@ pub enum WalletError {
 
     #[error("Wallet error: {message}")]
     WalletError { message: String },
+
+    #[error("Serialization error: {0}")]
+    SerializationError(String),
+
+    #[error("Deserialization error: {0}")]
+    DeserializationError(String),
+
+    #[error("Generic error: {0}")]
+    Generic(String),
 }
 
 #[derive(Error, Debug, Clone)]
@@ -248,6 +257,9 @@ pub enum SecurityError {
 
     #[error("Authentication token expired")]
     TokenExpired,
+
+    #[error("Integrity check failed: {message}")]
+    IntegrityCheckFailed { message: String },
 }
 
 #[derive(Error, Debug, Clone)]

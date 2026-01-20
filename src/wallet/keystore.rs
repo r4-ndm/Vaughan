@@ -286,6 +286,9 @@ mod tests {
                 created_at: chrono::Utc::now(),
                 is_hardware: false,
                 derivation_path: None,
+                tags: Vec::new(),
+                last_used: None,
+                transaction_count: 0,
             }); // Use mock for test if fails
         assert_eq!(account.name, "Test Account");
 

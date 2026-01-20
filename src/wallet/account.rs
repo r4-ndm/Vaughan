@@ -276,6 +276,9 @@ mod tests {
             created_at: chrono::Utc::now(),
             is_hardware: false,
             derivation_path: None,
+            tags: Vec::new(),
+            last_used: None,
+            transaction_count: 0,
         }
     }
 

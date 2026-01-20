@@ -562,6 +562,9 @@ impl SeedManager {
             created_at: chrono::Utc::now(),
             is_hardware: false,
             derivation_path: Some("m/44'/60'/0'/0/0".to_string()),
+            tags: Vec::new(),
+            last_used: None,
+            transaction_count: 0,
         })
     }
 
@@ -594,6 +597,9 @@ impl SeedManager {
             created_at: chrono::Utc::now(),
             is_hardware: false,
             derivation_path: Some("m/44'/60'/0'/0/0".to_string()),
+            tags: Vec::new(),
+            last_used: None,
+            transaction_count: 0,
         };
 
         tracing::info!("Created wallet from seed phrase: {} ({})", account.name, address);
@@ -633,6 +639,9 @@ impl SeedManager {
             created_at: chrono::Utc::now(),
             is_hardware: false,
             derivation_path: Some(path.to_string()),
+            tags: Vec::new(),
+            last_used: None,
+            transaction_count: 0,
         };
 
         tracing::info!(
