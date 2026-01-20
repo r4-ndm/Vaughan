@@ -1,0 +1,216 @@
+[package]
+name = "vaughan"
+version = "0.1.0"
+edition = "2021"
+authors = ["Vaughan Team"]
+description = "A production-ready, secure, and high-performance cryptocurrency wallet with advanced DeFi capabilities"
+license = "Galactic-Druid"
+repository = "https://github.com/vaughan-team/vaughan"
+keywords = ["cryptocurrency", "wallet", "defi", "ethereum", "blockchain"]
+categories = ["cryptography::cryptocurrencies", "gui", "network-programming"]
+
+[dependencies]
+# Core blockchain interaction - migrated to Alloy
+alloy = { version = "1.1", features = ["provider-http", "signer-local", "rlp", "consensus", "contract", "network"] }
+alloy-sol-macro = "1.1"
+alloy-sol-types = "1.1"
+tokio = { version = "1.0", features = ["full"] }
+
+# File system utilities - removed, use std::fs instead
+
+# GUI framework - optimized features for faster compilation
+iced = { version = "0.12", features = ["tokio", "image"] }
+iced_futures = "0.12"
+async-stream = "0.3"
+
+# Security and cryptography
+secrecy = { version = "0.8", features = ["serde"] }
+zeroize = "1.6"
+getrandom = "0.2"
+generic-array = "1.0"
+
+# Encryption and key derivation (MetaMask-compatible)
+aes = "0.8"
+ctr = "0.9"
+pbkdf2 = "0.12"
+sha2 = "0.10"
+hex = "0.4"
+
+# BIP39 mnemonic support
+bip39 = "2.0"
+
+# UUID generation
+uuid = { version = "1.6", features = ["v4"] }
+
+# Error handling
+thiserror = "2.0"
+anyhow = "1.0"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.8"
+
+# Additional GUI utilities - minimal set only
+arboard = "3.4"  # Essential for clipboard
+# once_cell removed - use std::sync::OnceLock
+
+# Async utilities - minimal set
+async-trait = "0.1"  # Essential for traits
+futures-util = "0.3"  # Essential for StreamExt in WebSocket subscriptions
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Networking - minimal set
+reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
+url = "2.4"  # Still needed for URL validation
+# urlencoding removed - use percent-encoding if needed
+# hyper, tower, tower-http removed - use alloy + reqwest only
+
+# WebSocket support removed - use HTTP polling instead
+
+# Chart rendering - optional for faster dev builds
+
+# Terminal emulator support removed - not core wallet functionality
+
+# UUID generation - already added above
+
+# Date and time handling - minimal features only
+chrono = { version = "0.4", features = ["clock", "serde"], default-features = false }
+
+# Random number generation - minimal set
+rand = "0.8"  # Essential for crypto
+fastrand = "2.0"  # Still used in error recovery
+# lazy_static removed - use std::sync::LazyLock
+
+# Production DEX integration - minimal set
+lru = "0.12"  # Essential for caching
+dashmap = "5.5"  # Essential for concurrent maps
+# ruint removed - alloy provides big integer types
+# backoff removed - implement simple retry logic
+# retry removed - implement custom retry
+
+# API server dependencies removed - wallets should not expose HTTP endpoints
+
+# Additional async/concurrency - use main tokio features only
+
+# Cryptography for keystore and enhanced seed encryption
+aes-gcm = "0.10"
+base64 = "0.22"
+bip32 = { version = "0.5", features = ["secp256k1"] }
+blake3 = "1.5"
+bincode = "1.3"
+flate2 = "1.0"
+
+# Professional backup systems - made optional
+qrcode = { version = "0.14", optional = true }
+image = { version = "0.24", optional = true }
+sharks = { version = "0.5", optional = true }  # Shamir's Secret Sharing implementation
+
+# Enhanced memory security  
+# Note: mlock functionality will be implemented using libc directly
+
+# Platform-specific keychain support
+dirs = "5.0"
+alloy-signer-ledger = { version = "1.1", features = ["node"], optional = true }
+alloy-signer-trezor = { version = "1.1", optional = true }
+
+# Audio notification system
+rodio = { version = "0.19", optional = true }
+k256 = "0.13.4"
+argon2 = "0.5.3"
+
+# macOS keychain support
+[target.'cfg(target_os = "macos")'.dependencies]
+security-framework = "2.9"
+
+# Windows credential manager support
+[target.'cfg(target_os = "windows")'.dependencies]
+winapi = { version = "0.3", features = ["wincred", "winnt", "errhandlingapi", "memoryapi"] }
+
+# Additional dependencies for secure key management
+
+# Hardware wallet support (optional features) - using Alloy signers
+# Note: These are defined above in the dependencies section
+
+# Unix-specific dependencies for sandboxing
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+
+# Development dependencies
+[dev-dependencies]
+tokio-test = "0.4"
+mockall = "0.11"
+tempfile = "3.0"
+criterion = "0.5"  # For benchmarking
+proptest = "1.0"   # For property-based testing
+futures = "0.3"    # For async tests
+
+
+
+
+
+
+
+
+
+[features]
+minimal = [] # Core wallet functionality only
+qr = ["dep:qrcode", "dep:image"] # QR code generation for addresses
+audio = ["dep:rodio"] # Audio notifications for incoming transactions
+hardware-wallets = ["dep:alloy-signer-ledger", "dep:alloy-signer-trezor"]
+professional = [] # Professional network monitoring features
+custom-tokens = [] # Custom token management features
+shamir = ["dep:sharks"] # Shamir's Secret Sharing
+full = ["qr", "audio", "hardware-wallets", "professional", "custom-tokens", "shamir"]
+default = ["minimal", "qr", "audio", "hardware-wallets", "professional", "custom-tokens"]
+
+
+
+# Build optimizations
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[profile.dev]
+debug = 1  # Faster compilation than full debug
+opt-level = 0
+incremental = true  # Enable incremental compilation
+codegen-units = 256  # More parallel codegen for faster compile
+# Memory optimizations
+overflow-checks = false  # Faster in dev mode
+lto = "off"  # Disable LTO for faster dev builds
+
+# Fast development profile
+[profile.fast-dev]
+inherits = "dev"
+opt-level = 1  # Some optimization for better performance
+debug = 0  # Minimal debug info
+incremental = true
+codegen-units = 16  # Balance between compile speed and runtime
+
+# Security and code quality lints (progressive implementation)
+[lints.rust]
+unsafe_code = "warn"  # Allow for sandbox.rs, but warn everywhere else
+unused_must_use = "warn"
+missing_docs = "allow"  # Too many missing docs for immediate fix
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+# Security-focused lints (progressive)
+unwrap_used = "warn"  # Warn but don't fail compilation
+expect_used = "warn"
+panic = "warn"
+unimplemented = "warn"
+todo = "warn"
+# Memory safety
+mem_forget = "deny"
+mem_replace_with_default = "warn"
+
+# Dependency patches for version consistency
+[patch.crates-io]
+# Framework for future dependency consolidation

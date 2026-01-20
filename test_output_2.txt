@@ -1,0 +1,2352 @@
+﻿cargo : warning: unused import: `BlackThemeColors`
+At line:1 char:1
++ cargo test --all-features 2>&1 | Out-File -Encoding utf8 test_output_ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (warning: unused...ackThemeColors`:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ --> src\gui\theme\text_input.rs:9:21
+  |
+9 | use super::colors::{BlackThemeColors, VaughanColors};
+  |                     ^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:373:26
+    |
+373 |             LastWritten: unsafe { std::mem::zeroed() },
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: requested on the command line with `-W unsafe-code`
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:383:22
+    |
+383 |         let result = unsafe { CredWriteW(&mut credential, 0) };
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:387:30
+    |
+387 |             let error_code = unsafe { GetLastError() };
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:412:22
+    |
+412 |           let result = unsafe {
+    |  ______________________^
+413 | |             CredReadW(
+414 | |                 target_name_wide.as_ptr() as LPCWSTR,
+415 | |                 CRED_TYPE_GENERIC,
+...   |
+419 | |         };
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:423:30
+    |
+423 |             let error_code = unsafe { GetLastError() };
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:433:24
+    |
+433 |           let key_data = unsafe {
+    |  ________________________^
+434 | |             let cred = &*credential;
+435 | |             let blob_size = cred.CredentialBlobSize as usize;
+436 | |             let blob_ptr = cred.CredentialBlob;
+...   |
+447 | |             String::from_utf8_lossy(data).into_owned()
+448 | |         };
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:450:9
+    |
+450 |         unsafe { CredFree(credential as *mut _) };
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:464:22
+    |
+464 |         let result = unsafe { CredDeleteW(target_name_wide.as_ptr() as LPCWSTR, CRED_TYPE_GENERIC, 0) };
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:468:30
+    |
+468 |             let error_code = unsafe { GetLastError() };
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+  --> src\security\memory.rs:55:22
+   |
+55 |         let result = unsafe { VirtualLock(addr as *mut winapi::ctypes::c_void, len) };
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+  --> src\security\memory.rs:73:22
+   |
+73 |         let result = unsafe { VirtualUnlock(addr as *mut winapi::ctypes::c_void, len) };
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:154:19
+    |
+154 |         let ptr = unsafe { std::alloc::alloc_zeroed(layout) };
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:184:9
+    |
+184 |         unsafe { std::slice::from_raw_parts_mut(self.ptr, self.len) }
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:202:9
+    |
+202 | /         unsafe {
+203 | |             ptr::write_bytes(self.ptr, 0, self.len);
+204 | |         }
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:227:9
+    |
+227 | /         unsafe {
+228 | |             let layout = std::alloc::Layout::from_size_align_unchecked(self.len, 8);
+229 | |             std::alloc::dealloc(self.ptr, layout);
+230 | |         }
+    | |_________^
+
+warning: implementation of an `unsafe` trait
+   --> src\security\memory.rs:237:1
+    |
+237 | unsafe impl Send for SecureMemory {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `SeedImportConfig` and `SeedImportValidation`
+  --> src\security\seed\derivation.rs:22:5
+   |
+22 |     SeedImportConfig, SeedImportValidation, SeedStrength,
+   |     ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `ExposeSecret` and `Secret`
+  --> src\security\seed\zeroization.rs:11:15
+   |
+11 | use secrecy::{ExposeSecret, Secret};
+   |               ^^^^^^^^^^^^  ^^^^^^
+
+warning: unused import: `k256::ecdsa::SigningKey`
+  --> src\security\seed\mod.rs:40:5
+   |
+40 | use k256::ecdsa::SigningKey;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::collections::HashSet`
+  --> src\security\seed\mod.rs:42:5
+   |
+42 | use std::collections::HashSet;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: ambiguous glob re-exports
+  --> src\security\mod.rs:33:9
+   |
+33 | pub use keystore::*;
+   |         ^^^^^^^^^^^ the name `encryption` in the type namespace is first re-exported here
+...
+36 | pub use seed::*;
+   |         ------- but the name `encryption` in the type namespace is also re-exported here
+   |
+   = note: `#[warn(ambiguous_glob_reexports)]` on by default
+
+warning: unused variable: `key_cache`
+  --> src\gui\state\auth_state.rs:57:21
+   |
+57 |         if let Some(key_cache) = &self.key_cache_handle {
+   |                     ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_key_cache`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `network_id` is never read
+  --> src\gui\transaction_cancellation.rs:58:5
+   |
+56 | pub struct TransactionCancellationService {
+   |            ------------------------------ field in this struct
+57 |     provider_url: String,
+58 |     network_id: NetworkId,
+   |     ^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: methods `store_encrypted_file`, `get_key_file_path`, `encrypt_key_with_integrity`, `write_secure_file`, 
+`retrieve_encrypted_file`, and `delete_encrypted_file` are never used
+   --> src\security\keychain.rs:483:8
+    |
+105 | impl OSKeychain {
+    | --------------- methods in this implementation
+...
+483 |     fn store_encrypted_file(&self, key_ref: &KeyReference, key: SecretString) -> Result<()> {
+    |        ^^^^^^^^^^^^^^^^^^^^
+...
+493 |     fn get_key_file_path(&self, key_ref: &KeyReference) -> Result<std::path::PathBuf> {
+    |        ^^^^^^^^^^^^^^^^^
+...
+511 |     fn encrypt_key_with_integrity(&self, key: SecretString) -> Result<Vec<u8>> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+561 |     fn write_secure_file(&self, path: &std::path::Path, data: &[u8]) -> Result<()> {
+    |        ^^^^^^^^^^^^^^^^^
+...
+591 |     fn retrieve_encrypted_file(&self, key_ref: &KeyReference) -> Result<SecretString> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^^
+...
+685 |     fn delete_encrypted_file(&self, key_ref: &KeyReference) -> Result<()> {
+    |        ^^^^^^^^^^^^^^^^^^^^^
+
+warning: struct `CoinGeckoSimplePrice` is never constructed
+  --> src\tokens\pricing.rs:14:8
+   |
+14 | struct CoinGeckoSimplePrice {
+   |        ^^^^^^^^^^^^^^^^^^^^
+
+warning: struct `CoinGeckoTokenList` is never constructed
+  --> src\tokens\pricing.rs:28:8
+   |
+28 | struct CoinGeckoTokenList {
+   |        ^^^^^^^^^^^^^^^^^^
+
+warning: struct `CoinGeckoToken` is never constructed
+  --> src\tokens\pricing.rs:34:8
+   |
+34 | struct CoinGeckoToken {
+   |        ^^^^^^^^^^^^^^
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+    --> src\gui\working_wallet.rs:2959:13
+     |
+2959 |     fn view(&self) -> Element<Message> {
+     |             ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+     |             |
+     |             the lifetime is elided here
+     |
+     = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+     = note: `#[warn(mismatched_lifetime_syntaxes)]` on by default
+help: use `'_` for type paths
+     |
+2959 |     fn view(&self) -> Element<'_, Message> {
+     |                               +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+    --> src\gui\working_wallet.rs:3118:26
+     |
+3118 |     fn dapps_dialog_view(&self) -> Element<Message> {
+     |                          ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+     |                          |
+     |                          the lifetime is elided here
+     |
+     = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+     |
+3118 |     fn dapps_dialog_view(&self) -> Element<'_, Message> {
+     |                                            +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\account_manager.rs:37:24
+   |
+37 |     pub fn view(state: &AppState) -> Element<Message> {
+   |                        ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                        |
+   |                        the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+37 |     pub fn view(state: &AppState) -> Element<'_, Message> {
+   |                                              +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\account_manager.rs:60:28
+   |
+60 |     fn account_list(state: &AppState) -> Element<Message> {
+   |                            ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                            |
+   |                            the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+60 |     fn account_list(state: &AppState) -> Element<'_, Message> {
+   |                                                  +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\balance_display.rs:13:24
+   |
+13 |     pub fn view(state: &AppState) -> Element<Message> {
+   |                        ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                        |
+   |                        the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+13 |     pub fn view(state: &AppState) -> Element<'_, Message> {
+   |                                              +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\balance_display.rs:28:28
+   |
+28 |     fn main_balance(state: &AppState) -> Element<Message> {
+   |                            ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                            |
+   |                            the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+28 |     fn main_balance(state: &AppState) -> Element<'_, Message> {
+   |                                                  +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\balance_display.rs:56:28
+   |
+56 |     fn account_info(state: &AppState) -> Element<Message> {
+   |                            ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                            |
+   |                            the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+56 |     fn account_info(state: &AppState) -> Element<'_, Message> {
+   |                                                  +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\cancel_transaction_dialog.rs:19:46
+   |
+19 | pub fn cancel_transaction_dialog_view(state: &AppState) -> Element<Message> {
+   |                                              ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                              |
+   |                                              the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+19 | pub fn cancel_transaction_dialog_view(state: &AppState) -> Element<'_, Message> {
+   |                                                                    +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\confirmation_dialogs.rs:32:51
+   |
+32 | pub fn clear_logs_confirmation_dialog_view(state: &AppState) -> Element<Message> {
+   |                                                   ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                                   |
+   |                                                   the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+32 | pub fn clear_logs_confirmation_dialog_view(state: &AppState) -> Element<'_, Message> {
+   |                                                                         +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\confirmation_dialogs.rs:86:54
+   |
+86 | pub fn reset_wallet_confirmation_dialog_view(_state: &AppState) -> Element<Message> {
+   |                                                      ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden 
+here
+   |                                                      |
+   |                                                      the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+86 | pub fn reset_wallet_confirmation_dialog_view(_state: &AppState) -> Element<'_, Message> {
+   |                                                                            +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\components\dialogs\confirmation_dialogs.rs:163:43
+    |
+163 | pub fn hardware_wallet_dialog_view(state: &AppState) -> Element<Message> {
+    |                                           ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                           |
+    |                                           the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+163 | pub fn hardware_wallet_dialog_view(state: &AppState) -> Element<'_, Message> {
+    |                                                                 +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\components\dialogs\confirmation_dialogs.rs:329:42
+    |
+329 | pub fn delete_account_dialog_view(state: &AppState) -> Element<Message> {
+    |                                          ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                          |
+    |                                          the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+329 | pub fn delete_account_dialog_view(state: &AppState) -> Element<'_, Message> {
+    |                                                                +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\components\dialogs\confirmation_dialogs.rs:407:55
+    |
+407 | pub fn delete_network_confirmation_dialog_view(state: &AppState) -> Element<Message> {
+    |                                                       ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden 
+here
+    |                                                       |
+    |                                                       the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+407 | pub fn delete_network_confirmation_dialog_view(state: &AppState) -> Element<'_, Message> {
+    |                                                                             +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\components\dialogs\confirmation_dialogs.rs:473:46
+    |
+473 | pub fn dapps_coming_soon_dialog_view(_state: &AppState) -> Element<Message> {
+    |                                              ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                              |
+    |                                              the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+473 | pub fn dapps_coming_soon_dialog_view(_state: &AppState) -> Element<'_, Message> {
+    |                                                                    +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\create_wallet_dialog.rs:19:41
+   |
+19 | pub fn create_wallet_dialog_view(state: &AppState) -> Element<Message> {
+   |                                         ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                         |
+   |                                         the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+19 | pub fn create_wallet_dialog_view(state: &AppState) -> Element<'_, Message> {
+   |                                                               +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\custom_token_dialog.rs:19:40
+   |
+19 | pub fn custom_token_screen_view(state: &AppState) -> Element<Message> {
+   |                                        ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                        |
+   |                                        the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+19 | pub fn custom_token_screen_view(state: &AppState) -> Element<'_, Message> {
+   |                                                              +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\export_wallet_dialog.rs:18:41
+   |
+18 | pub fn export_wallet_dialog_view(state: &AppState) -> Element<Message> {
+   |                                         ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                         |
+   |                                         the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+18 | pub fn export_wallet_dialog_view(state: &AppState) -> Element<'_, Message> {
+   |                                                               +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\import_wallet_dialog.rs:19:41
+   |
+19 | pub fn import_wallet_dialog_view(state: &AppState) -> Element<Message> {
+   |                                         ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                         |
+   |                                         the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+19 | pub fn import_wallet_dialog_view(state: &AppState) -> Element<'_, Message> {
+   |                                                               +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\network_dialog.rs:18:39
+   |
+18 | pub fn add_network_dialog_view(state: &AppState) -> Element<Message> {
+   |                                       ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                       |
+   |                                       the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+18 | pub fn add_network_dialog_view(state: &AppState) -> Element<'_, Message> {
+   |                                                             +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\receive_dialog.rs:13:35
+   |
+13 | pub fn receive_dialog_view(state: &AppState) -> Element<Message> {
+   |                                   ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                   |
+   |                                   the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+13 | pub fn receive_dialog_view(state: &AppState) -> Element<'_, Message> {
+   |                                                         +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\transaction_confirmation.rs:15:52
+   |
+15 | pub fn transaction_confirmation_dialog_view(state: &AppState) -> Element<Message> {
+   |                                                    ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                                    |
+   |                                                    the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+15 | pub fn transaction_confirmation_dialog_view(state: &AppState) -> Element<'_, Message> {
+   |                                                                          +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\unified_password_dialog.rs:37:36
+   |
+37 | pub fn password_dialog_view(state: &AppState) -> Element<Message> {
+   |                                    ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                    |
+   |                                    the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+37 | pub fn password_dialog_view(state: &AppState) -> Element<'_, Message> {
+   |                                                          +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\export_dialog.rs:14:24
+   |
+14 |     pub fn view(state: &AppState) -> Element<Message> {
+   |                        ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                        |
+   |                        the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+14 |     pub fn view(state: &AppState) -> Element<'_, Message> {
+   |                                              +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\export_dialog.rs:42:30
+   |
+42 |     fn export_content(state: &AppState) -> Element<Message> {
+   |                              ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                              |
+   |                              the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+42 |     fn export_content(state: &AppState) -> Element<'_, Message> {
+   |                                                    +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\export_dialog.rs:52:38
+   |
+52 |     fn account_selection_step(state: &AppState) -> Element<Message> {
+   |                                      ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                      |
+   |                                      the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+52 |     fn account_selection_step(state: &AppState) -> Element<'_, Message> {
+   |                                                            +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\components\export_dialog.rs:130:35
+    |
+130 |     fn result_display_step(state: &AppState) -> Element<Message> {
+    |                                   ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                   |
+    |                                   the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+130 |     fn result_display_step(state: &AppState) -> Element<'_, Message> {
+    |                                                         +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\components\export_dialog.rs:179:31
+    |
+179 |     fn exporting_step(_state: &AppState) -> Element<Message> {
+    |                               ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                               |
+    |                               the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+179 |     fn exporting_step(_state: &AppState) -> Element<'_, Message> {
+    |                                                     +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\network_selector.rs:13:24
+   |
+13 |     pub fn view(state: &AppState) -> Element<Message> {
+   |                        ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                        |
+   |                        the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+13 |     pub fn view(state: &AppState) -> Element<'_, Message> {
+   |                                              +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\network_selector.rs:28:32
+   |
+28 |     fn network_dropdown(state: &AppState) -> Element<Message> {
+   |                                ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                |
+   |                                the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+28 |     fn network_dropdown(state: &AppState) -> Element<'_, Message> {
+   |                                                      +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\network_selector.rs:49:28
+   |
+49 |     fn network_info(state: &AppState) -> Element<Message> {
+   |                            ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                            |
+   |                            the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+49 |     fn network_info(state: &AppState) -> Element<'_, Message> {
+   |                                                  +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\session_indicator.rs:13:38
+   |
+13 | pub fn session_indicator_view(state: &AppState) -> Element<Message> {
+   |                                      ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                      |
+   |                                      the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+13 | pub fn session_indicator_view(state: &AppState) -> Element<'_, Message> {
+   |                                                            +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\session_indicator.rs:68:41
+   |
+68 | pub fn session_indicator_compact(state: &AppState) -> Element<Message> {
+   |                                         ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                         |
+   |                                         the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+68 | pub fn session_indicator_compact(state: &AppState) -> Element<'_, Message> {
+   |                                                               +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\views\history.rs:15:25
+   |
+15 |     pub fn history_view(&self) -> Element<Message> {
+   |                         ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                         |
+   |                         the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+15 |     pub fn history_view(&self) -> Element<'_, Message> {
+   |                                           +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\views\history.rs:79:36
+   |
+79 |     fn transaction_history_content(&self) -> Element<Message> {
+   |                                    ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                    |
+   |                                    the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+79 |     fn transaction_history_content(&self) -> Element<'_, Message> {
+   |                                                      +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\history.rs:128:33
+    |
+128 |     fn transaction_list_content(&self) -> Element<Message> {
+    |                                 ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                 |
+    |                                 the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+128 |     fn transaction_list_content(&self) -> Element<'_, Message> {
+    |                                                   +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\history.rs:288:28
+    |
+288 |     fn wallet_logs_content(&self) -> Element<Message> {
+    |                            ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                            |
+    |                            the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+288 |     fn wallet_logs_content(&self) -> Element<'_, Message> {
+    |                                              +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\views\locked_view.rs:23:27
+   |
+23 | pub fn locked_view(state: &AppState) -> Element<Message> {
+   |                           ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                           |
+   |                           the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+23 | pub fn locked_view(state: &AppState) -> Element<'_, Message> {
+   |                                                 +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\views\main_wallet.rs:22:29
+   |
+22 |     pub fn main_wallet_view(&self) -> Element<Message> {
+   |                             ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                             |
+   |                             the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+22 |     pub fn main_wallet_view(&self) -> Element<'_, Message> {
+   |                                               +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:137:23
+    |
+137 |     fn send_form_view(&self) -> Element<Message> {
+    |                       ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                       |
+    |                       the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+137 |     fn send_form_view(&self) -> Element<'_, Message> {
+    |                                         +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:163:28
+    |
+163 |     fn account_balance_row(&self) -> Element<Message> {
+    |                            ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                            |
+    |                            the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+163 |     fn account_balance_row(&self) -> Element<'_, Message> {
+    |                                              +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:255:25
+    |
+255 |     fn account_selector(&self) -> Element<Message> {
+    |                         ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                         |
+    |                         the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+255 |     fn account_selector(&self) -> Element<'_, Message> {
+    |                                           +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:295:26
+    |
+295 |     fn address_input_row(&self) -> Element<Message> {
+    |                          ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                          |
+    |                          the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+295 |     fn address_input_row(&self) -> Element<'_, Message> {
+    |                                            +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:337:25
+    |
+337 |     fn token_amount_row(&self) -> Element<Message> {
+    |                         ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                         |
+    |                         the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+337 |     fn token_amount_row(&self) -> Element<'_, Message> {
+    |                                           +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:382:25
+    |
+382 |     fn gas_settings_row(&self) -> Element<Message> {
+    |                         ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                         |
+    |                         the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+382 |     fn gas_settings_row(&self) -> Element<'_, Message> {
+    |                                           +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:426:26
+    |
+426 |     fn tx_type_nonce_row(&self) -> Element<Message> {
+    |                          ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                          |
+    |                          the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+426 |     fn tx_type_nonce_row(&self) -> Element<'_, Message> {
+    |                                            +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:488:33
+    |
+488 |     fn max_priority_fee_section(&self) -> Element<Message> {
+    |                                 ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                 |
+    |                                 the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+488 |     fn max_priority_fee_section(&self) -> Element<'_, Message> {
+    |                                                   +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:494:26
+    |
+494 |     fn gas_speed_buttons(&self) -> Element<Message> {
+    |                          ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                          |
+    |                          the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+494 |     fn gas_speed_buttons(&self) -> Element<'_, Message> {
+    |                                            +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:532:20
+    |
+532 |     fn send_button(&self) -> Element<Message> {
+    |                    ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                    |
+    |                    the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+532 |     fn send_button(&self) -> Element<'_, Message> {
+    |                                      +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:556:28
+    |
+556 |     fn action_buttons_view(&self) -> Element<Message> {
+    |                            ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                            |
+    |                            the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+556 |     fn action_buttons_view(&self) -> Element<'_, Message> {
+    |                                              +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:602:39
+    |
+602 |     fn wallet_management_buttons_view(&self) -> Element<Message> {
+    |                                       ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                       |
+    |                                       the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+602 |     fn wallet_management_buttons_view(&self) -> Element<'_, Message> {
+    |                                                         +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:640:25
+    |
+640 |     fn price_info_panel(&self) -> Element<Message> {
+    |                         ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                         |
+    |                         the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+640 |     fn price_info_panel(&self) -> Element<'_, Message> {
+    |                                           +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:721:28
+    |
+721 |     fn status_message_view(&self) -> Element<Message> {
+    |                            ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                            |
+    |                            the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+721 |     fn status_message_view(&self) -> Element<'_, Message> {
+    |                                              +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:742:34
+    |
+742 |     fn pending_transactions_view(&self) -> Element<Message> {
+    |                                  ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                  |
+    |                                  the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+742 |     fn pending_transactions_view(&self) -> Element<'_, Message> {
+    |                                                    +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\spinner.rs:135:43
+    |
+135 |     pub fn view<Message: Clone + 'static>(&self) -> Element<Message> {
+    |                                           ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                           |
+    |                                           the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+135 |     pub fn view<Message: Clone + 'static>(&self) -> Element<'_, Message> {
+    |                                                             +++
+
+warning: `vaughan` (lib) generated 82 warnings (run `cargo fix --lib -p vaughan` to apply 60 suggestions)
+   Compiling vaughan v0.1.0 (C:\Users\rb3y9\Desktop\Vaughan-main)
+warning: unexpected `cfg` condition value: `gui-tests`
+ --> tests\test_export_window_integration.rs:1:8
+  |
+1 | #![cfg(feature = "gui-tests")]
+  |        ^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: expected values for `feature` are: `audio`, `custom-tokens`, `default`, `full`, `hardware-wallets`, 
+`minimal`, `professional`, `qr`, and `shamir`
+  = help: consider adding `gui-tests` as a feature in `Cargo.toml`
+  = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about 
+checking conditional configuration
+  = note: `#[warn(unexpected_cfgs)]` on by default
+
+warning: `vaughan` (test "test_export_window_integration") generated 1 warning
+warning: unused import: `vaughan::security::hardware::HardwareWallet`
+ --> tests\hardware_wallet_integration.rs:9:5
+  |
+9 | use vaughan::security::hardware::HardwareWallet;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `vaughan` (test "hardware_wallet_integration") generated 1 warning (run `cargo fix --test 
+"hardware_wallet_integration" -p vaughan` to apply 1 suggestion)
+error[E0432]: unresolved import `vaughan::gui::state::security_state`
+ --> tests\security_state_tests.rs:5:30
+  |
+5 |     use vaughan::gui::state::security_state::*;
+  |                              ^^^^^^^^^^^^^^ could not find `security_state` in `state`
+
+error[E0432]: unresolved import `vaughan::gui::state::security_state`
+ --> tests\password_integration_tests.rs:8:30
+  |
+8 |     use vaughan::gui::state::security_state::{PasswordError, PasswordReason, SecurityState};
+  |                              ^^^^^^^^^^^^^^ could not find `security_state` in `state`
+
+warning: unused import: `std::time::Duration`
+  --> tests\password_integration_tests.rs:12:9
+   |
+12 |     use std::time::Duration;
+   |         ^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0599]: no method named `store_encrypted_seed_phrase_v2` found for struct `SecureSeedStorage` in the current 
+scope
+  --> tests\test_seed_encryption_standalone.rs:50:10
+   |
+49 |       let key_ref = secure_storage
+   |  ___________________-
+50 | |         .store_encrypted_seed_phrase_v2(
+   | |_________-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+help: there is a method `store_encrypted_seed_phrase` with a similar name, but with different arguments
+  --> C:\Users\rb3y9\Desktop\Vaughan-main\src\security\seed\mod.rs:64:5
+   |
+64 | /     pub async fn store_encrypted_seed_phrase(
+65 | |         &self,
+66 | |         wallet_id: &str,
+67 | |         seed_phrase: &SecretString,
+68 | |         master_password: &SecretString,
+69 | |     ) -> Result<KeyReference> {
+   | |_____________________________^
+
+error[E0432]: unresolved import `vaughan::gui::state::security_state`
+  --> tests\password_validation_tests.rs:12:26
+   |
+12 | use vaughan::gui::state::security_state::{PasswordError, SecurityState, SessionState};
+   |                          ^^^^^^^^^^^^^^ could not find `security_state` in `state`
+
+error[E0282]: type annotations needed
+  --> tests\test_seed_encryption_standalone.rs:49:19
+   |
+49 |       let key_ref = secure_storage
+   |  ___________________^
+50 | |         .store_encrypted_seed_phrase_v2(
+51 | |             wallet_id,
+52 | |             &generated_phrase,
+...  |
+57 | |         .await
+   | |______________^ cannot infer type
+
+warning: unused imports: `PasswordValidator` and `SecureSeedStorage`
+  --> tests\password_validation_tests.rs:13:39
+   |
+13 | use vaughan::security::{KeyReference, PasswordValidator, SecureSeedStorage};
+   |                                       ^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+  --> tests\password_integration_tests.rs:39:19
+   |
+39 |             state.security_mut().password_dialog.show(PasswordReason::UnlockSession);
+   |                   ^^^^^^^^^^^^
+   |
+help: there is a method `ui_mut` with a similar name
+   |
+39 -             state.security_mut().password_dialog.show(PasswordReason::UnlockSession);
+39 +             state.ui_mut().password_dialog.show(PasswordReason::UnlockSession);
+   |
+
+error[E0599]: no method named `store_encrypted_seed_phrase_v2` found for struct `SecureSeedStorage` in the current 
+scope
+  --> tests\test_seed_encryption_standalone.rs:94:10
+   |
+93 |       let test_key_ref = secure_storage
+   |  ________________________-
+94 | |         .store_encrypted_seed_phrase_v2(
+   | |_________-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+help: there is a method `store_encrypted_seed_phrase` with a similar name, but with different arguments
+  --> C:\Users\rb3y9\Desktop\Vaughan-main\src\security\seed\mod.rs:64:5
+   |
+64 | /     pub async fn store_encrypted_seed_phrase(
+65 | |         &self,
+66 | |         wallet_id: &str,
+67 | |         seed_phrase: &SecretString,
+68 | |         master_password: &SecretString,
+69 | |     ) -> Result<KeyReference> {
+   | |_____________________________^
+
+error[E0282]: type annotations needed
+   --> tests\test_seed_encryption_standalone.rs:93:24
+    |
+ 93 |       let test_key_ref = secure_storage
+    |  ________________________^
+ 94 | |         .store_encrypted_seed_phrase_v2(
+ 95 | |             "test_vector_wallet",
+ 96 | |             &test_phrase,
+...   |
+101 | |         .await
+    | |______________^ cannot infer type
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+  --> tests\password_integration_tests.rs:42:27
+   |
+42 |             assert!(state.security().password_dialog.visible);
+   |                           ^^^^^^^^ method not found in `AppState`
+
+error[E0282]: type annotations needed
+  --> tests\password_validation_tests.rs:86:21
+   |
+86 |                     cached.expose_secret(),
+   |                     ^^^^^^ cannot infer type
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+  --> tests\password_integration_tests.rs:44:23
+   |
+44 |                 state.security().password_dialog.reason,
+   |                       ^^^^^^^^ method not found in `AppState`
+
+warning: unused variable: `keychain`
+   --> tests\test_seed_encryption_standalone.rs:180:9
+    |
+180 |     let keychain = Arc::new(OSKeychain::new("test-service".to_string()).unwrap());
+    |         ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_keychain`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `session`
+   --> tests\transaction_flow_tests.rs:145:9
+    |
+145 |         session in prop_oneof![arb_unlocked_session(), arb_locked_session()]
+    |         ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_session`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+Some errors have detailed explanations: E0282, E0599.
+For more information about an error, try `rustc --explain E0282`.
+warning: `vaughan` (test "test_seed_encryption_standalone") generated 1 warning
+error: could not compile `vaughan` (test "test_seed_encryption_standalone") due to 4 previous errors; 1 warning emitted
+warning: build failed, waiting for other jobs to finish...
+Some errors have detailed explanations: E0282, E0432.
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+  --> tests\password_integration_tests.rs:49:28
+   |
+49 |             assert!(!state.security().session.is_unlocked);
+   |                            ^^^^^^^^ method not found in `AppState`
+
+warning: `vaughan` (test "password_validation_tests") generated 1 warning
+error: could not compile `vaughan` (test "password_validation_tests") due to 2 previous errors; 1 warning emitted
+warning: fields `weights` and `current_weights` are never read
+   --> tests\professional_test.rs:209:5
+    |
+208 | struct WeightedRoundRobinBalancer {
+    |        -------------------------- fields in this struct
+209 |     weights: std::sync::Arc<tokio::sync::RwLock<Vec<f32>>>,
+    |     ^^^^^^^
+210 |     current_weights: std::sync::Arc<tokio::sync::RwLock<Vec<f32>>>,
+    |     ^^^^^^^^^^^^^^^
+    |
+    = note: `WeightedRoundRobinBalancer` has a derived impl for the trait `Debug`, but this is intentionally ignored 
+during dead code analysis
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+  --> tests\password_integration_tests.rs:63:19
+   |
+63 |             state.security_mut().session.unlock();
+   |                   ^^^^^^^^^^^^
+   |
+help: there is a method `ui_mut` with a similar name
+   |
+63 -             state.security_mut().session.unlock();
+63 +             state.ui_mut().session.unlock();
+   |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+  --> tests\password_integration_tests.rs:66:27
+   |
+66 |             assert!(state.security().session.is_unlocked);
+   |                           ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+  --> tests\password_integration_tests.rs:69:28
+   |
+69 |             assert!(!state.security().password_dialog.visible);
+   |                            ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+  --> tests\password_integration_tests.rs:79:15
+   |
+79 |         state.security_mut().password_dialog.show(PasswordReason::UnlockSession);
+   |               ^^^^^^^^^^^^
+   |
+help: there is a method `ui_mut` with a similar name
+   |
+79 -         state.security_mut().password_dialog.show(PasswordReason::UnlockSession);
+79 +         state.ui_mut().password_dialog.show(PasswordReason::UnlockSession);
+   |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+  --> tests\password_integration_tests.rs:86:15
+   |
+86 |         state.security_mut().session.unlock();
+   |               ^^^^^^^^^^^^
+   |
+help: there is a method `ui_mut` with a similar name
+   |
+86 -         state.security_mut().session.unlock();
+86 +         state.ui_mut().session.unlock();
+   |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+  --> tests\password_integration_tests.rs:90:19
+   |
+90 |             state.security_mut().session.cached_password = Some(seed_phrase);
+   |                   ^^^^^^^^^^^^
+   |
+help: there is a method `ui_mut` with a similar name
+   |
+90 -             state.security_mut().session.cached_password = Some(seed_phrase);
+90 +             state.ui_mut().session.cached_password = Some(seed_phrase);
+   |
+
+warning: unused import: `vaughan::gui::state::auth_state::AuthState`
+  --> tests\session_management_tests.rs:12:5
+   |
+12 | use vaughan::gui::state::auth_state::AuthState;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `super::*`
+  --> tests\session_management_tests.rs:16:9
+   |
+16 |     use super::*;
+   |         ^^^^^^^^
+
+warning: unused import: `vaughan::gui::state::auth_state::AuthState`
+  --> tests\session_management_tests.rs:18:9
+   |
+18 |     use vaughan::gui::state::auth_state::AuthState;
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+  --> tests\session_management_tests.rs:23:28
+   |
+23 |         let mut security = SecurityState::default();
+   |                            ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+  --> tests\session_management_tests.rs:41:28
+   |
+41 |         let mut security = SecurityState::default();
+   |                            ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+  --> tests\session_management_tests.rs:62:28
+   |
+62 |         let mut security = SecurityState::default();
+   |                            ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+  --> tests\password_integration_tests.rs:94:15
+   |
+94 |         state.security_mut().password_dialog.hide();
+   |               ^^^^^^^^^^^^
+   |
+help: there is a method `ui_mut` with a similar name
+   |
+94 -         state.security_mut().password_dialog.hide();
+94 +         state.ui_mut().password_dialog.hide();
+   |
+
+warning: unused import: `vaughan::gui::state::auth_state::AuthState`
+ --> tests\account_type_switching_tests.rs:9:5
+  |
+9 | use vaughan::gui::state::auth_state::AuthState;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+  --> tests\password_integration_tests.rs:97:23
+   |
+97 |         assert!(state.security().session.is_unlocked);
+   |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+  --> tests\session_property_tests.rs:17:25
+   |
+17 |         let mut state = SecurityState::default();
+   |                         ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+  --> tests\session_property_tests.rs:50:25
+   |
+50 |         let mut state = SecurityState::default();
+   |                         ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+   --> tests\session_management_tests.rs:120:28
+    |
+120 |         let mut security = SecurityState::default();
+    |                            ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+   --> tests\session_management_tests.rs:138:28
+    |
+138 |         let mut security = SecurityState::default();
+    |                            ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+  --> tests\session_property_tests.rs:81:25
+   |
+81 |         let mut state = SecurityState::default();
+   |                         ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+   --> tests\session_property_tests.rs:111:25
+    |
+111 |         let mut state = SecurityState::default();
+    |                         ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+   --> tests\session_management_tests.rs:181:28
+    |
+181 |         let mut security = SecurityState::default();
+    |                            ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+   --> tests\session_property_tests.rs:126:25
+    |
+126 |         let mut state = SecurityState::default();
+    |                         ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+   --> tests\session_property_tests.rs:144:25
+    |
+144 |         let mut state = SecurityState::default();
+    |                         ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+   --> tests\session_property_tests.rs:174:25
+    |
+174 |         let mut state = SecurityState::default();
+    |                         ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+   --> tests\session_property_tests.rs:195:25
+    |
+195 |         let mut state = SecurityState::default();
+    |                         ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `PasswordReason`
+   --> tests\session_property_tests.rs:198:36
+    |
+198 |         state.password_dialog.show(PasswordReason::UnlockSession);
+    |                                    ^^^^^^^^^^^^^^ use of undeclared type `PasswordReason`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+   --> tests\session_property_tests.rs:225:25
+    |
+225 |         let mut state = SecurityState::default();
+    |                         ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+   --> tests\session_management_tests.rs:251:28
+    |
+251 |         let mut security = SecurityState::default();
+    |                            ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+   --> tests\session_property_tests.rs:247:25
+    |
+247 |         let mut state = SecurityState::default();
+    |                         ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+   --> tests\session_management_tests.rs:282:28
+    |
+282 |         let mut security = SecurityState::default();
+    |                            ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+  --> tests\password_integration_tests.rs:98:24
+   |
+98 |         assert!(!state.security().password_dialog.visible);
+   |                        ^^^^^^^^ method not found in `AppState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+   --> tests\session_management_tests.rs:313:28
+    |
+313 |         let mut security = SecurityState::default();
+    |                            ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+  --> tests\account_type_switching_tests.rs:74:28
+   |
+74 |         let mut security = SecurityState::default();
+   |                            ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+   --> tests\session_property_tests.rs:269:25
+    |
+269 |         let mut state = SecurityState::default();
+    |                         ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+   --> tests\session_property_tests.rs:284:25
+    |
+284 |         let mut state = SecurityState::default();
+    |                         ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+   --> tests\account_type_switching_tests.rs:114:28
+    |
+114 |         let mut security = SecurityState::default();
+    |                            ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+   --> tests\account_type_switching_tests.rs:178:28
+    |
+178 |         let mut security = SecurityState::default();
+    |                            ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+   --> tests\account_type_switching_tests.rs:211:28
+    |
+211 |         let mut security = SecurityState::default();
+    |                            ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+   --> tests\account_type_switching_tests.rs:230:28
+    |
+230 |         let mut security = SecurityState::default();
+    |                            ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+error[E0433]: failed to resolve: use of undeclared type `SecurityState`
+   --> tests\account_type_switching_tests.rs:247:28
+    |
+247 |         let mut security = SecurityState::default();
+    |                            ^^^^^^^^^^^^^ use of undeclared type `SecurityState`
+
+For more information about this error, try `rustc --explain E0433`.
+error: could not compile `vaughan` (test "session_property_tests") due to 13 previous errors
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+  --> tests\password_integration_tests.rs:99:23
+   |
+99 |         assert!(state.security().session.cached_password.is_some());
+   |                       ^^^^^^^^ method not found in `AppState`
+
+warning: `vaughan` (test "session_management_tests") generated 3 warnings
+error: could not compile `vaughan` (test "session_management_tests") due to 9 previous errors; 3 warnings emitted
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:108:15
+    |
+108 |         state.security_mut().password_dialog.show(PasswordReason::UnlockSession);
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+108 -         state.security_mut().password_dialog.show(PasswordReason::UnlockSession);
+108 +         state.ui_mut().password_dialog.show(PasswordReason::UnlockSession);
+    |
+
+warning: `vaughan` (test "account_type_switching_tests") generated 1 warning
+error: could not compile `vaughan` (test "account_type_switching_tests") due to 6 previous errors; 1 warning emitted
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:111:15
+    |
+111 |         state.security_mut().password_dialog.set_error(
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+111 -         state.security_mut().password_dialog.set_error(
+111 +         state.ui_mut().password_dialog.set_error(
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:116:24
+    |
+116 |         assert!(!state.security().session.is_unlocked);
+    |                        ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:117:23
+    |
+117 |         assert!(state.security().password_dialog.visible);
+    |                       ^^^^^^^^ method not found in `AppState`
+
+For more information about this error, try `rustc --explain E0432`.
+error: could not compile `vaughan` (test "security_state_tests") due to 1 previous error
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:118:23
+    |
+118 |         assert!(state.security().password_dialog.error.is_some());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:119:26
+    |
+119 |         assert_eq!(state.security().password_dialog.attempts, 1);
+    |                          ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:132:15
+    |
+132 |         state.security_mut().session.unlock();
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+132 -         state.security_mut().session.unlock();
+132 +         state.ui_mut().session.unlock();
+    |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:133:15
+    |
+133 |         state.security_mut().session.cached_password = 
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+133 -         state.security_mut().session.cached_password = 
+133 +         state.ui_mut().session.cached_password = 
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:138:41
+    |
+138 |         let session_is_unlocked = state.security().session.is_unlocked;
+    |                                         ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:139:41
+    |
+139 |         let has_cached_password = state.security().session.cached_password.is_some();
+    |                                         ^^^^^^^^ method not found in `AppState`
+
+error[E0433]: failed to resolve: use of undeclared type `PasswordDialogConfig`
+   --> src\gui\views\locked_view.rs:149:47
+    |
+149 |         state.auth_mut().password_dialog.show(PasswordDialogConfig::WalletUnlock);
+    |                                               ^^^^^^^^^^^^^^^^^^^^ use of undeclared type `PasswordDialogConfig`
+    |
+help: consider importing this enum
+    |
+126 +     use crate::gui::state::auth_state::PasswordDialogConfig;
+    |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:158:15
+    |
+158 |         state.security_mut().session.lock();
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+158 -         state.security_mut().session.lock();
+158 +         state.ui_mut().session.lock();
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:162:41
+    |
+162 |         let session_is_unlocked = state.security().session.is_unlocked;
+    |                                         ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:166:19
+    |
+166 |             state.security_mut().password_dialog.show(
+    |                   ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+166 -             state.security_mut().password_dialog.show(
+166 +             state.ui_mut().password_dialog.show(
+    |
+
+warning: usage of an `unsafe` block
+  --> src\security\memory.rs:55:22
+   |
+55 |         let result = unsafe { VirtualLock(addr as *mut winapi::ctypes::c_void, len) };
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: requested on the command line with `-W unsafe-code`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:173:27
+    |
+173 |             assert!(state.security().password_dialog.visible);
+    |                           ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:175:23
+    |
+175 |                 state.security().password_dialog.reason,
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:187:15
+    |
+187 |         state.security_mut().session.unlock();
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+187 -         state.security_mut().session.unlock();
+187 +         state.ui_mut().session.unlock();
+    |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:188:15
+    |
+188 |         state.security_mut().session.cached_password = 
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+188 -         state.security_mut().session.cached_password = 
+188 +         state.ui_mut().session.cached_password = 
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:192:23
+    |
+192 |         assert!(state.security().session.cached_password.is_some());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:196:19
+    |
+196 |             state.security().session.is_unlocked && 
+    |                   ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:197:19
+    |
+197 |             state.security().session.cached_password.is_some();
+    |                   ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:208:15
+    |
+208 |         state.security_mut().session.unlock();
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+208 -         state.security_mut().session.unlock();
+208 +         state.ui_mut().session.unlock();
+    |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:209:15
+    |
+209 |         state.security_mut().session.temporary_key = 
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+209 -         state.security_mut().session.temporary_key = 
+209 +         state.ui_mut().session.temporary_key = 
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:213:23
+    |
+213 |         assert!(state.security().session.temporary_key.is_some());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:214:23
+    |
+214 |         assert!(state.security().session.cached_password.is_none());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:217:30
+    |
+217 |         let temp_key = state.security_mut().session.temporary_key.take();
+    |                              ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+217 -         let temp_key = state.security_mut().session.temporary_key.take();
+217 +         let temp_key = state.ui_mut().session.temporary_key.take();
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:221:23
+    |
+221 |         assert!(state.security().session.temporary_key.is_none());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:249:15
+    |
+249 |         state.security_mut().session.unlock();
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+249 -         state.security_mut().session.unlock();
+249 +         state.ui_mut().session.unlock();
+    |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:250:15
+    |
+250 |         state.security_mut().session.cached_password = 
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+250 -         state.security_mut().session.cached_password = 
+250 +         state.ui_mut().session.cached_password = 
+    |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:254:15
+    |
+254 |         state.security_mut().session.timeout_duration = std::time::Duration::from_millis(100);
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+254 -         state.security_mut().session.timeout_duration = std::time::Duration::from_millis(100);
+254 +         state.ui_mut().session.timeout_duration = std::time::Duration::from_millis(100);
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:260:34
+    |
+260 |         let is_timed_out = state.security().session.is_timed_out();
+    |                                  ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:265:19
+    |
+265 |             state.security_mut().session.lock();
+    |                   ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+265 -             state.security_mut().session.lock();
+265 +             state.ui_mut().session.lock();
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:269:24
+    |
+269 |         assert!(!state.security().session.is_unlocked);
+    |                        ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:270:23
+    |
+270 |         assert!(state.security().session.cached_password.is_none());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:271:23
+    |
+271 |         assert!(state.security().session.temporary_key.is_none());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:280:15
+    |
+280 |         state.security_mut().session.unlock();
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+280 -         state.security_mut().session.unlock();
+280 +         state.ui_mut().session.unlock();
+    |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:281:15
+    |
+281 |         state.security_mut().session.timeout_duration = std::time::Duration::from_millis(200);
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+281 -         state.security_mut().session.timeout_duration = std::time::Duration::from_millis(200);
+281 +         state.ui_mut().session.timeout_duration = std::time::Duration::from_millis(200);
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:284:38
+    |
+284 |         let initial_activity = state.security().session.last_activity;
+    |                                      ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:290:15
+    |
+290 |         state.security_mut().session.update_activity();
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+290 -         state.security_mut().session.update_activity();
+290 +         state.ui_mut().session.update_activity();
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:293:23
+    |
+293 |         assert!(state.security().session.last_activity > initial_activity);
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:296:24
+    |
+296 |         assert!(!state.security().session.is_timed_out());
+    |                        ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:305:15
+    |
+305 |         state.security_mut().session.unlock();
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+305 -         state.security_mut().session.unlock();
+305 +         state.ui_mut().session.unlock();
+    |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:306:15
+    |
+306 |         state.security_mut().session.cached_password = 
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+306 -         state.security_mut().session.cached_password = 
+306 +         state.ui_mut().session.cached_password = 
+    |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:308:15
+    |
+308 |         state.security_mut().session.temporary_key = 
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+308 -         state.security_mut().session.temporary_key = 
+308 +         state.ui_mut().session.temporary_key = 
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:312:23
+    |
+312 |         assert!(state.security().session.is_unlocked);
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:313:23
+    |
+313 |         assert!(state.security().session.cached_password.is_some());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:314:23
+    |
+314 |         assert!(state.security().session.temporary_key.is_some());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:317:15
+    |
+317 |         state.security_mut().session.lock();
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+317 -         state.security_mut().session.lock();
+317 +         state.ui_mut().session.lock();
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:320:24
+    |
+320 |         assert!(!state.security().session.is_unlocked);
+    |                        ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:321:23
+    |
+321 |         assert!(state.security().session.cached_password.is_none());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:322:23
+    |
+322 |         assert!(state.security().session.temporary_key.is_none());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:323:23
+    |
+323 |         assert!(state.security().session.unlocked_at.is_none());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:332:15
+    |
+332 |         state.security_mut().session.unlock();
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+332 -         state.security_mut().session.unlock();
+332 +         state.ui_mut().session.unlock();
+    |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:333:15
+    |
+333 |         state.security_mut().session.cached_password = 
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+333 -         state.security_mut().session.cached_password = 
+333 +         state.ui_mut().session.cached_password = 
+    |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:335:15
+    |
+335 |         state.security_mut().session.timeout_duration = std::time::Duration::from_millis(100);
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+335 -         state.security_mut().session.timeout_duration = std::time::Duration::from_millis(100);
+335 +         state.ui_mut().session.timeout_duration = std::time::Duration::from_millis(100);
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:338:23
+    |
+338 |         assert!(state.security().session.cached_password.is_some());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:344:18
+    |
+344 |         if state.security().session.is_timed_out() {
+    |                  ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:346:19
+    |
+346 |             state.security_mut().session.lock();
+    |                   ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+346 -             state.security_mut().session.lock();
+346 +             state.ui_mut().session.lock();
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:350:23
+    |
+350 |         assert!(state.security().session.cached_password.is_none());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:351:24
+    |
+351 |         assert!(!state.security().session.is_unlocked);
+    |                        ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:364:15
+    |
+364 |         state.security_mut().password_dialog.show(PasswordReason::UnlockSession);
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+364 -         state.security_mut().password_dialog.show(PasswordReason::UnlockSession);
+364 +         state.ui_mut().password_dialog.show(PasswordReason::UnlockSession);
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:365:23
+    |
+365 |         assert!(state.security().password_dialog.visible);
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:368:15
+    |
+368 |         state.security_mut().session.unlock();
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+368 -         state.security_mut().session.unlock();
+368 +         state.ui_mut().session.unlock();
+    |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:369:15
+    |
+369 |         state.security_mut().session.cached_password = 
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+369 -         state.security_mut().session.cached_password = 
+369 +         state.ui_mut().session.cached_password = 
+    |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:371:15
+    |
+371 |         state.security_mut().password_dialog.hide();
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+371 -         state.security_mut().password_dialog.hide();
+371 +         state.ui_mut().password_dialog.hide();
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:373:23
+    |
+373 |         assert!(state.security().session.is_unlocked);
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:374:24
+    |
+374 |         assert!(!state.security().password_dialog.visible);
+    |                        ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:377:30
+    |
+377 |         let can_sign = state.security().session.is_unlocked && 
+    |                              ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:378:29
+    |
+378 |                       state.security().session.cached_password.is_some();
+    |                             ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:382:15
+    |
+382 |         state.security_mut().session.timeout_duration = std::time::Duration::from_millis(50);
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+382 -         state.security_mut().session.timeout_duration = std::time::Duration::from_millis(50);
+382 +         state.ui_mut().session.timeout_duration = std::time::Duration::from_millis(50);
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:385:18
+    |
+385 |         if state.security().session.is_timed_out() {
+    |                  ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:386:19
+    |
+386 |             state.security_mut().session.lock();
+    |                   ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+386 -             state.security_mut().session.lock();
+386 +             state.ui_mut().session.lock();
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:389:24
+    |
+389 |         assert!(!state.security().session.is_unlocked);
+    |                        ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:392:15
+    |
+392 |         state.security_mut().password_dialog.show(
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+392 -         state.security_mut().password_dialog.show(
+392 +         state.ui_mut().password_dialog.show(
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:395:23
+    |
+395 |         assert!(state.security().password_dialog.visible);
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:404:15
+    |
+404 |         state.security_mut().session.unlock();
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+404 -         state.security_mut().session.unlock();
+404 +         state.ui_mut().session.unlock();
+    |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:405:15
+    |
+405 |         state.security_mut().session.cached_password = 
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+405 -         state.security_mut().session.cached_password = 
+405 +         state.ui_mut().session.cached_password = 
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:408:23
+    |
+408 |         assert!(state.security().session.is_unlocked);
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:409:23
+    |
+409 |         assert!(state.security().session.cached_password.is_some());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:418:19
+    |
+418 |             state.security_mut().session.cached_password = None;
+    |                   ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+418 -             state.security_mut().session.cached_password = None;
+418 +             state.ui_mut().session.cached_password = None;
+    |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:419:19
+    |
+419 |             state.security_mut().session.temporary_key = None;
+    |                   ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+419 -             state.security_mut().session.temporary_key = None;
+419 +             state.ui_mut().session.temporary_key = None;
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:423:23
+    |
+423 |         assert!(state.security().session.cached_password.is_none());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:424:23
+    |
+424 |         assert!(state.security().session.temporary_key.is_none());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:432:36
+    |
+432 |             let needs_auth = state.security().session.cached_password.is_none();
+    |                                    ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:443:15
+    |
+443 |         state.security_mut().session.unlock();
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+443 -         state.security_mut().session.unlock();
+443 +         state.ui_mut().session.unlock();
+    |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:448:19
+    |
+448 |             state.security_mut().session.cached_password = Some(seed.clone());
+    |                   ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+448 -             state.security_mut().session.cached_password = Some(seed.clone());
+448 +             state.ui_mut().session.cached_password = Some(seed.clone());
+    |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:450:19
+    |
+450 |             state.security_mut().session.temporary_key = Some(seed.clone());
+    |                   ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+450 -             state.security_mut().session.temporary_key = Some(seed.clone());
+450 +             state.ui_mut().session.temporary_key = Some(seed.clone());
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:453:23
+    |
+453 |         assert!(state.security().session.cached_password.is_some());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+warning: `vaughan` (test "professional_test") generated 1 warning
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:454:23
+    |
+454 |         assert!(state.security().session.temporary_key.is_none());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:457:15
+    |
+457 |         state.security_mut().session.lock();
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+457 -         state.security_mut().session.lock();
+457 +         state.ui_mut().session.lock();
+    |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:458:15
+    |
+458 |         state.security_mut().session.unlock();
+    |               ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+458 -         state.security_mut().session.unlock();
+458 +         state.ui_mut().session.unlock();
+    |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:464:19
+    |
+464 |             state.security_mut().session.cached_password = Some(seed.clone());
+    |                   ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+464 -             state.security_mut().session.cached_password = Some(seed.clone());
+464 +             state.ui_mut().session.cached_password = Some(seed.clone());
+    |
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:466:19
+    |
+466 |             state.security_mut().session.temporary_key = Some(seed.clone());
+    |                   ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+466 -             state.security_mut().session.temporary_key = Some(seed.clone());
+466 +             state.ui_mut().session.temporary_key = Some(seed.clone());
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:469:23
+    |
+469 |         assert!(state.security().session.cached_password.is_none());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:470:23
+    |
+470 |         assert!(state.security().session.temporary_key.is_some());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+error[E0599]: no method named `security_mut` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:473:27
+    |
+473 |         let _temp = state.security_mut().session.temporary_key.take();
+    |                           ^^^^^^^^^^^^
+    |
+help: there is a method `ui_mut` with a similar name
+    |
+473 -         let _temp = state.security_mut().session.temporary_key.take();
+473 +         let _temp = state.ui_mut().session.temporary_key.take();
+    |
+
+error[E0599]: no method named `security` found for struct `AppState` in the current scope
+   --> tests\password_integration_tests.rs:474:23
+    |
+474 |         assert!(state.security().session.temporary_key.is_none());
+    |                       ^^^^^^^^ method not found in `AppState`
+
+warning: `vaughan` (test "transaction_flow_tests") generated 1 warning (run `cargo fix --test "transaction_flow_tests" 
+-p vaughan` to apply 1 suggestion)
+Some errors have detailed explanations: E0432, E0599.
+For more information about an error, try `rustc --explain E0432`.
+warning: `vaughan` (test "password_integration_tests") generated 1 warning
+error: could not compile `vaughan` (test "password_integration_tests") due to 111 previous errors; 1 warning emitted
+warning: `vaughan` (lib test) generated 14 warnings (13 duplicates)
+error: could not compile `vaughan` (lib test) due to 1 previous error; 14 warnings emitted

@@ -1,0 +1,23 @@
+# Vaughan Wallet Code Formatting Configuration
+# Using only stable rustfmt options (stable channel compatible)
+
+# Edition
+edition = "2021"
+
+# Line width
+max_width = 120
+
+# Indentation and whitespace
+tab_spaces = 4
+hard_tabs = false
+
+# Struct and function formatting
+use_field_init_shorthand = true
+use_try_shorthand = true
+
+# Newlines
+newline_style = "Auto"
+
+# Reordering
+reorder_imports = true
+reorder_modules = true

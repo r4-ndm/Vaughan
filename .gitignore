@@ -1,0 +1,120 @@
+# Rust
+/target/
+**/target/
+**/*.rs.bk
+Cargo.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+*.tmp
+*.temp
+
+# Build artifacts
+dist/
+build/
+
+# Keystore and sensitive data
+/keystore/
+*.keystore
+*.key
+*.pem
+
+# Test artifacts
+coverage/
+.nyc_output/
+
+# Documentation build
+docs/_build/
+
+# Local configuration
+config.local.toml
+config/api_config.toml
+
+# Local development folders
+agents/
+readme/
+
+# Vaughan Wallet specific
+.vaughan/
+*.wallet
+*.seed
+private_keys/
+wallet_data/
+
+# Foundry/Anvil
+cache/
+out/
+broadcast/
+
+# Node modules (if any)
+node_modules/.env
+
+# API Keys and Secrets (CRITICAL)
+set_moralis_key.fish
+set_moralis_key.sh  
+*.api-key
+*_secrets*
+api_keys/
+*_key.txt
+*_token.txt
+
+# Moralis specific
+.moralis/
+moralis.config
+
+# User-specific config files
+config/user_*
+config/*_local*
+~/.config/vaughan/
+
+# Development files with potential secrets
+dev_setup.*
+local_config.*
+my_*.txt
+
+# JWT tokens and similar (but allow code files)
+eyJ*
+jwt_*
+*_token.txt
+*_token.json
+*.token
+*_token.key
+api_token*
+jwt_token*
+access_token*
+# Allow legitimate code files
+!*_service.rs
+!token_*.rs
+# Backup files from security fixes
+*.backup.*
+*.fix
+
+# Windows reserved filenames
+nul
+CON
+PRN
+AUX

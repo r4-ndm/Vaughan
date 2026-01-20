@@ -1,0 +1,322 @@
+
+running 147 tests
+test config::tests::test_get_config_dir ... ok
+test config::tests::test_config_manager_creation ... ok
+test blockchain::explorer_apis::tests::test_rate_limiter ... ok
+test gui::safe_calculations::tests::test_safe_balance ... ok
+test blockchain::explorer_apis::tests::test_config_serialization ... ok
+test error::recovery::tests::test_non_recoverable_error ... ok
+test gui::components::session_indicator::tests::test_session_indicator_locked ... ok
+test gui::safe_calculations::tests::test_safe_dimension ... ok
+test gui::components::session_indicator::tests::test_session_indicator_unlocked ... ok
+test gui::safe_calculations::tests::test_safe_ticker ... ok
+test gui::state::auth_state::tests::test_password_dialog_error_handling ... ok
+test config::api_config::tests::test_api_config_creation ... ok
+test gui::state::auth_state::tests::test_password_dialog_show_hide ... ok
+test gui::state::auth_state::tests::test_password_error_display ... ok
+test gui::state::auth_state::tests::test_security_state_default ... ok
+test gui::state::auth_state::tests::test_session_lock_unlock ... ok
+test gui::tests::test_amount_validation ... ok
+test gui::transaction_cancellation::tests::test_cancellation_error_display ... ok
+test gui::transaction_cancellation::tests::test_gas_settings_creation ... ok
+test gui::transaction_cancellation::tests::test_pending_transaction_creation ... ok
+test gui::transaction_errors::tests::test_error_classification ... ok
+test gui::transaction_errors::tests::test_error_info_generation ... ok
+test gui::views::locked_view::tests::test_locked_view_shows_unlock_button ... ok
+test gui::views::locked_view::tests::test_should_not_show_locked_view_when_password_dialog_visible ... ok
+test gui::views::locked_view::tests::test_should_not_show_locked_view_when_session_unlocked ... ok
+test gui::views::locked_view::tests::test_should_show_locked_view_when_session_locked ... ok
+test gui::widgets::tests::test_balance_display_creation ... ok
+test gui::widgets::tests::test_button_creation ... ok
+test gui::widgets::tests::test_connection_status_display ... ok
+test gui::widgets::tests::test_network_selector_creation ... ok
+test gui::widgets::tests::test_status_message_creation ... ok
+test config::api_config::tests::test_moralis_configuration ... ok
+test gui::widgets::tests::test_text_input_creation ... ok
+test gui::widgets::tests::test_theme_switcher_creation ... ok
+test gui::widgets::transaction::tests::test_format_timestamp ... ok
+test gui::widgets::transaction::tests::test_transaction_confirmation_creation ... ok
+test gui::widgets::transaction::tests::test_transaction_history_empty ... ok
+test gui::widgets::transaction::tests::test_transaction_history_with_data ... ok
+test gui::widgets::transaction::tests::test_validate_amount ... ok
+test gui::widgets::transaction::tests::test_validate_gas_limit ... ok
+test gui::widgets::transaction::tests::test_validate_gas_price ... ok
+test security::hardware::tests::test_address_validation ... ok
+test security::hardware::tests::test_address_verification ... ok
+test security::hardware::tests::test_audit_transaction ... ok
+test security::hardware::tests::test_derivation_path_validation ... ok
+test security::hardware::tests::test_error_handling_invalid_device_operations ... ok
+test security::hardware::tests::test_security_validator_creation ... ok
+test security::hardware::tests::test_security_validator_with_custom_limits ... ok
+test security::hardware::tests::test_transaction_validation_high_value ... ok
+test security::hardware::tests::test_transaction_validation_success ... ok
+test gui::services::qr_service::tests::test_invalid_address_generates_qr ... ok
+test security::hardware_feedback::tests::test_feedback_manager_creation ... ok
+test security::hardware_feedback::tests::test_guidance_generation ... ok
+test security::hardware_feedback::tests::test_progress_tracking ... ok
+test security::hardware_feedback::tests::test_status_updates ... ok
+test security::key_cache::tests::test_key_cache_basic ... ok
+test security::key_cache::tests::test_key_cache_clear ... ok
+test gui::hd_wallet_service::tests::test_hd_wallet_derivation ... ok
+test security::keychain::tests::test_mock_keychain ... ok
+test security::keystore::tests::test_create_account ... ok
+test gui::services::qr_service::tests::test_generate_address_qr_code ... ok
+test security::keystore::tests::test_keystore_locking ... ok
+test security::memory::tests::test_disable_core_dumps ... ok
+test security::keystore::tests::test_import_account ... ok
+test security::memory::tests::test_memory_protection_calls ... ok
+test security::memory::tests::test_secure_memory_allocation ... ok
+test security::password_validator::tests::test_attempt_recording ... ok
+test security::password_validator::tests::test_clear_all ... ok
+test security::password_validator::tests::test_clear_failures_on_success ... ok
+test security::password_validator::tests::test_failure_increment ... ok
+test security::password_validator::tests::test_initial_state ... ok
+test security::password_validator::tests::test_lockout_after_max_failures ... ok
+test security::password_validator::tests::test_multiple_accounts ... ok
+test security::password_validator::tests::test_rate_limit_check ... ok
+test security::seed::tests::test_seed_generation ... ok
+test security::seed::tests::test_seed_strength_detection ... ok
+test security::seed::tests::test_seed_validation ... ok
+test security::seed::zeroization::tests::test_secure_guard ... ok
+test security::seed::zeroization::tests::test_zero_array ... ok
+test security::seed::zeroization::tests::test_zero_bytes ... ok
+test gui::services::qr_service::tests::test_generate_payment_request_qr_code ... ok
+test security::transaction_signing::tests::test_derive_key_from_seed ... ok
+test security::validation::tests::test_sanitize_input ... ok
+test security::transaction_signing::tests::test_derive_wallet_from_seed ... ok
+test security::validation::tests::test_validate_ethereum_address ... ok
+test security::validation::tests::test_validate_password_strength ... ok
+test security::validation::tests::test_validate_private_key ... ok
+test security::validation::tests::test_validate_rpc_endpoint ... ok
+test security::validation::tests::test_validate_file_path ... ok
+test error::recovery::tests::test_retry_with_exponential_backoff ... ok
+test security::transaction_signing::tests::test_derive_with_custom_path ... ok
+test security::wallet_password_validator::tests::test_password_strength_validation ... ok
+test security::hardware::tests::test_trezor_address_derivation ... ok
+test security::hardware::tests::test_trezor_connection ... ok
+test security::hardware::tests::test_ledger_connection ... ok
+test security::hardware::tests::test_ledger_address_derivation ... ok
+test security::hardware::tests::test_trezor_transaction_signing ... ok
+test security::hardware::tests::test_ledger_transaction_signing ... ok
+test wallet::account::tests::test_account_manager_basic_operations ... ok
+test wallet::account::tests::test_account_tags ... ok
+test wallet::errors::tests::test_error_debug ... ok
+test wallet::errors::tests::test_error_display ... ok
+test wallet::hardware::tests::test_address_verification_feedback ... ok
+test gui::state::auth_state::tests::test_session_timeout ... ok
+test security::key_cache::tests::test_key_cache_expiration ... ok
+test wallet::hardware::tests::test_get_addresses_error_handling ... ok
+test security::hardware::tests::test_transaction_validation_zero_gas ... ok
+test security::hardware::tests::test_hardware_wallet_manager ... ok
+test security::hardware::tests::test_concurrent_device_access ... ok
+test wallet::hardware::tests::test_hardware_manager_creation ... ok
+test wallet::hardware::tests::test_hardware_manager_default ... ok
+test wallet::hardware::tests::test_sign_transaction_error_handling ... ok
+test wallet::keystore::tests::test_account_operations ... ok
+test wallet::keystore::tests::test_wallet_keystore_creation ... ok
+test wallet::keystore_format::tests::test_crypto_section_structure ... ok
+test wallet::keystore_format::tests::test_keystore_serialization ... ok
+test wallet::keystore_format::tests::test_keystore_structure ... ok
+test wallet::hardware::tests::test_device_detection ... ok
+test wallet::hardware::tests::test_device_type_checking ... ok
+test wallet::keystore::tests::test_auto_lock ... ok
+test wallet::hardware::tests::test_get_device_info ... ok
+test wallet::hardware::tests::test_disconnect_all ... ok
+test wallet::hardware::tests::test_transaction_audit_feedback ... ok
+test wallet::hardware::tests::test_device_refresh ... ok
+test security::hardware::tests::test_recovery_connection ... ok
+test wallet::hardware::tests::test_device_recovery_feedback ... ok
+test wallet::manager::tests::test_create_wallet ... ok
+test wallet::manager::tests::test_export_seed_phrase ... ok
+test wallet::manager::tests::test_export_private_key ... ok
+test wallet::manager::tests::test_export_while_locked_fails ... ok
+test wallet::manager::tests::test_memory_is_cleared_after_lock ... ok
+test wallet::manager::tests::test_metamask_keystore_format ... ok
+test wallet::manager::tests::test_full_wallet_lifecycle ... ok
+test wallet::manager::tests::test_encrypt_decrypt_roundtrip ... ok
+test wallet::manager::tests::test_password_1234_works_for_development ... ok
+test wallet::manager::tests::test_mac_verification ... ok
+test wallet::manager::tests::test_unlock_wallet ... ok
+test wallet::manager::tests::test_wrong_password ... ok
+test wallet::manager::tests::test_wrong_password_fails_gracefully ... ok
+test wallet::manager::tests::test_multiple_sessions ... ok
+test security::wallet_config::tests::test_wallet_config_creation ... ok
+test security::wallet_config::tests::test_wallet_settings_encryption ... ok
+test security::wallet_config::tests::test_account_metadata_encryption ... ok
+test security::wallet_password_validator::tests::test_wallet_password_validator ... ok
+test security::wallet_storage::tests::test_wallet_config_storage ... ok
+test wallet::manager::tests::test_lock_unlock_cycle ... ok
+test security::wallet_storage::tests::test_wallet_export_import ... ok
+
+test result: ok. 147 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 35.88s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 5 tests
+test unit_tests::test_seed_based_account_detection ... ok
+test unit_tests::test_private_key_account_detection ... ok
+test prop_account_type_detection_is_deterministic ... ok
+test prop_account_type_detection_is_correct ... ok
+test prop_account_type_depends_only_on_service ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+
+running 8 tests
+test unit_tests::test_switch_preserves_session_lock_state ... ok
+test unit_tests::test_switch_to_seed_preserves_cache ... ok
+test unit_tests::test_account_type_identification ... ok
+test unit_tests::test_switch_from_seed_to_private_key_clears_cache ... ok
+test prop_cache_cleared_only_for_pk_switch ... ok
+test prop_switching_to_seed_preserves_session ... ok
+test prop_account_type_switch_clears_cache_when_needed ... ok
+test prop_account_type_consistent_during_switches ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+
+
+running 4 tests
+test test_auth_state_initialization ... ok
+test test_auth_state_locking_unlocking ... ok
+test test_auth_state_timeout ... ok
+test test_password_dialog_config_consolidation ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 1 test
+test test_auto_balance_service_placeholder ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 3 tests
+test test_dead_code_annotation_count ... ok
+test test_all_dead_code_annotations_are_documented ... ok
+test test_no_undocumented_allow_attributes ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+
+running 1 test
+test verify_optimized_dependencies ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 2 tests
+test verify_default_feature_configuration ... ok
+test verify_dependency_gating ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 2 tests
+test test_build_eip1559_fees ... ok
+test test_build_legacy_with_nonce_override ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 13 tests
+test tests::test_gui_wallet_operations ... ignored
+test tests::test_hardware_wallet_detection ... ok
+test tests::test_error_handling ... ok
+test tests::test_hardware_wallet_feedback ... ok
+test tests::test_hardware_manager_initialization ... ok
+test tests::test_comprehensive_error_scenarios ... ok
+test tests::test_transaction_signing_flow ... ok
+test tests::test_trezor_wallet_operations ... ok
+test tests::test_timeout_handling ... ok
+test tests::test_ledger_wallet_operations ... ok
+test tests::test_hardware_operation_with_timeout ... ok
+test tests::test_address_derivation_performance ... ok
+test tests::test_main_wallet_hardware_integration ... ok
+
+test result: ok. 12 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.19s
+
+
+running 8 tests
+test test_e2e_multi_device_user ... FAILED
+test test_e2e_high_value_transaction ... FAILED
+test test_e2e_experienced_user_transaction ... FAILED
+test test_e2e_corporate_multi_account ... FAILED
+test test_e2e_first_time_user_setup ... FAILED
+test test_e2e_performance_validation ... FAILED
+test test_e2e_real_world_simulation ... FAILED
+test test_e2e_error_recovery ... ok
+
+failures:
+
+---- test_e2e_multi_device_user stdout ----
+🧪 E2E Test: Multi-device user workflow
+✅ Detected 0 devices
+
+thread 'test_e2e_multi_device_user' (13876) panicked at tests\hardware_wallet_e2e.rs:123:5:
+assertion failed: devices.len() >= 2
+
+---- test_e2e_high_value_transaction stdout ----
+🧪 E2E Test: High-value transaction workflow
+💰 High-value transaction: 50 ETH
+
+thread 'test_e2e_high_value_transaction' (13208) panicked at tests\hardware_wallet_e2e.rs:239:10:
+called `Result::unwrap()` on an `Err` value: HardwareWallet(DeviceNotFound)
+
+---- test_e2e_experienced_user_transaction stdout ----
+🧪 E2E Test: Experienced user transaction workflow
+✅ Hardware wallets already detected and ready
+📝 Transaction prepared: 0.5 ETH to recipient
+
+thread 'test_e2e_experienced_user_transaction' (22120) panicked at tests\hardware_wallet_e2e.rs:88:10:
+called `Result::unwrap()` on an `Err` value: HardwareWallet(DeviceNotFound)
+
+---- test_e2e_corporate_multi_account stdout ----
+🧪 E2E Test: Corporate multi-account workflow
+🏢 Setting up Treasury account at m/44'/60'/0'/0
+
+thread 'test_e2e_corporate_multi_account' (18864) panicked at tests\hardware_wallet_e2e.rs:297:73:
+called `Result::unwrap()` on an `Err` value: HardwareWallet(DeviceNotFound)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- test_e2e_first_time_user_setup stdout ----
+🧪 E2E Test: First-time user setup
+✅ Wallet initialized with hardware wallet support
+
+thread 'test_e2e_first_time_user_setup' (21904) panicked at tests\hardware_wallet_e2e.rs:30:5:
+assertion failed: !detected_wallets.is_empty()
+
+---- test_e2e_performance_validation stdout ----
+🧪 E2E Test: Performance validation
+⚡ Bulk address derivation: 20 operations in 98.9µs
+
+thread 'test_e2e_performance_validation' (11020) panicked at tests\hardware_wallet_e2e.rs:361:9:
+assertion failed: result.is_ok()
+
+---- test_e2e_real_world_simulation stdout ----
+🧪 E2E Test: Real-world simulation with delays
+🔍 Device detection attempt #1
+⏳ No devices found, waiting...
+🔍 Device detection attempt #2
+⏳ No devices found, waiting...
+🔍 Device detection attempt #3
+⏳ No devices found, waiting...
+
+thread 'test_e2e_real_world_simulation' (24372) panicked at tests\hardware_wallet_e2e.rs:441:5:
+assertion failed: !devices.is_empty()
+
+
+failures:
+    test_e2e_corporate_multi_account
+    test_e2e_experienced_user_transaction
+    test_e2e_first_time_user_setup
+    test_e2e_high_value_transaction
+    test_e2e_multi_device_user
+    test_e2e_performance_validation
+    test_e2e_real_world_simulation
+
+test result: FAILED. 1 passed; 7 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.25s
+

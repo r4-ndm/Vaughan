@@ -1,0 +1,1424 @@
+﻿cargo :    Compiling vaughan v0.1.0 (C:\Users\rb3y9\Desktop\Vaughan-main)
+At line:1 char:1
++ cargo test --all-features 2>&1 | Out-File -Encoding utf8 test_run_out ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling va...p\Vaughan-main):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+warning: unused import: `crate::gui::state::auth_state::PasswordDialogConfig`
+  --> src\gui\views\locked_view.rs:13:5
+   |
+13 | use crate::gui::state::auth_state::PasswordDialogConfig;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `BlackThemeColors`
+ --> src\gui\theme\text_input.rs:9:21
+  |
+9 | use super::colors::{BlackThemeColors, VaughanColors};
+  |                     ^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:373:26
+    |
+373 |             LastWritten: unsafe { std::mem::zeroed() },
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: requested on the command line with `-W unsafe-code`
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:383:22
+    |
+383 |         let result = unsafe { CredWriteW(&mut credential, 0) };
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:387:30
+    |
+387 |             let error_code = unsafe { GetLastError() };
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:412:22
+    |
+412 |           let result = unsafe {
+    |  ______________________^
+413 | |             CredReadW(
+414 | |                 target_name_wide.as_ptr() as LPCWSTR,
+415 | |                 CRED_TYPE_GENERIC,
+...   |
+419 | |         };
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:423:30
+    |
+423 |             let error_code = unsafe { GetLastError() };
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:433:24
+    |
+433 |           let key_data = unsafe {
+    |  ________________________^
+434 | |             let cred = &*credential;
+435 | |             let blob_size = cred.CredentialBlobSize as usize;
+436 | |             let blob_ptr = cred.CredentialBlob;
+...   |
+447 | |             String::from_utf8_lossy(data).into_owned()
+448 | |         };
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:450:9
+    |
+450 |         unsafe { CredFree(credential as *mut _) };
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:464:22
+    |
+464 |         let result = unsafe { CredDeleteW(target_name_wide.as_ptr() as LPCWSTR, CRED_TYPE_GENERIC, 0) };
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:468:30
+    |
+468 |             let error_code = unsafe { GetLastError() };
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+  --> src\security\memory.rs:55:22
+   |
+55 |         let result = unsafe { VirtualLock(addr as *mut winapi::ctypes::c_void, len) };
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+  --> src\security\memory.rs:73:22
+   |
+73 |         let result = unsafe { VirtualUnlock(addr as *mut winapi::ctypes::c_void, len) };
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:154:19
+    |
+154 |         let ptr = unsafe { std::alloc::alloc_zeroed(layout) };
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:184:9
+    |
+184 |         unsafe { std::slice::from_raw_parts_mut(self.ptr, self.len) }
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:202:9
+    |
+202 | /         unsafe {
+203 | |             ptr::write_bytes(self.ptr, 0, self.len);
+204 | |         }
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:227:9
+    |
+227 | /         unsafe {
+228 | |             let layout = std::alloc::Layout::from_size_align_unchecked(self.len, 8);
+229 | |             std::alloc::dealloc(self.ptr, layout);
+230 | |         }
+    | |_________^
+
+warning: implementation of an `unsafe` trait
+   --> src\security\memory.rs:237:1
+    |
+237 | unsafe impl Send for SecureMemory {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `SeedImportConfig` and `SeedImportValidation`
+  --> src\security\seed\derivation.rs:22:5
+   |
+22 |     SeedImportConfig, SeedImportValidation, SeedStrength,
+   |     ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `ExposeSecret` and `Secret`
+  --> src\security\seed\zeroization.rs:11:15
+   |
+11 | use secrecy::{ExposeSecret, Secret};
+   |               ^^^^^^^^^^^^  ^^^^^^
+
+warning: unused import: `k256::ecdsa::SigningKey`
+  --> src\security\seed\mod.rs:40:5
+   |
+40 | use k256::ecdsa::SigningKey;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::collections::HashSet`
+  --> src\security\seed\mod.rs:42:5
+   |
+42 | use std::collections::HashSet;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: ambiguous glob re-exports
+  --> src\security\mod.rs:33:9
+   |
+33 | pub use keystore::*;
+   |         ^^^^^^^^^^^ the name `encryption` in the type namespace is first re-exported here
+...
+36 | pub use seed::*;
+   |         ------- but the name `encryption` in the type namespace is also re-exported here
+   |
+   = note: `#[warn(ambiguous_glob_reexports)]` on by default
+
+warning: unused import: `BlackThemeColors`
+ --> src\gui\theme\text_input.rs:9:21
+  |
+9 | use super::colors::{BlackThemeColors, VaughanColors};
+  |                     ^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `HDPath as TrezorHDPath`
+  --> src\security\hardware.rs:29:41
+   |
+29 |     alloy_signer_trezor::{TrezorSigner, HDPath as TrezorHDPath},
+   |                                         ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+  --> src\security\memory.rs:55:22
+   |
+55 |         let result = unsafe { VirtualLock(addr as *mut winapi::ctypes::c_void, len) };
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: requested on the command line with `-W unsafe-code`
+
+warning: unused variable: `key_cache`
+  --> src\gui\state\auth_state.rs:57:21
+   |
+57 |         if let Some(key_cache) = &self.key_cache_handle {
+   |                     ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_key_cache`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `network_id` is never read
+  --> src\gui\transaction_cancellation.rs:58:5
+   |
+56 | pub struct TransactionCancellationService {
+   |            ------------------------------ field in this struct
+57 |     provider_url: String,
+58 |     network_id: NetworkId,
+   |     ^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: methods `store_encrypted_file`, `get_key_file_path`, `encrypt_key_with_integrity`, `write_secure_file`, 
+`retrieve_encrypted_file`, and `delete_encrypted_file` are never used
+   --> src\security\keychain.rs:483:8
+    |
+105 | impl OSKeychain {
+    | --------------- methods in this implementation
+...
+483 |     fn store_encrypted_file(&self, key_ref: &KeyReference, key: SecretString) -> Result<()> {
+    |        ^^^^^^^^^^^^^^^^^^^^
+...
+493 |     fn get_key_file_path(&self, key_ref: &KeyReference) -> Result<std::path::PathBuf> {
+    |        ^^^^^^^^^^^^^^^^^
+...
+511 |     fn encrypt_key_with_integrity(&self, key: SecretString) -> Result<Vec<u8>> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+561 |     fn write_secure_file(&self, path: &std::path::Path, data: &[u8]) -> Result<()> {
+    |        ^^^^^^^^^^^^^^^^^
+...
+591 |     fn retrieve_encrypted_file(&self, key_ref: &KeyReference) -> Result<SecretString> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^^
+...
+685 |     fn delete_encrypted_file(&self, key_ref: &KeyReference) -> Result<()> {
+    |        ^^^^^^^^^^^^^^^^^^^^^
+
+warning: struct `CoinGeckoSimplePrice` is never constructed
+  --> src\tokens\pricing.rs:14:8
+   |
+14 | struct CoinGeckoSimplePrice {
+   |        ^^^^^^^^^^^^^^^^^^^^
+
+warning: struct `CoinGeckoTokenList` is never constructed
+  --> src\tokens\pricing.rs:28:8
+   |
+28 | struct CoinGeckoTokenList {
+   |        ^^^^^^^^^^^^^^^^^^
+
+warning: struct `CoinGeckoToken` is never constructed
+  --> src\tokens\pricing.rs:34:8
+   |
+34 | struct CoinGeckoToken {
+   |        ^^^^^^^^^^^^^^
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+    --> src\gui\working_wallet.rs:2959:13
+     |
+2959 |     fn view(&self) -> Element<Message> {
+     |             ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+     |             |
+     |             the lifetime is elided here
+     |
+     = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+     = note: `#[warn(mismatched_lifetime_syntaxes)]` on by default
+help: use `'_` for type paths
+     |
+2959 |     fn view(&self) -> Element<'_, Message> {
+     |                               +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+    --> src\gui\working_wallet.rs:3118:26
+     |
+3118 |     fn dapps_dialog_view(&self) -> Element<Message> {
+     |                          ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+     |                          |
+     |                          the lifetime is elided here
+     |
+     = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+     |
+3118 |     fn dapps_dialog_view(&self) -> Element<'_, Message> {
+     |                                            +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\account_manager.rs:37:24
+   |
+37 |     pub fn view(state: &AppState) -> Element<Message> {
+   |                        ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                        |
+   |                        the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+37 |     pub fn view(state: &AppState) -> Element<'_, Message> {
+   |                                              +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\account_manager.rs:60:28
+   |
+60 |     fn account_list(state: &AppState) -> Element<Message> {
+   |                            ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                            |
+   |                            the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+60 |     fn account_list(state: &AppState) -> Element<'_, Message> {
+   |                                                  +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\balance_display.rs:13:24
+   |
+13 |     pub fn view(state: &AppState) -> Element<Message> {
+   |                        ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                        |
+   |                        the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+13 |     pub fn view(state: &AppState) -> Element<'_, Message> {
+   |                                              +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\balance_display.rs:28:28
+   |
+28 |     fn main_balance(state: &AppState) -> Element<Message> {
+   |                            ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                            |
+   |                            the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+28 |     fn main_balance(state: &AppState) -> Element<'_, Message> {
+   |                                                  +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\balance_display.rs:56:28
+   |
+56 |     fn account_info(state: &AppState) -> Element<Message> {
+   |                            ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                            |
+   |                            the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+56 |     fn account_info(state: &AppState) -> Element<'_, Message> {
+   |                                                  +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\cancel_transaction_dialog.rs:19:46
+   |
+19 | pub fn cancel_transaction_dialog_view(state: &AppState) -> Element<Message> {
+   |                                              ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                              |
+   |                                              the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+19 | pub fn cancel_transaction_dialog_view(state: &AppState) -> Element<'_, Message> {
+   |                                                                    +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\confirmation_dialogs.rs:32:51
+   |
+32 | pub fn clear_logs_confirmation_dialog_view(state: &AppState) -> Element<Message> {
+   |                                                   ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                                   |
+   |                                                   the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+32 | pub fn clear_logs_confirmation_dialog_view(state: &AppState) -> Element<'_, Message> {
+   |                                                                         +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\confirmation_dialogs.rs:86:54
+   |
+86 | pub fn reset_wallet_confirmation_dialog_view(_state: &AppState) -> Element<Message> {
+   |                                                      ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden 
+here
+   |                                                      |
+   |                                                      the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+86 | pub fn reset_wallet_confirmation_dialog_view(_state: &AppState) -> Element<'_, Message> {
+   |                                                                            +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\components\dialogs\confirmation_dialogs.rs:163:43
+    |
+163 | pub fn hardware_wallet_dialog_view(state: &AppState) -> Element<Message> {
+    |                                           ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                           |
+    |                                           the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+163 | pub fn hardware_wallet_dialog_view(state: &AppState) -> Element<'_, Message> {
+    |                                                                 +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\components\dialogs\confirmation_dialogs.rs:329:42
+    |
+329 | pub fn delete_account_dialog_view(state: &AppState) -> Element<Message> {
+    |                                          ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                          |
+    |                                          the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+329 | pub fn delete_account_dialog_view(state: &AppState) -> Element<'_, Message> {
+    |                                                                +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\components\dialogs\confirmation_dialogs.rs:407:55
+    |
+407 | pub fn delete_network_confirmation_dialog_view(state: &AppState) -> Element<Message> {
+    |                                                       ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden 
+here
+    |                                                       |
+    |                                                       the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+407 | pub fn delete_network_confirmation_dialog_view(state: &AppState) -> Element<'_, Message> {
+    |                                                                             +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\components\dialogs\confirmation_dialogs.rs:473:46
+    |
+473 | pub fn dapps_coming_soon_dialog_view(_state: &AppState) -> Element<Message> {
+    |                                              ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                              |
+    |                                              the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+473 | pub fn dapps_coming_soon_dialog_view(_state: &AppState) -> Element<'_, Message> {
+    |                                                                    +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\create_wallet_dialog.rs:19:41
+   |
+19 | pub fn create_wallet_dialog_view(state: &AppState) -> Element<Message> {
+   |                                         ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                         |
+   |                                         the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+19 | pub fn create_wallet_dialog_view(state: &AppState) -> Element<'_, Message> {
+   |                                                               +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\custom_token_dialog.rs:19:40
+   |
+19 | pub fn custom_token_screen_view(state: &AppState) -> Element<Message> {
+   |                                        ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                        |
+   |                                        the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+19 | pub fn custom_token_screen_view(state: &AppState) -> Element<'_, Message> {
+   |                                                              +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\export_wallet_dialog.rs:18:41
+   |
+18 | pub fn export_wallet_dialog_view(state: &AppState) -> Element<Message> {
+   |                                         ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                         |
+   |                                         the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+18 | pub fn export_wallet_dialog_view(state: &AppState) -> Element<'_, Message> {
+   |                                                               +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\import_wallet_dialog.rs:19:41
+   |
+19 | pub fn import_wallet_dialog_view(state: &AppState) -> Element<Message> {
+   |                                         ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                         |
+   |                                         the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+19 | pub fn import_wallet_dialog_view(state: &AppState) -> Element<'_, Message> {
+   |                                                               +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\network_dialog.rs:18:39
+   |
+18 | pub fn add_network_dialog_view(state: &AppState) -> Element<Message> {
+   |                                       ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                       |
+   |                                       the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+18 | pub fn add_network_dialog_view(state: &AppState) -> Element<'_, Message> {
+   |                                                             +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\receive_dialog.rs:13:35
+   |
+13 | pub fn receive_dialog_view(state: &AppState) -> Element<Message> {
+   |                                   ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                   |
+   |                                   the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+13 | pub fn receive_dialog_view(state: &AppState) -> Element<'_, Message> {
+   |                                                         +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\transaction_confirmation.rs:15:52
+   |
+15 | pub fn transaction_confirmation_dialog_view(state: &AppState) -> Element<Message> {
+   |                                                    ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                                    |
+   |                                                    the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+15 | pub fn transaction_confirmation_dialog_view(state: &AppState) -> Element<'_, Message> {
+   |                                                                          +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\dialogs\unified_password_dialog.rs:37:36
+   |
+37 | pub fn password_dialog_view(state: &AppState) -> Element<Message> {
+   |                                    ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                    |
+   |                                    the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+37 | pub fn password_dialog_view(state: &AppState) -> Element<'_, Message> {
+   |                                                          +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\export_dialog.rs:14:24
+   |
+14 |     pub fn view(state: &AppState) -> Element<Message> {
+   |                        ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                        |
+   |                        the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+14 |     pub fn view(state: &AppState) -> Element<'_, Message> {
+   |                                              +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\export_dialog.rs:42:30
+   |
+42 |     fn export_content(state: &AppState) -> Element<Message> {
+   |                              ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                              |
+   |                              the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+42 |     fn export_content(state: &AppState) -> Element<'_, Message> {
+   |                                                    +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\export_dialog.rs:52:38
+   |
+52 |     fn account_selection_step(state: &AppState) -> Element<Message> {
+   |                                      ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                      |
+   |                                      the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+52 |     fn account_selection_step(state: &AppState) -> Element<'_, Message> {
+   |                                                            +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\components\export_dialog.rs:130:35
+    |
+130 |     fn result_display_step(state: &AppState) -> Element<Message> {
+    |                                   ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                   |
+    |                                   the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+130 |     fn result_display_step(state: &AppState) -> Element<'_, Message> {
+    |                                                         +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\components\export_dialog.rs:179:31
+    |
+179 |     fn exporting_step(_state: &AppState) -> Element<Message> {
+    |                               ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                               |
+    |                               the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+179 |     fn exporting_step(_state: &AppState) -> Element<'_, Message> {
+    |                                                     +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\network_selector.rs:13:24
+   |
+13 |     pub fn view(state: &AppState) -> Element<Message> {
+   |                        ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                        |
+   |                        the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+13 |     pub fn view(state: &AppState) -> Element<'_, Message> {
+   |                                              +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\network_selector.rs:28:32
+   |
+28 |     fn network_dropdown(state: &AppState) -> Element<Message> {
+   |                                ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                |
+   |                                the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+28 |     fn network_dropdown(state: &AppState) -> Element<'_, Message> {
+   |                                                      +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\network_selector.rs:49:28
+   |
+49 |     fn network_info(state: &AppState) -> Element<Message> {
+   |                            ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                            |
+   |                            the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+49 |     fn network_info(state: &AppState) -> Element<'_, Message> {
+   |                                                  +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\session_indicator.rs:13:38
+   |
+13 | pub fn session_indicator_view(state: &AppState) -> Element<Message> {
+   |                                      ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                      |
+   |                                      the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+13 | pub fn session_indicator_view(state: &AppState) -> Element<'_, Message> {
+   |                                                            +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\components\session_indicator.rs:68:41
+   |
+68 | pub fn session_indicator_compact(state: &AppState) -> Element<Message> {
+   |                                         ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                         |
+   |                                         the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+68 | pub fn session_indicator_compact(state: &AppState) -> Element<'_, Message> {
+   |                                                               +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\views\history.rs:15:25
+   |
+15 |     pub fn history_view(&self) -> Element<Message> {
+   |                         ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                         |
+   |                         the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+15 |     pub fn history_view(&self) -> Element<'_, Message> {
+   |                                           +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\views\history.rs:79:36
+   |
+79 |     fn transaction_history_content(&self) -> Element<Message> {
+   |                                    ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                    |
+   |                                    the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+79 |     fn transaction_history_content(&self) -> Element<'_, Message> {
+   |                                                      +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\history.rs:128:33
+    |
+128 |     fn transaction_list_content(&self) -> Element<Message> {
+    |                                 ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                 |
+    |                                 the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+128 |     fn transaction_list_content(&self) -> Element<'_, Message> {
+    |                                                   +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\history.rs:288:28
+    |
+288 |     fn wallet_logs_content(&self) -> Element<Message> {
+    |                            ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                            |
+    |                            the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+288 |     fn wallet_logs_content(&self) -> Element<'_, Message> {
+    |                                              +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\views\locked_view.rs:25:27
+   |
+25 | pub fn locked_view(state: &AppState) -> Element<Message> {
+   |                           ^^^^^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                           |
+   |                           the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+25 | pub fn locked_view(state: &AppState) -> Element<'_, Message> {
+   |                                                 +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> src\gui\views\main_wallet.rs:22:29
+   |
+22 |     pub fn main_wallet_view(&self) -> Element<Message> {
+   |                             ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                             |
+   |                             the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+22 |     pub fn main_wallet_view(&self) -> Element<'_, Message> {
+   |                                               +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:137:23
+    |
+137 |     fn send_form_view(&self) -> Element<Message> {
+    |                       ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                       |
+    |                       the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+137 |     fn send_form_view(&self) -> Element<'_, Message> {
+    |                                         +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:163:28
+    |
+163 |     fn account_balance_row(&self) -> Element<Message> {
+    |                            ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                            |
+    |                            the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+163 |     fn account_balance_row(&self) -> Element<'_, Message> {
+    |                                              +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:255:25
+    |
+255 |     fn account_selector(&self) -> Element<Message> {
+    |                         ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                         |
+    |                         the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+255 |     fn account_selector(&self) -> Element<'_, Message> {
+    |                                           +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:295:26
+    |
+295 |     fn address_input_row(&self) -> Element<Message> {
+    |                          ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                          |
+    |                          the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+295 |     fn address_input_row(&self) -> Element<'_, Message> {
+    |                                            +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:337:25
+    |
+337 |     fn token_amount_row(&self) -> Element<Message> {
+    |                         ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                         |
+    |                         the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+337 |     fn token_amount_row(&self) -> Element<'_, Message> {
+    |                                           +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:382:25
+    |
+382 |     fn gas_settings_row(&self) -> Element<Message> {
+    |                         ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                         |
+    |                         the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+382 |     fn gas_settings_row(&self) -> Element<'_, Message> {
+    |                                           +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:426:26
+    |
+426 |     fn tx_type_nonce_row(&self) -> Element<Message> {
+    |                          ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                          |
+    |                          the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+426 |     fn tx_type_nonce_row(&self) -> Element<'_, Message> {
+    |                                            +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:488:33
+    |
+488 |     fn max_priority_fee_section(&self) -> Element<Message> {
+    |                                 ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                 |
+    |                                 the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+488 |     fn max_priority_fee_section(&self) -> Element<'_, Message> {
+    |                                                   +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:494:26
+    |
+494 |     fn gas_speed_buttons(&self) -> Element<Message> {
+    |                          ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                          |
+    |                          the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+494 |     fn gas_speed_buttons(&self) -> Element<'_, Message> {
+    |                                            +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:532:20
+    |
+532 |     fn send_button(&self) -> Element<Message> {
+    |                    ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                    |
+    |                    the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+532 |     fn send_button(&self) -> Element<'_, Message> {
+    |                                      +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:556:28
+    |
+556 |     fn action_buttons_view(&self) -> Element<Message> {
+    |                            ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                            |
+    |                            the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+556 |     fn action_buttons_view(&self) -> Element<'_, Message> {
+    |                                              +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:602:39
+    |
+602 |     fn wallet_management_buttons_view(&self) -> Element<Message> {
+    |                                       ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                       |
+    |                                       the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+602 |     fn wallet_management_buttons_view(&self) -> Element<'_, Message> {
+    |                                                         +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:640:25
+    |
+640 |     fn price_info_panel(&self) -> Element<Message> {
+    |                         ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                         |
+    |                         the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+640 |     fn price_info_panel(&self) -> Element<'_, Message> {
+    |                                           +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:721:28
+    |
+721 |     fn status_message_view(&self) -> Element<Message> {
+    |                            ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                            |
+    |                            the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+721 |     fn status_message_view(&self) -> Element<'_, Message> {
+    |                                              +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\views\main_wallet.rs:742:34
+    |
+742 |     fn pending_transactions_view(&self) -> Element<Message> {
+    |                                  ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                  |
+    |                                  the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+742 |     fn pending_transactions_view(&self) -> Element<'_, Message> {
+    |                                                    +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> src\gui\spinner.rs:135:43
+    |
+135 |     pub fn view<Message: Clone + 'static>(&self) -> Element<Message> {
+    |                                           ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                           |
+    |                                           the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+135 |     pub fn view<Message: Clone + 'static>(&self) -> Element<'_, Message> {
+    |                                                             +++
+
+warning: `vaughan` (lib) generated 83 warnings (run `cargo fix --lib -p vaughan` to apply 61 suggestions)
+warning: unused import: `super::*`
+ --> tests\multicall_test.rs:4:9
+  |
+4 |     use super::*;
+  |         ^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `std::time::Duration`
+  --> tests\password_integration_tests.rs:12:9
+   |
+12 |     use std::time::Duration;
+   |         ^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `vaughan::security::hardware::HardwareWallet`
+ --> tests\hardware_wallet_integration.rs:9:5
+  |
+9 | use vaughan::security::hardware::HardwareWallet;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `keychain`
+   --> tests\test_seed_encryption_standalone.rs:176:9
+    |
+176 |     let keychain = Arc::new(OSKeychain::new("test-service".to_string()).unwrap());
+    |         ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_keychain`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `seed_account`
+  --> tests\account_type_switching_tests.rs:71:9
+   |
+71 |         seed_account in arb_secure_account_with_type(AccountType::SeedBased),
+   |         ^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_seed_account`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `session`
+   --> tests\transaction_flow_tests.rs:145:9
+    |
+145 |         session in prop_oneof![arb_unlocked_session(), arb_locked_session()]
+    |         ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_session`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: `vaughan` (lib test) generated 73 warnings (70 duplicates) (run `cargo fix --lib -p vaughan --tests` to apply 
+2 suggestions)
+warning: unused variable: `manager`
+  --> tests\integration_test.rs:99:9
+   |
+99 |     let manager = HardwareWalletManager::new();
+   |         ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_manager`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `wallet`
+   --> tests\integration_test.rs:120:9
+    |
+120 |     let wallet = vaughan::wallet::Vaughan::new(config).await?;
+    |         ^^^^^^ help: if this is intentional, prefix it with an underscore: `_wallet`
+
+warning: unused import: `std::time::Duration`
+  --> examples\trezor_live_test.rs:13:5
+   |
+13 | use std::time::Duration;
+   |     ^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `vaughan` (test "multicall_test") generated 1 warning (run `cargo fix --test "multicall_test" -p vaughan` to 
+apply 1 suggestion)
+warning: unexpected `cfg` condition value: `gui-tests`
+ --> tests\test_export_window_integration.rs:1:8
+  |
+1 | #![cfg(feature = "gui-tests")]
+  |        ^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: expected values for `feature` are: `audio`, `custom-tokens`, `default`, `full`, `hardware-wallets`, 
+`minimal`, `professional`, `qr`, and `shamir`
+  = help: consider adding `gui-tests` as a feature in `Cargo.toml`
+  = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about 
+checking conditional configuration
+  = note: `#[warn(unexpected_cfgs)]` on by default
+
+warning: `vaughan` (test "test_export_window_integration") generated 1 warning
+warning: `vaughan` (test "hardware_wallet_integration") generated 1 warning (run `cargo fix --test 
+"hardware_wallet_integration" -p vaughan` to apply 1 suggestion)
+warning: `vaughan` (test "transaction_flow_tests") generated 1 warning (run `cargo fix --test "transaction_flow_tests" 
+-p vaughan` to apply 1 suggestion)
+warning: `vaughan` (test "integration_test") generated 2 warnings (run `cargo fix --test "integration_test" -p 
+vaughan` to apply 2 suggestions)
+warning: unused import: `std::io::Cursor`
+  --> tests\test_audio_alerts.rs:10:9
+   |
+10 |     use std::io::Cursor;
+   |         ^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `PasswordValidator` and `SecureSeedStorage`
+  --> tests\password_validation_tests.rs:13:39
+   |
+13 | use vaughan::security::{KeyReference, PasswordValidator, SecureSeedStorage};
+   |                                       ^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `arb_incorrect_password` is never used
+  --> tests\password_validation_tests.rs:21:4
+   |
+21 | fn arb_incorrect_password(correct: String) -> impl Strategy<Value = String> {
+   |    ^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `arb_seed_key_reference` is never used
+  --> tests\password_validation_tests.rs:26:4
+   |
+26 | fn arb_seed_key_reference() -> impl Strategy<Value = KeyReference> {
+   |    ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: `vaughan` (test "account_type_switching_tests") generated 1 warning (run `cargo fix --test 
+"account_type_switching_tests" -p vaughan` to apply 1 suggestion)
+warning: unused import: `super::*`
+  --> tests\session_management_tests.rs:16:9
+   |
+16 |     use super::*;
+   |         ^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `vaughan` (test "test_seed_encryption_standalone") generated 1 warning (run `cargo fix --test 
+"test_seed_encryption_standalone" -p vaughan` to apply 1 suggestion)
+warning: fields `weights` and `current_weights` are never read
+   --> tests\professional_test.rs:209:5
+    |
+208 | struct WeightedRoundRobinBalancer {
+    |        -------------------------- fields in this struct
+209 |     weights: std::sync::Arc<tokio::sync::RwLock<Vec<f32>>>,
+    |     ^^^^^^^
+210 |     current_weights: std::sync::Arc<tokio::sync::RwLock<Vec<f32>>>,
+    |     ^^^^^^^^^^^^^^^
+    |
+    = note: `WeightedRoundRobinBalancer` has a derived impl for the trait `Debug`, but this is intentionally ignored 
+during dead code analysis
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `vaughan` (test "password_integration_tests") generated 1 warning (run `cargo fix --test 
+"password_integration_tests" -p vaughan` to apply 1 suggestion)
+warning: `vaughan` (test "test_audio_alerts") generated 1 warning (run `cargo fix --test "test_audio_alerts" -p 
+vaughan` to apply 1 suggestion)
+warning: `vaughan` (example "trezor_live_test") generated 1 warning (run `cargo fix --example "trezor_live_test" -p 
+vaughan` to apply 1 suggestion)
+warning: `vaughan` (test "password_validation_tests") generated 3 warnings (run `cargo fix --test 
+"password_validation_tests" -p vaughan` to apply 1 suggestion)
+warning: `vaughan` (test "session_management_tests") generated 1 warning (run `cargo fix --test 
+"session_management_tests" -p vaughan` to apply 1 suggestion)
+warning: `vaughan` (test "professional_test") generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 33.41s
+     Running unittests src\lib.rs (target\debug\deps\vaughan-3bfedb7ce75ad9d0.exe)
+
+running 151 tests
+test gui::safe_calculations::tests::test_safe_dimension ... ok
+test gui::safe_calculations::tests::test_safe_ticker ... ok
+test config::tests::test_get_config_dir ... ok
+test config::tests::test_config_manager_creation ... ok
+test gui::state::auth_state::tests::test_password_dialog_error_handling ... ok
+test gui::safe_calculations::tests::test_safe_balance ... ok
+test gui::state::auth_state::tests::test_password_dialog_show_hide ... ok
+test gui::components::session_indicator::tests::test_session_indicator_unlocked ... ok
+test gui::components::session_indicator::tests::test_session_indicator_locked ... ok
+test gui::state::auth_state::tests::test_password_error_display ... ok
+test gui::state::auth_state::tests::test_security_state_default ... ok
+test gui::state::auth_state::tests::test_session_lock_unlock ... ok
+test config::api_config::tests::test_api_config_creation ... ok
+test blockchain::explorer_apis::tests::test_config_serialization ... ok
+test gui::state::session_state::tests::test_account_session_unlock_lock ... ok
+test gui::state::session_state::tests::test_enhanced_session_creation ... ok
+test gui::tests::test_amount_validation ... ok
+test error::recovery::tests::test_non_recoverable_error ... ok
+test blockchain::explorer_apis::tests::test_rate_limiter ... ok
+test gui::state::session_state::tests::test_session_timeout ... ok
+test gui::transaction_cancellation::tests::test_cancellation_error_display ... ok
+test gui::transaction_cancellation::tests::test_gas_settings_creation ... ok
+test gui::transaction_cancellation::tests::test_pending_transaction_creation ... ok
+test gui::transaction_errors::tests::test_error_classification ... ok
+test gui::transaction_errors::tests::test_error_info_generation ... ok
+test gui::views::locked_view::tests::test_should_not_show_locked_view_when_password_dialog_visible ... ok
+test gui::views::locked_view::tests::test_locked_view_shows_unlock_button ... ok
+test gui::views::locked_view::tests::test_should_not_show_locked_view_when_session_unlocked ... ok
+test gui::views::locked_view::tests::test_should_show_locked_view_when_session_locked ... ok
+test gui::widgets::tests::test_balance_display_creation ... ok
+test gui::widgets::tests::test_button_creation ... ok
+test gui::widgets::tests::test_connection_status_display ... ok
+test gui::widgets::tests::test_network_selector_creation ... ok
+test gui::widgets::tests::test_status_message_creation ... ok
+test gui::widgets::tests::test_text_input_creation ... ok
+test gui::widgets::tests::test_theme_switcher_creation ... ok
+test gui::widgets::transaction::tests::test_format_timestamp ... ok
+test gui::widgets::transaction::tests::test_transaction_confirmation_creation ... ok
+test gui::widgets::transaction::tests::test_transaction_history_empty ... ok
+test gui::widgets::transaction::tests::test_transaction_history_with_data ... ok
+test gui::widgets::transaction::tests::test_validate_amount ... ok
+test config::api_config::tests::test_moralis_configuration ... ok
+test gui::widgets::transaction::tests::test_validate_gas_limit ... ok
+test gui::widgets::transaction::tests::test_validate_gas_price ... ok
+test security::hardware::tests::test_address_validation ... ok
+test security::hardware::tests::test_address_verification ... ok
+test security::hardware::tests::test_audit_transaction ... ok
+test security::hardware::tests::test_derivation_path_validation ... ok
+test security::hardware::tests::test_error_handling_invalid_device_operations ... ok
+test security::hardware::tests::test_security_validator_with_custom_limits ... ok
+test security::hardware::tests::test_transaction_validation_high_value ... ok
+test security::hardware::tests::test_transaction_validation_success ... ok
+test security::hardware::tests::test_ledger_address_derivation ... FAILED
+test security::hardware::tests::test_security_validator_creation ... FAILED
+test security::hardware::tests::test_trezor_address_derivation ... FAILED
+test security::hardware::tests::test_ledger_transaction_signing ... FAILED
+test security::hardware_feedback::tests::test_feedback_manager_creation ... ok
+test security::hardware_feedback::tests::test_guidance_generation ... ok
+test security::hardware::tests::test_trezor_transaction_signing ... FAILED
+test security::hardware_feedback::tests::test_progress_tracking ... ok
+test security::hardware_feedback::tests::test_status_updates ... ok
+test security::key_cache::tests::test_key_cache_basic ... ok
+test security::key_cache::tests::test_key_cache_clear ... ok
+test security::keychain::tests::test_mock_keychain ... ok
+test gui::services::qr_service::tests::test_invalid_address_fails ... ok
+test security::keystore::tests::test_keystore_locking ... ok
+test security::memory::tests::test_disable_core_dumps ... ok
+test security::memory::tests::test_memory_protection_calls ... ok
+test security::memory::tests::test_secure_memory_allocation ... ok
+test security::keystore::tests::test_import_account ... ok
+test security::keystore::tests::test_create_account ... ok
+test security::password_validator::tests::test_attempt_recording ... ok
+test security::password_validator::tests::test_clear_all ... ok
+test security::password_validator::tests::test_clear_failures_on_success ... ok
+test security::password_validator::tests::test_failure_increment ... ok
+test security::password_validator::tests::test_initial_state ... ok
+test security::password_validator::tests::test_lockout_after_max_failures ... ok
+test security::password_validator::tests::test_multiple_accounts ... ok
+test security::password_validator::tests::test_rate_limit_check ... ok
+test security::seed::tests::test_seed_generation ... ok
+test security::seed::tests::test_seed_strength_detection ... ok
+test security::seed::tests::test_seed_validation ... ok
+test security::seed::zeroization::tests::test_secure_guard ... ok
+test security::seed::zeroization::tests::test_zero_array ... ok
+test security::seed::zeroization::tests::test_zero_bytes ... ok
+test gui::services::qr_service::tests::test_generate_address_qr_code ... ok
+test security::validation::tests::test_sanitize_input ... ok
+test security::validation::tests::test_validate_ethereum_address ... ok
+test gui::hd_wallet_service::tests::test_hd_wallet_derivation ... ok
+test security::validation::tests::test_validate_password_strength ... ok
+test security::validation::tests::test_validate_private_key ... ok
+test security::validation::tests::test_validate_rpc_endpoint ... ok
+test security::validation::tests::test_validate_file_path ... ok
+test gui::services::qr_service::tests::test_generate_payment_request_qr_code ... ok
+test security::transaction_signing::tests::test_derive_wallet_from_seed ... ok
+test security::wallet_password_validator::tests::test_password_strength_validation ... FAILED
+test security::transaction_signing::tests::test_derive_key_from_seed ... ok
+test security::wallet_password_validator::tests::test_wallet_password_validator ... FAILED
+test security::transaction_signing::tests::test_derive_with_custom_path ... ok
+test wallet::account::tests::test_account_manager_basic_operations ... ok
+test wallet::account::tests::test_account_tags ... ok
+test wallet::errors::tests::test_error_debug ... ok
+test wallet::errors::tests::test_error_display ... ok
+test wallet::hardware::tests::test_address_verification_feedback ... ok
+test error::recovery::tests::test_retry_with_exponential_backoff ... ok
+test security::hardware::tests::test_ledger_connection ... FAILED
+test security::hardware::tests::test_trezor_connection ... FAILED
+test gui::state::auth_state::tests::test_session_timeout ... ok
+test security::key_cache::tests::test_key_cache_expiration ... ok
+test wallet::hardware::tests::test_get_addresses_error_handling ... ok
+test security::hardware::tests::test_hardware_wallet_manager ... ok
+test security::hardware::tests::test_transaction_validation_zero_gas ... ok
+test security::hardware::tests::test_concurrent_device_access ... FAILED
+test wallet::hardware::tests::test_hardware_manager_creation ... ok
+test wallet::hardware::tests::test_hardware_manager_default ... ok
+test wallet::hardware::tests::test_sign_transaction_error_handling ... ok
+test wallet::hardware::tests::test_transaction_audit_feedback ... FAILED
+test wallet::keystore::tests::test_wallet_keystore_creation ... ok
+test wallet::keystore_format::tests::test_crypto_section_structure ... ok
+test wallet::keystore_format::tests::test_keystore_serialization ... ok
+test wallet::keystore_format::tests::test_keystore_structure ... ok
+test wallet::keystore::tests::test_account_operations ... ok
+test wallet::hardware::tests::test_device_detection ... ok
+test wallet::hardware::tests::test_device_type_checking ... FAILED
+test wallet::hardware::tests::test_get_device_info ... ok
+test wallet::hardware::tests::test_disconnect_all ... ok
+test wallet::keystore::tests::test_auto_lock ... ok
+test wallet::hardware::tests::test_device_refresh ... ok
+test security::hardware::tests::test_recovery_connection ... ok
+test wallet::hardware::tests::test_device_recovery_feedback ... ok
+test wallet::manager::tests::test_create_wallet ... ok
+test wallet::manager::tests::test_export_private_key ... ok
+test wallet::manager::tests::test_export_while_locked_fails ... ok
+test wallet::manager::tests::test_export_seed_phrase ... ok
+test wallet::manager::tests::test_memory_is_cleared_after_lock ... ok
+test wallet::manager::tests::test_metamask_keystore_format ... ok
+test wallet::manager::tests::test_encrypt_decrypt_roundtrip ... ok
+test wallet::manager::tests::test_full_wallet_lifecycle ... ok
+test wallet::manager::tests::test_password_1234_works_for_development ... ok
+test wallet::manager::tests::test_mac_verification ... ok
+test gui::state::session_state::tests::test_session_summary ... ok
+test wallet::manager::tests::test_wrong_password ... ok
+test wallet::manager::tests::test_unlock_wallet ... ok
+test wallet::manager::tests::test_wrong_password_fails_gracefully ... ok
+test wallet::manager::tests::test_multiple_sessions ... ok
+test security::wallet_config::tests::test_wallet_settings_encryption ... ok
+test security::wallet_config::tests::test_account_metadata_encryption ... ok
+test security::wallet_config::tests::test_wallet_config_creation ... ok
+test security::wallet_storage::tests::test_wallet_config_storage ... ok
+test wallet::manager::tests::test_lock_unlock_cycle ... ok
+test security::wallet_storage::tests::test_wallet_export_import ... FAILED
+
+failures:
+
+---- security::hardware::tests::test_ledger_address_derivation stdout ----
+
+thread 'security::hardware::tests::test_ledger_address_derivation' (20820) panicked at src\security\hardware.rs:1622:9:
+assertion failed: result.is_ok()
+
+---- security::hardware::tests::test_security_validator_creation stdout ----
+
+thread 'security::hardware::tests::test_security_validator_creation' (23232) panicked at src\security\hardware.rs:1501:9:
+assertion failed: !validator.security_audit_enabled
+
+---- security::hardware::tests::test_trezor_address_derivation stdout ----
+
+thread 'security::hardware::tests::test_trezor_address_derivation' (24040) panicked at src\security\hardware.rs:1644:9:
+assertion failed: result.is_ok()
+
+---- security::hardware::tests::test_ledger_transaction_signing stdout ----
+
+thread 'security::hardware::tests::test_ledger_transaction_signing' (15244) panicked at src\security\hardware.rs:1635:9:
+assertion failed: result.is_ok()
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- security::hardware::tests::test_trezor_transaction_signing stdout ----
+
+thread 'security::hardware::tests::test_trezor_transaction_signing' (17256) panicked at src\security\hardware.rs:1657:9:
+assertion failed: result.is_ok()
+
+---- security::wallet_password_validator::tests::test_password_strength_validation stdout ----
+
+thread 'security::wallet_password_validator::tests::test_password_strength_validation' (2632) panicked at src\security\wallet_password_validator.rs:384:9:
+assertion failed: validator.validate_password_strength(&strong_password).is_ok()
+
+---- security::wallet_password_validator::tests::test_wallet_password_validator stdout ----
+
+thread 'security::wallet_password_validator::tests::test_wallet_password_validator' (20760) panicked at src\security\wallet_password_validator.rs:345:98:
+called `Result::unwrap()` on an `Err` value: WeakPassword { requirements: ["Must not contain 'wallet'"] }
+
+---- security::hardware::tests::test_ledger_connection stdout ----
+
+thread 'security::hardware::tests::test_ledger_connection' (20564) panicked at src\security\hardware.rs:1459:9:
+assertion `left == right` failed
+  left: "Ledger (Simulated)"
+ right: "Ledger"
+
+---- security::hardware::tests::test_trezor_connection stdout ----
+
+thread 'security::hardware::tests::test_trezor_connection' (13412) panicked at src\security\hardware.rs:1471:9:
+assertion `left == right` failed
+  left: "Trezor (Simulated)"
+ right: "Trezor"
+
+---- security::hardware::tests::test_concurrent_device_access stdout ----
+
+thread 'security::hardware::tests::test_concurrent_device_access' (22488) panicked at src\security\hardware.rs:1690:13:
+assertion failed: result.is_ok()
+
+---- wallet::hardware::tests::test_transaction_audit_feedback stdout ----
+
+thread 'wallet::hardware::tests::test_transaction_audit_feedback' (22388) panicked at src\wallet\hardware.rs:457:14:
+called `Result::unwrap()` on an `Err` value: HardwareWallet(DeviceNotFound)
+
+---- wallet::hardware::tests::test_device_type_checking stdout ----
+
+thread 'wallet::hardware::tests::test_device_type_checking' (24280) panicked at src\wallet\hardware.rs:419:9:
+assertion failed: manager.has_device_type("Ledger").await
+
+---- security::wallet_storage::tests::test_wallet_export_import stdout ----
+
+thread 'security::wallet_storage::tests::test_wallet_export_import' (21908) panicked at src\security\wallet_storage.rs:480:14:
+called `Result::unwrap()` on an `Err` value: Security(DecryptionError { message: "AES-GCM decryption failed: aead::Error" })
+
+
+failures:
+    security::hardware::tests::test_concurrent_device_access
+    security::hardware::tests::test_ledger_address_derivation
+    security::hardware::tests::test_ledger_connection
+    security::hardware::tests::test_ledger_transaction_signing
+    security::hardware::tests::test_security_validator_creation
+    security::hardware::tests::test_trezor_address_derivation
+    security::hardware::tests::test_trezor_connection
+    security::hardware::tests::test_trezor_transaction_signing
+    security::wallet_password_validator::tests::test_password_strength_validation
+    security::wallet_password_validator::tests::test_wallet_password_validator
+    security::wallet_storage::tests::test_wallet_export_import
+    wallet::hardware::tests::test_device_type_checking
+    wallet::hardware::tests::test_transaction_audit_feedback
+
+test result: FAILED. 138 passed; 13 failed; 0 ignored; 0 measured; 0 filtered out; finished in 18.51s
+
+error: test failed, to rerun pass `--lib`
