@@ -20,9 +20,11 @@
 
 pub mod creation;
 pub mod import;
+pub mod export;
 
 pub use creation::{AccountCreator, AccountCreationConfig, CreatedAccount, KeyValidation, SeedValidation};
 pub use import::{AccountImporter, FormatDetectionResult, ImportedAccount, ImportMetadata, ImportSourceType, ImportValidationResult};
+pub use export::*;
 
 use alloy::primitives::Address;
 use async_trait::async_trait;

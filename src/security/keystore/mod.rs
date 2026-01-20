@@ -665,6 +665,63 @@ impl SecureKeystoreImpl {
         encryption::decrypt_with_password(encrypted_data, password)
     }
 
+    /// Retrieve decrypted private key (deriving from seed if necessary)
+    pub async fn get_decrypted_private_key(
+        &self,
+        address: &Address,
+        password: Option<&SecretString>,
+    ) -> Result<SecretString> {
+        let account = self.accounts.get(address).ok_or_else(|| {
+             SecurityError::InvalidAddress(address.to_string())
+        })?;
+
+        let is_seed_based = account.key_reference.service == "vaughan-wallet-encrypted-seeds";
+
+        if is_seed_based {
+             let password = password.ok_or_else(|| SecurityError::KeystoreError {
+                 message: "Password required for seed-based account".to_string(),
+             })?;
+
+             let seed_storage = crate::security::SecureSeedStorage::new(self.keychain.clone_box());
+             let seed_phrase = crate::security::decrypt_seed_with_password(&seed_storage, &account.key_reference, password).await?;
+
+             let derivation_path = account.derivation_path.as_deref();
+             let mut secure_key = crate::security::derive_key_from_seed(
+                 self.keychain.clone_box(), 
+                 &seed_phrase, 
+                 derivation_path
+             )?;
+             
+             // Convert key bytes to hex string
+             let key_hex = hex::encode(secure_key.as_mut_slice());
+             Ok(SecretString::new(key_hex))
+        } else {
+             // Direct private key
+             let private_key = self.keychain.retrieve(&account.key_reference)?;
+             Ok(private_key)
+        }
+    }
+
+    /// Retrieve decrypted seed phrase (only for seed-based accounts)
+    pub async fn get_decrypted_seed_phrase(
+        &self,
+        address: &Address,
+        password: &SecretString,
+    ) -> Result<SecretString> {
+        let account = self.accounts.get(address).ok_or_else(|| {
+             SecurityError::InvalidAddress(address.to_string())
+        })?;
+
+        if account.key_reference.service != "vaughan-wallet-encrypted-seeds" {
+            return Err(SecurityError::KeystoreError {
+                message: "Account is not seed-based".to_string(),
+            }.into());
+        }
+
+        let seed_storage = crate::security::SecureSeedStorage::new(self.keychain.clone_box());
+        crate::security::decrypt_seed_with_password(&seed_storage, &account.key_reference, password).await
+    }
+
     /// Reload accounts from persistent storage
     async fn reload_accounts(&mut self) -> Result<()> {
         storage::load_accounts(&mut self.accounts, self.keychain.as_ref())

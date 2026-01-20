@@ -12,6 +12,7 @@ use crate::error::Result;
 // pub mod account_migration; // Temporarily disabled due to compilation errors
 pub mod hardware;
 pub mod hardware_feedback;
+pub mod export_auth;
 // pub mod hardware_manager; // Removed redundant module
 
 pub mod key_cache;
@@ -29,6 +30,7 @@ pub mod wallet_storage;
 
 pub use hardware::*;
 pub use hardware_feedback::*;
+pub use export_auth::*;
 #[allow(ambiguous_glob_reexports)] // encryption module exists in both keystore and seed
 pub use key_cache::*;
 pub use keychain::*;

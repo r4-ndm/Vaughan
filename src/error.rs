@@ -236,6 +236,18 @@ pub enum SecurityError {
 
     #[error("Deserialization error: {message}")]
     DeserializationError { message: String },
+
+    #[error("Rate limit exceeded for {operation}. Try again in {wait_time_seconds} seconds.")]
+    RateLimitExceeded {
+        operation: String,
+        wait_time_seconds: u64,
+    },
+
+    #[error("Invalid password")]
+    InvalidPassword,
+
+    #[error("Authentication token expired")]
+    TokenExpired,
 }
 
 #[derive(Error, Debug, Clone)]

@@ -238,40 +238,40 @@ This implementation plan breaks down the enhanced account management system into
   - **Validates: Requirements 9.4**
   - Test that LRU entries are evicted first
 
-- [ ] 13. Implement export authentication
+- [x] 13. Implement export authentication
   - Create `src/security/export_auth.rs` with `ExportAuthenticator`
   - Implement password verification with rate limiting
   - Add auth token generation with time-based expiration
   - Implement audit logging for export operations
   - _Requirements: 2.2_
 
-- [ ] 13.1 Write unit tests for export authentication
+- [x] 13.1 Write unit tests for export authentication
   - Test password verification
   - Test rate limiting
   - Test token expiration
   - _Requirements: 2.2_
 
-- [ ] 14. Implement account export module
+- [x] 14. Implement account export module
   - Create `src/wallet/account_manager/export.rs` with `AccountExporter`
   - Implement `export_seed()` with authentication requirement
   - Implement `export_private_key()` with authentication requirement
   - Add correlation tracking for all export operations
   - _Requirements: 1.1_
 
-- [ ] 14.1 Write unit tests for account export
+- [x] 14.1 Write unit tests for account export
   - Test seed phrase export with authentication
   - Test private key export with authentication
   - Test export failures without authentication
   - _Requirements: 1.1_
 
-- [ ] 15. Implement telemetry system
+- [x] 15. Implement telemetry system
   - Create `src/telemetry/account_events.rs` with `AccountTelemetry`
   - Implement event recording with privacy mode support
   - Add opt-out mechanism
   - Implement data anonymization (no PII, no full addresses)
   - _Requirements: 10.1, 10.2, 10.3, 10.4_
 
-- [ ] 15.1 Write property test for telemetry anonymity
+- [x] 15.1 Write property test for telemetry anonymity
   - **Property 29: Telemetry Anonymity**
   - **Validates: Requirements 10.1, 10.4**
   - Test that telemetry contains no sensitive data

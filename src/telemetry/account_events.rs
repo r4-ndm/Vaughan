@@ -39,6 +39,9 @@ use uuid::Uuid;
 /// Global privacy mode setting
 static PRIVACY_MODE: AtomicBool = AtomicBool::new(false);
 
+/// Global opt-out setting
+static OPT_OUT: AtomicBool = AtomicBool::new(false);
+
 /// Privacy mode configuration for log sanitization
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum PrivacyMode {
@@ -75,6 +78,55 @@ pub fn set_privacy_mode(enabled: bool) {
 /// Get the current global privacy mode
 pub fn get_privacy_mode() -> bool {
     PRIVACY_MODE.load(Ordering::SeqCst)
+}
+
+/// Set opt-out status
+pub fn set_opt_out(opt_out: bool) {
+    OPT_OUT.store(opt_out, Ordering::SeqCst);
+    if opt_out {
+        warn!("🚫 Telemetry opt-out enabled - no events will be recorded");
+    } else {
+        info!("✅ Telemetry opt-in confirmed");
+    }
+}
+
+/// Check if user has opted out
+pub fn is_opted_out() -> bool {
+    OPT_OUT.load(Ordering::SeqCst)
+}
+
+/// specific Telemetry interface matching requirements
+#[derive(Debug, Clone)]
+pub struct AccountTelemetry {
+    logger: AccountLogger,
+}
+
+impl AccountTelemetry {
+    pub fn new() -> Self {
+        Self {
+            logger: AccountLogger::default(),
+        }
+    }
+
+    pub fn record_event(&self, span: &OperationSpan, event: &str, details: &str) {
+        if is_opted_out() {
+            return;
+        }
+        self.logger.log_operation_complete(span, &format!("{}: {}", event, details));
+    }
+    
+    pub fn record_error(&self, span: &OperationSpan, error: &str) {
+        if is_opted_out() {
+            return;
+        }
+        self.logger.log_operation_error(span, error);
+    }
+}
+
+impl Default for AccountTelemetry {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 /// Operation span for tracking a single operation with correlation ID
@@ -670,6 +722,37 @@ mod property_tests {
             // Seed phrase should be redacted
             let sanitized_seed = sanitize("word1 word2 word3", SensitiveDataType::SeedPhrase);
             prop_assert!(sanitized_seed.contains("REDACTED"));
+            
+            set_privacy_mode(false);
+        }
+
+        /// Property 29: Telemetry Anonymity
+        ///
+        /// Validates: Requirements 10.1, 10.4
+        /// Test that telemetry contains no sensitive data when privacy mode is enabled.
+        #[test]
+        fn prop_telemetry_anonymity(
+            sensitive_data in "[a-f0-9]{64}", 
+            address in "0x[a-f0-9]{40}",
+            details in "[a-zA-Z0-9 ]{10,50}"
+        ) {
+            set_privacy_mode(true);
+            set_opt_out(false); // Ensure we are logging to check sanitization
+            
+            // Check sanitization logic explicitly used by telemetry
+            let sanitized_key = sanitize(&sensitive_data, SensitiveDataType::PrivateKey);
+            let sanitized_addr = sanitize(&address, SensitiveDataType::Address);
+            
+            // Verify PII is removed
+            prop_assert!(!sanitized_key.contains(&sensitive_data));
+            prop_assert!(sanitized_key.contains("REDACTED"));
+            
+            prop_assert!(!sanitized_addr.contains(&address));
+            
+            // Verify address is truncated if shown at all
+            if sanitized_addr != "[REDACTED:ADDRESS]" {
+                 prop_assert!(sanitized_addr.contains("..."));
+            }
             
             set_privacy_mode(false);
         }

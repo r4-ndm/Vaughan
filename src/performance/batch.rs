@@ -283,7 +283,7 @@ impl BatchProcessor {
             .collect();
 
         // Execute all futures concurrently
-        let results: Vec<BalanceResult> = futures::future::join_all(futures).await;
+        let results: Vec<BalanceResult> = futures_util::future::join_all(futures).await;
 
         // Count successes and failures
         let success_count = results.iter().filter(|r| r.is_success()).count();
