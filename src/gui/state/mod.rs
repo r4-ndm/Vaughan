@@ -9,6 +9,14 @@ pub mod transaction_state;
 pub mod ui_state;
 pub mod wallet_state;
 
+/// Types of wallet export operations
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ExportType {
+    None,
+    SeedPhrase,
+    PrivateKey,
+}
+
 // Re-export auth_state types (including merged session types)
 pub use auth_state::{
     AccountCreationType,
@@ -95,6 +103,8 @@ pub struct AppState {
     pub exporting_data: bool,
     pub export_result: Option<String>,
     pub export_loading: bool,
+    pub pending_export_type: ExportType,
+    pub export_error_message: Option<String>,
 
     // Custom token fields
     pub custom_token_address_input: String,
@@ -145,6 +155,8 @@ impl Default for AppState {
             exporting_data: false,
             export_result: None,
             export_loading: false,
+            pending_export_type: ExportType::None,
+            export_error_message: None,
 
             // Custom token fields
             custom_token_address_input: String::new(),

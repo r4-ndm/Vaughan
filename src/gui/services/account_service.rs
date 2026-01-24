@@ -275,13 +275,7 @@ pub async fn export_seed_phrase_unified(account_id: String, password: String) ->
     tracing::info!("🔑 Unified seed phrase export for account: {}", account_id);
 
     // Check for new keystore.json format first
-    let wallet_dir = match dirs::home_dir() {
-        Some(dir) => dir.join(".vaughan"),
-        None => {
-            tracing::warn!("Could not determine home directory, falling back to legacy export");
-            return export_seed_phrase_with_password(account_id, password).await;
-        }
-    };
+    let wallet_dir = crate::security::keystore::storage::get_vaughan_dir();
 
     let keystore_path = wallet_dir.join("keystore.json");
 

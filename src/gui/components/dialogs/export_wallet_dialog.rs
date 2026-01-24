@@ -38,55 +38,63 @@ pub fn export_wallet_dialog_view(state: &AppState) -> Element<'_, Message> {
                 .push(Text::new("Exporting wallet data...").size(16))
                 .push(Space::with_height(Length::Fixed(10.0)))
                 .align_items(iced::Alignment::Center)
-        } else if state.exported_seed_phrase.as_ref().is_some_and(|s| !s.is_empty())
-            || state.exported_private_key.as_ref().is_some_and(|s| !s.is_empty())
-        {
-            // Show exported data based on what was exported
-            let mut column = Column::new()
-                .push(
+        } else if state.exported_seed_phrase.is_some() || state.exported_private_key.is_some() || state.export_error_message.is_some() {
+            // Show exported data or error
+            let mut column = Column::new();
+
+            // Show error if one occurred
+            if let Some(ref error) = state.export_error_message {
+                column = column.push(
+                    Column::new()
+                        .push(Text::new("❌ Export Failed").size(16).style(text::error()))
+                        .push(Space::with_height(Length::Fixed(10.0)))
+                        .push(Text::new(error).size(14).style(text::secondary()))
+                        .spacing(5)
+                        .padding(20)
+                );
+            } else {
+                column = column.push(
                     Text::new("⚠️ IMPORTANT: Keep this information secure!")
                         .size(16)
                         .style(iced::Color::from_rgb(1.0, 0.6, 0.0)),
                 )
                 .push(Space::with_height(Length::Fixed(20.0)));
 
-            // Show seed phrase if available
-            if state.exported_seed_phrase.as_ref().is_some_and(|s| !s.is_empty()) {
-                column = column.push(
-                    Column::new()
-                        .push(Text::new("Seed Phrase:").size(14))
-                        .push(Space::with_height(Length::Fixed(8.0)))
-                        .push(
-                            Row::new()
-                                .push(
-                                    Container::new(
-                                        Text::new(state.exported_seed_phrase.as_deref().unwrap_or(""))
-                                            .size(14)
-                                            .style(text::primary()),
+                // Show seed phrase if available
+                if let Some(ref seed) = state.exported_seed_phrase {
+                    column = column.push(
+                        Column::new()
+                            .push(Text::new("Seed Phrase:").size(14))
+                            .push(Space::with_height(Length::Fixed(8.0)))
+                            .push(
+                                Row::new()
+                                    .push(
+                                        Container::new(
+                                            iced::widget::text_input("Seed Phrase", seed)
+                                                .size(14)
+                                                .style(styles::primary_text_input())
+                                                .width(Length::Fill),
+                                        )
+                                        .padding(5)
+                                        .style(styles::info_container())
+                                        .width(Length::Fill),
                                     )
-                                    .padding(15)
-                                    .style(styles::info_container())
-                                    .width(Length::Fill),
-                                )
-                                .push(Space::with_width(Length::Fixed(10.0)))
-                                .push(
-                                    Button::new(Text::new("📋 Copy"))
-                                        .on_press(Message::CopyExportedData(
-                                            state.exported_seed_phrase.clone().unwrap_or_default(),
-                                        ))
-                                        .padding([8, 12])
-                                        .style(styles::secondary_button()),
-                                )
-                                .align_items(iced::Alignment::Center),
-                        )
-                        .spacing(5),
-                );
-            }
+                                    .push(Space::with_width(Length::Fixed(10.0)))
+                                    .push(
+                                        Button::new(Text::new("📋 Copy"))
+                                            .on_press(Message::CopyExportedData(seed.clone()))
+                                            .padding([8, 12])
+                                            .style(styles::secondary_button()),
+                                    )
+                                    .align_items(iced::Alignment::Center),
+                            )
+                            .spacing(5),
+                    );
+                }
 
-            // Show private key if available
-            if let Some(ref key) = state.exported_private_key {
-                if !key.is_empty() {
-                    if state.exported_seed_phrase.as_ref().is_some_and(|s| !s.is_empty()) {
+                // Show private key if available
+                if let Some(ref key) = state.exported_private_key {
+                    if state.exported_seed_phrase.is_some() {
                         column = column.push(Space::with_height(Length::Fixed(20.0)));
                     }
                     column = column.push(
@@ -96,10 +104,15 @@ pub fn export_wallet_dialog_view(state: &AppState) -> Element<'_, Message> {
                             .push(
                                 Row::new()
                                     .push(
-                                        Container::new(Text::new(key).size(12).style(text::primary()))
-                                            .padding(15)
-                                            .style(styles::info_container())
-                                            .width(Length::Fill),
+                                        Container::new(
+                                            iced::widget::text_input("Private Key", key)
+                                                .size(12)
+                                                .style(styles::primary_text_input())
+                                                .width(Length::Fill),
+                                        )
+                                        .padding(5)
+                                        .style(styles::info_container())
+                                        .width(Length::Fill),
                                     )
                                     .push(Space::with_width(Length::Fixed(10.0)))
                                     .push(
@@ -113,6 +126,15 @@ pub fn export_wallet_dialog_view(state: &AppState) -> Element<'_, Message> {
                             .spacing(5),
                     );
                 }
+            }
+
+            // Copy feedback
+            if let Some(ref feedback) = state.ui().export_copy_feedback {
+                column = column.push(Space::with_height(Length::Fixed(15.0))).push(
+                    Text::new(feedback)
+                        .size(13)
+                        .style(text::success()),
+                );
             }
 
             // Add back button

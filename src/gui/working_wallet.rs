@@ -823,12 +823,15 @@ impl Application for WorkingWalletApp {
 
                     // Show cancellable wallet password dialog for export operations
                     // We don't store a pending operation anymore - simpler, more secure flow
+                    self.state.pending_export_type = crate::gui::state::ExportType::SeedPhrase;
                     self.state
                         .auth_mut()
                         .password_dialog
                         .show(crate::gui::state::auth_state::PasswordDialogConfig::WalletExport);
                     return Command::none();
                 }
+
+                self.state.pending_export_type = crate::gui::state::ExportType::SeedPhrase;
 
                 // Use already selected account, or fallback to current account
                 let account_id = if let Some(selected_id) = &self.state.selected_export_account_id {
@@ -942,12 +945,15 @@ impl Application for WorkingWalletApp {
 
                     // Show cancellable wallet password dialog for export operations
                     // We don't store a pending operation anymore - simpler, more secure flow
+                    self.state.pending_export_type = crate::gui::state::ExportType::PrivateKey;
                     self.state
                         .auth_mut()
                         .password_dialog
                         .show(crate::gui::state::auth_state::PasswordDialogConfig::WalletExport);
                     return Command::none();
                 }
+
+                self.state.pending_export_type = crate::gui::state::ExportType::PrivateKey;
 
                 // Use already selected account, or fallback to current account
                 let account_id = if let Some(selected_id) = &self.state.selected_export_account_id {
@@ -1034,6 +1040,49 @@ impl Application for WorkingWalletApp {
                         ),
                     );
                     Command::none()
+                }
+            }
+            Message::PerformWalletExport(password) => {
+                let account_id = match &self.state.selected_export_account_id {
+                    Some(id) => id.clone(),
+                    None => {
+                        self.state.exporting_data = false;
+                        return Command::none();
+                    }
+                };
+
+                use secrecy::ExposeSecret;
+                let password_str = password.expose_secret().to_string();
+
+                self.state.exporting_data = true;
+                self.state.export_loading = true;
+                self.state.wallet_mut().export_error_message = None;
+
+                match self.state.pending_export_type {
+                    crate::gui::state::ExportType::SeedPhrase => {
+                        self.state.exported_seed_phrase = None;
+                        Command::perform(
+                            crate::gui::services::account_service::export_seed_phrase_unified(
+                                account_id,
+                                password_str,
+                            ),
+                            Message::SeedPhraseExported,
+                        )
+                    }
+                    crate::gui::state::ExportType::PrivateKey => {
+                        self.state.exported_private_key = None;
+                        Command::perform(
+                            crate::gui::services::account_service::export_private_key_unified(
+                                account_id,
+                                password_str,
+                            ),
+                            Message::PrivateKeyExported,
+                        )
+                    }
+                    crate::gui::state::ExportType::None => {
+                        self.state.exporting_data = false;
+                        Command::none()
+                    }
                 }
             }
             Message::SeedPhraseExported(result) => {
@@ -3739,24 +3788,9 @@ impl WorkingWalletApp {
                 // Handle wallet unlock for export operations (MetaMask-style flow)
                 tracing::info!("🔓 Unlocking wallet for export operation with master password");
 
-                // Attempt to unlock the wallet
-                let unlock_result = self.handle_wallet_unlock(password);
-
-                // Check if unlock was successful by verifying wallet is now ready
-                if self.state.auth().enhanced_session.is_wallet_ready() {
-                    tracing::info!("✅ Wallet unlock successful - user can now proceed with export");
-
-                    // Hide the password dialog after successful unlock
-                    self.state.auth_mut().password_dialog.hide();
-
-                    // Logic simplified: no auto-resume of pending operation.
-                    // User stays on the export screen and can now click the export button again.
-                } else {
-                    tracing::error!("❌ Wallet unlock failed");
-                    // Password dialog remains visible with error message for user to retry
-                }
-
-                unlock_result
+                // Attempt to unlock the wallet - this will dispatch MasterPasswordValidated
+                // which in turn will eventually dispatch PerformWalletExport via handle_password_validated in security.rs
+                self.handle_wallet_unlock(password)
             }
             _ => {
                 tracing::warn!("⚠️ Wallet password config not implemented: {:?}", config);
