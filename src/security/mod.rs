@@ -8,6 +8,13 @@ use secrecy::SecretString;
 use serde::{Deserialize, Serialize};
 
 use crate::error::Result;
+ 
+/// Service name for private key storage in OS keychain
+pub const SERVICE_NAME_PRIVATE_KEYS: &str = "vaughan-wallet";
+/// Service name for encrypted seed phrase storage in OS keychain
+pub const SERVICE_NAME_ENCRYPTED_SEEDS: &str = "vaughan-wallet-encrypted-seeds";
+
+
 
 // pub mod account_migration; // Temporarily disabled due to compilation errors
 pub mod hardware;
@@ -22,6 +29,7 @@ pub mod memory;
 pub mod password_validator;
 pub mod seed;
 pub mod session;
+pub mod rate_limiter;
 pub mod transaction_signing;
 pub mod validation;
 pub mod wallet_config;
@@ -39,6 +47,7 @@ pub use memory::*;
 pub use password_validator::*;
 pub use seed::*;
 pub use session::*;
+pub use rate_limiter::*;
 pub use transaction_signing::*;
 pub use validation::*;
 pub use wallet_config::*;

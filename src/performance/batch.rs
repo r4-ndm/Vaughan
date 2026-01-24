@@ -25,7 +25,8 @@ use std::time::Duration;
 use tokio::sync::Semaphore;
 use uuid::Uuid;
 
-use crate::error::{NetworkError, Result};
+use crate::error::Result;
+// NetworkError removed
 
 /// Configuration for batch processing operations
 #[derive(Debug, Clone)]
@@ -565,10 +566,11 @@ mod tests {
                 // Fail for addresses ending in 1 or 3
                 let last_byte = addr.0[19];
                 if last_byte % 2 == 1 {
-                    Err(NetworkError::RpcError {
-                        message: "Simulated failure".to_string(),
-                    }
-                    .into())
+                    Err(crate::error::VaughanError::Network(
+                        crate::error::NetworkError::RpcError {
+                            message: "Simulated failure".to_string(),
+                        },
+                    ))
                 } else {
                     Ok(U256::from(last_byte as u64 * 1000))
                 }

@@ -15,7 +15,7 @@ pub async fn check_for_seed_accounts() -> Result<bool, String> {
 
     // Create keychain and keystore
     let keychain = Box::new(
-        OSKeychain::new("vaughan-wallet".to_string()).map_err(|e| format!("Failed to initialize keychain: {e}"))?,
+        OSKeychain::new(crate::security::SERVICE_NAME_PRIVATE_KEYS.to_string()).map_err(|e| format!("Failed to initialize keychain: {e}"))?,
     );
     let keystore = SecureKeystoreImpl::new(keychain)
         .await
@@ -48,7 +48,7 @@ pub async fn check_for_seed_accounts() -> Result<bool, String> {
 pub fn get_account_type(account: &SecureAccount) -> AccountType {
     // Seed-based accounts use the "vaughan-wallet-encrypted-seeds" service
     // Private-key accounts use the "vaughan-wallet" service
-    if account.key_reference.service == "vaughan-wallet-encrypted-seeds" {
+    if account.key_reference.service == crate::security::SERVICE_NAME_ENCRYPTED_SEEDS {
         AccountType::SeedBased
     } else {
         AccountType::PrivateKey
@@ -71,7 +71,7 @@ pub async fn create_wallet_from_seed(name: String, seed: String, password: Strin
 
     // Create keychain and seed manager (using correct service name for encrypted seeds)
     let keychain = Box::new(
-        OSKeychain::new("vaughan-wallet-encrypted-seeds".to_string())
+        OSKeychain::new(crate::security::SERVICE_NAME_ENCRYPTED_SEEDS.to_string())
             .map_err(|e| format!("Failed to initialize keychain: {e}"))?,
     );
     let seed_manager = SeedManager::new(keychain);
@@ -98,7 +98,7 @@ pub async fn create_wallet_from_seed(name: String, seed: String, password: Strin
 
     // Also save the account to the keystore for persistence
     let keychain2 = Box::new(
-        OSKeychain::new("vaughan-wallet".to_string())
+        OSKeychain::new(crate::security::SERVICE_NAME_PRIVATE_KEYS.to_string())
             .map_err(|e| format!("Failed to initialize keychain for keystore: {e}"))?,
     );
     let mut keystore = SecureKeystoreImpl::new(keychain2)
@@ -111,14 +111,13 @@ pub async fn create_wallet_from_seed(name: String, seed: String, password: Strin
         .await
         .map_err(|e| format!("Failed to save account to keystore: {e}"))?;
 
-    let address = format!("{:?}", account.address);
     tracing::info!(
-        "Successfully created and saved wallet: {} with address: {}",
+        "Successfully created and saved wallet: {} with identity: {}",
         account.name,
-        address
+        account.id
     );
 
-    Ok(address)
+    Ok(account.id)
 }
 
 /// Import an existing wallet from seed phrase
@@ -141,7 +140,7 @@ pub async fn import_wallet_from_seed(name: String, seed: String, password: Strin
 
     // Create keychain and seed manager (using correct service name for encrypted seeds)
     let keychain = Box::new(
-        OSKeychain::new("vaughan-wallet-encrypted-seeds".to_string())
+        OSKeychain::new(crate::security::SERVICE_NAME_ENCRYPTED_SEEDS.to_string())
             .map_err(|e| format!("Failed to initialize keychain: {e}"))?,
     );
     let seed_manager = SeedManager::new(keychain);
@@ -168,7 +167,7 @@ pub async fn import_wallet_from_seed(name: String, seed: String, password: Strin
 
     // Also save the account to the keystore for persistence
     let keychain2 = Box::new(
-        OSKeychain::new("vaughan-wallet".to_string())
+        OSKeychain::new(crate::security::SERVICE_NAME_PRIVATE_KEYS.to_string())
             .map_err(|e| format!("Failed to initialize keychain for keystore: {e}"))?,
     );
     let mut keystore = SecureKeystoreImpl::new(keychain2)
@@ -181,14 +180,13 @@ pub async fn import_wallet_from_seed(name: String, seed: String, password: Strin
         .await
         .map_err(|e| format!("Failed to save account to keystore: {e}"))?;
 
-    let address = format!("{:?}", account.address);
     tracing::info!(
-        "Successfully imported and saved wallet: {} with address: {}",
+        "Successfully imported and saved wallet: {} with identity: {}",
         account.name,
-        address
+        account.id
     );
 
-    Ok(address)
+    Ok(account.id)
 }
 
 /// Import wallet from private key
@@ -230,7 +228,7 @@ pub async fn import_wallet_from_private_key(name: String, key: String, _password
 
     // Create keychain and keystore
     let keychain = Box::new(
-        OSKeychain::new("vaughan-wallet".to_string()).map_err(|e| format!("Failed to initialize keychain: {e}"))?,
+        OSKeychain::new(crate::security::SERVICE_NAME_PRIVATE_KEYS.to_string()).map_err(|e| format!("Failed to initialize keychain: {e}"))?,
     );
     let mut keystore = SecureKeystoreImpl::new(keychain)
         .await
@@ -259,14 +257,13 @@ pub async fn import_wallet_from_private_key(name: String, key: String, _password
         format!("Account imported but metadata save failed: {e}")
     })?;
 
-    let address = format!("{:?}", account.address);
     tracing::info!(
-        "Successfully imported wallet from private key: {} with address: {}",
+        "Successfully imported wallet from private key: {} with identity: {}",
         account.name,
-        address
+        account.id
     );
 
-    Ok(address)
+    Ok(account.id)
 }
 
 /// Unified export seed phrase - checks for new WalletManager format, falls back to legacy
@@ -331,13 +328,7 @@ pub async fn export_private_key_unified(account_id: String, password: String) ->
     tracing::info!("🔑 Unified private key export for account: {}", account_id);
 
     // Check for new keystore.json format first
-    let wallet_dir = match dirs::home_dir() {
-        Some(dir) => dir.join(".vaughan"),
-        None => {
-            tracing::warn!("Could not determine home directory, falling back to legacy export");
-            return export_private_key_with_password(account_id, password).await;
-        }
-    };
+    let wallet_dir = crate::security::keystore::storage::get_vaughan_dir();
 
     let keystore_path = wallet_dir.join("keystore.json");
 
@@ -395,7 +386,7 @@ pub async fn export_seed_phrase_with_password(account_id: String, password: Stri
     let export_task = async move {
         // Create keychain and keystore to get the account
         let keychain = Box::new(
-            OSKeychain::new("vaughan-wallet".to_string()).map_err(|e| format!("Failed to initialize keychain: {e}"))?,
+            OSKeychain::new(crate::security::SERVICE_NAME_PRIVATE_KEYS.to_string()).map_err(|e| format!("Failed to initialize keychain: {e}"))?,
         );
         let keystore = SecureKeystoreImpl::new(keychain)
             .await
@@ -415,7 +406,7 @@ pub async fn export_seed_phrase_with_password(account_id: String, password: Stri
         // Create seed manager for export
         // IMPORTANT: Use "vaughan-wallet-encrypted-seeds" service - this is where seeds are stored
         let keychain2 = Box::new(
-            OSKeychain::new("vaughan-wallet-encrypted-seeds".to_string())
+            OSKeychain::new(crate::security::SERVICE_NAME_ENCRYPTED_SEEDS.to_string())
                 .map_err(|e| format!("Failed to initialize keychain for seed manager: {e}"))?,
         );
         let seed_manager = SeedManager::new(keychain2);
@@ -485,7 +476,7 @@ pub async fn export_private_key_with_password(account_id: String, password: Stri
     let export_task = async move {
         // Create keychain and keystore to get the account (following seed phrase export pattern)
         let keychain = Box::new(
-            OSKeychain::new("vaughan-wallet".to_string()).map_err(|e| format!("Failed to initialize keychain: {e}"))?,
+            OSKeychain::new(crate::security::SERVICE_NAME_PRIVATE_KEYS.to_string()).map_err(|e| format!("Failed to initialize keychain: {e}"))?,
         );
         let keystore = SecureKeystoreImpl::new(keychain)
             .await
@@ -505,7 +496,7 @@ pub async fn export_private_key_with_password(account_id: String, password: Stri
         // Create seed manager for export (following seed phrase export pattern)
         // IMPORTANT: Use "vaughan-wallet-encrypted-seeds" service - this is where seeds are stored
         let keychain2 = Box::new(
-            OSKeychain::new("vaughan-wallet-encrypted-seeds".to_string())
+            OSKeychain::new(crate::security::SERVICE_NAME_ENCRYPTED_SEEDS.to_string())
                 .map_err(|e| format!("Failed to initialize keychain for seed manager: {e}"))?,
         );
         let seed_manager = SeedManager::new(keychain2);
@@ -556,7 +547,7 @@ pub async fn export_private_key_with_password(account_id: String, password: Stri
 
                 // Try to retrieve private key directly from keychain
                 let keychain3 = Box::new(
-                    OSKeychain::new("vaughan-wallet".to_string())
+                    OSKeychain::new(crate::security::SERVICE_NAME_PRIVATE_KEYS.to_string())
                         .map_err(|e| format!("Failed to initialize keychain for private key retrieval: {e}"))?,
                 );
                 let private_key_data = keychain3
@@ -607,7 +598,7 @@ pub async fn discover_addresses_from_seed(seed: String) -> Result<Vec<(String, S
 
     // Create keystore to check existing accounts
     let keychain =
-        Box::new(OSKeychain::new("vaughan-wallet".to_string()).map_err(|e| format!("Failed to create keychain: {e}"))?);
+        Box::new(OSKeychain::new(crate::security::SERVICE_NAME_PRIVATE_KEYS.to_string()).map_err(|e| format!("Failed to create keychain: {e}"))?);
     let keystore = SecureKeystoreImpl::new(keychain)
         .await
         .map_err(|e| format!("Failed to create keystore: {e}"))?;
@@ -657,7 +648,7 @@ pub async fn import_multiple_addresses_from_seed(
 
     // Create keychain and seed manager (using correct service name for encrypted seeds)
     let keychain = Box::new(
-        OSKeychain::new("vaughan-wallet-encrypted-seeds".to_string())
+        OSKeychain::new(crate::security::SERVICE_NAME_ENCRYPTED_SEEDS.to_string())
             .map_err(|e| format!("Failed to initialize keychain: {e}"))?,
     );
     let seed_manager = SeedManager::new(keychain);
@@ -686,7 +677,7 @@ pub async fn import_multiple_addresses_from_seed(
             Ok(account) => {
                 // Save to keystore for persistence
                 let keychain2 = Box::new(
-                    OSKeychain::new("vaughan-wallet".to_string())
+                    OSKeychain::new(crate::security::SERVICE_NAME_PRIVATE_KEYS.to_string())
                         .map_err(|e| format!("Failed to initialize keychain for keystore: {e}"))?,
                 );
                 let mut keystore = SecureKeystoreImpl::new(keychain2)
@@ -702,12 +693,11 @@ pub async fn import_multiple_addresses_from_seed(
                     .await
                     .map_err(|e| format!("Failed to save account to keystore: {e}"))?;
 
-                let address = format!("{:?}", account.address);
-                imported_addresses.push(address.clone());
+                imported_addresses.push(account.id.clone());
                 tracing::info!(
-                    "Successfully imported: {} with address: {} (path: {})",
+                    "Successfully imported: {} with identity: {} (path: {})",
                     account.name,
-                    address,
+                    account.id,
                     path
                 );
             }
@@ -835,7 +825,7 @@ pub async fn generate_seed_phrase_with_strength(strength: SeedStrength) -> Strin
     tracing::info!("Generating new seed phrase with strength: {:?}", strength);
 
     // Create keychain and seed manager
-    match OSKeychain::new("vaughan-wallet".to_string()) {
+    match OSKeychain::new(crate::security::SERVICE_NAME_PRIVATE_KEYS.to_string()) {
         Ok(keychain) => {
             let seed_manager = SeedManager::new(Box::new(keychain));
 
@@ -862,16 +852,12 @@ pub async fn generate_seed_phrase_with_strength(strength: SeedStrength) -> Strin
 
 /// Save account metadata to persistent file storage
 pub async fn save_account_metadata_to_file(account: &SecureAccount) -> Result<(), String> {
-    use dirs;
     use serde_json;
 
-    // Get the accounts directory using the same path as account manager
-    let accounts_dir = dirs::data_dir()
-        .ok_or("Failed to get data directory")?
-        .join("vaughan")
-        .join("accounts");
+    // Get the vaughan directory using standardization
+    let accounts_dir = crate::security::keystore::storage::get_vaughan_dir();
 
-    std::fs::create_dir_all(&accounts_dir).map_err(|e| format!("Failed to create accounts directory: {e}"))?;
+    std::fs::create_dir_all(&accounts_dir).map_err(|e| format!("Failed to create account directory: {e}"))?;
 
     // Create account metadata for storage
     let metadata = serde_json::json!({

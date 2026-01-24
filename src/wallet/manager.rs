@@ -22,6 +22,7 @@ use secrecy::{ExposeSecret, SecretString};
 use sha2::{Digest, Sha256};
 use std::path::PathBuf;
 use uuid::Uuid;
+use tracing::instrument;
 
 /// PBKDF2 iteration count - follows MetaMask standard
 /// 262144 iterations provides strong key stretching while remaining reasonable for UX
@@ -72,14 +73,7 @@ impl WalletManager {
     ///
     /// Generates a new random mnemonic, derives the private key,
     /// encrypts it with the provided password, and saves the keystore to disk.
-    ///
-    /// # Arguments
-    ///
-    /// * `password` - Password to encrypt the keystore
-    ///
-    /// # Returns
-    ///
-    /// * `Address` - The address of the created wallet
+    #[instrument(skip(self, password), fields(keystore_path = ?self.keystore_path))]
     pub fn create_wallet(&mut self, password: SecretString) -> WalletResult<Address> {
         use std::str::FromStr;
 
@@ -162,10 +156,7 @@ impl WalletManager {
     ///
     /// Loads the keystore from disk (if not already loaded) and attempts
     /// to decrypt the private key with the provided password.
-    ///
-    /// # Arguments
-    ///
-    /// * `password` - Password to decrypt the keystore
+    #[instrument(skip(self, password), fields(keystore_path = ?self.keystore_path))]
     pub fn unlock(&mut self, password: SecretString) -> WalletResult<()> {
         // Ensure keystore is loaded
         if self.keystore.is_none() {
@@ -209,6 +200,7 @@ impl WalletManager {
     ///
     /// Clears all sensitive data (signer, mnemonic) from memory.
     /// The wallet must be unlocked again with the password to be used.
+    #[instrument(skip(self))]
     pub fn lock(&mut self) -> WalletResult<()> {
         self.signer = None;
         self.mnemonic = None;
@@ -240,6 +232,7 @@ impl WalletManager {
     /// Export the seed phrase (mnemonic)
     ///
     /// Requires the wallet to be unlocked.
+    #[instrument(skip(self))]
     pub fn export_seed_phrase(&self) -> WalletResult<String> {
         if !self.is_unlocked() {
             return Err(WalletManagerError::KeystoreLocked);
@@ -258,6 +251,7 @@ impl WalletManager {
     /// Export the private key
     ///
     /// Requires the wallet to be unlocked.
+    #[instrument(skip(self))]
     pub fn export_private_key(&self) -> WalletResult<SecretString> {
         if let Some(signer) = &self.signer {
             let bytes = signer.to_bytes();

@@ -14,16 +14,18 @@
 //! - Enable EthereumWallet composition
 
 use crate::error::{Result, VaughanError, WalletError};
-use crate::security::{KeyReference, SecureAccount};
+use crate::security::SecureAccount;
 use crate::telemetry::account_events::OperationSpan;
+use alloy::network::EthereumWallet;
 use alloy::primitives::{Address, B256};
 use alloy::signers::{
     local::PrivateKeySigner,
     Signature, Signer, SignerSync,
 };
 use async_trait::async_trait;
-use std::sync::Arc;
-use tracing::{info, warn, error};
+// Arc removed
+use tracing::info;
+// tracing::{warn, error} removed as unused
 
 /// Vaughan signer that wraps various signing backends.
 ///
@@ -69,6 +71,11 @@ impl VaughanSigner {
             #[cfg(feature = "hardware-wallets")]
             Self::Ledger(_) | Self::Trezor(_) => true,
         }
+    }
+
+    /// Convert this signer into an Alloy EthereumWallet
+    pub fn into_ethereum_wallet(self) -> EthereumWallet {
+        EthereumWallet::new(self)
     }
 }
 
@@ -136,6 +143,30 @@ impl SignerSync for VaughanSigner {
     }
 }
 
+#[async_trait]
+impl alloy::network::TxSigner<Signature> for VaughanSigner {
+    fn address(&self) -> Address {
+        self.address()
+    }
+
+    async fn sign_transaction(
+        &self,
+        tx: &mut dyn alloy::consensus::SignableTransaction<Signature>,
+    ) -> alloy::signers::Result<Signature> {
+        match self {
+            Self::PrivateKey(signer) => signer.sign_transaction(tx).await,
+            #[cfg(feature = "hardware-wallets")]
+            Self::Ledger(_) => Err(alloy::signers::Error::UnsupportedOperation(
+                alloy::signers::UnsupportedSignerOperation::SignTransaction,
+            )),
+            #[cfg(feature = "hardware-wallets")]
+            Self::Trezor(_) => Err(alloy::signers::Error::UnsupportedOperation(
+                alloy::signers::UnsupportedSignerOperation::SignTransaction,
+            )),
+        }
+    }
+}
+
 /// Signer manager for retrieving signers from accounts
 pub struct SignerManager {
     /// Correlation tracking
@@ -197,14 +228,16 @@ impl Default for SignerManager {
 
 /// Wrapper for composing signers with Alloy providers
 ///
-/// This struct provides the `to_ethereum_wallet()` pattern for
-/// seamless integration with Alloy's provider ecosystem.
+/// This struct provides a builder pattern for creating both `VaughanSigner`
+/// and `EthereumWallet` instances, enabling seamless integration with Alloy.
 ///
 /// # Example
 /// ```ignore
+/// use alloy::providers::ProviderBuilder;
+/// 
 /// let wallet = EthereumWalletBuilder::new()
 ///     .with_signer(signer)
-///     .build();
+///     .build_wallet()?;
 /// 
 /// let provider = ProviderBuilder::new()
 ///     .wallet(wallet)
@@ -236,8 +269,8 @@ impl EthereumWalletBuilder {
         self
     }
 
-    /// Build the configured wallet
-    pub fn build(self) -> Result<VaughanSigner> {
+    /// Build the configured signer
+    pub fn build_signer(self) -> Result<VaughanSigner> {
         let mut signer = self.signer.ok_or_else(|| {
             VaughanError::Wallet(WalletError::WalletError {
                 message: "No signer configured".to_string(),
@@ -249,6 +282,17 @@ impl EthereumWalletBuilder {
         }
 
         Ok(signer)
+    }
+
+    /// Build an Alloy EthereumWallet
+    pub fn build_wallet(self) -> Result<EthereumWallet> {
+        let signer = self.build_signer()?;
+        Ok(signer.into_ethereum_wallet())
+    }
+
+    /// Build the configured signer (alias for build_signer for backward compatibility)
+    pub fn build(self) -> Result<VaughanSigner> {
+        self.build_signer()
     }
 }
 
@@ -396,5 +440,29 @@ mod tests {
         let signature = signer.sign_hash_sync(&hash);
         
         assert!(signature.is_ok());
+    }
+
+    #[test]
+    fn test_into_ethereum_wallet() {
+        let private_key = B256::from([0x42u8; 32]);
+        let signer = VaughanSigner::from_private_key(private_key).unwrap();
+        
+        let wallet = signer.into_ethereum_wallet();
+        // Since EthereumWallet doesn't expose inner fields easily, we just check generic instantiation worked
+        // We verify compilation and that we can move it
+        let _ = wallet;
+    }
+
+    #[test]
+    fn test_builder_build_wallet() {
+        let private_key = B256::from([0x42u8; 32]);
+        let signer = VaughanSigner::from_private_key(private_key).unwrap();
+        
+        let wallet = EthereumWalletBuilder::new()
+            .with_signer(signer)
+            .with_chain_id(1)
+            .build_wallet();
+            
+        assert!(wallet.is_ok());
     }
 }

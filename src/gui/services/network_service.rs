@@ -392,10 +392,8 @@ pub async fn load_all_networks() -> Vec<NetworkConfig> {
         },
     ];
 
-    // Load custom networks from storage
-    let home_dir = std::env::var("HOME").unwrap_or_else(|_| ".".to_string());
-    let mut networks_path = std::path::PathBuf::from(home_dir);
-    networks_path.push(".vaughan");
+    // Load custom networks from storage using standardized path
+    let mut networks_path = crate::security::keystore::storage::get_vaughan_dir();
     networks_path.push("custom_networks.json");
 
     if let Ok(content) = std::fs::read_to_string(&networks_path) {
@@ -417,7 +415,7 @@ pub async fn save_networks_to_storage(networks: Vec<NetworkConfig>) -> Result<()
     tracing::info!("Saving networks to storage...");
 
     // Create keychain and keystore
-    match OSKeychain::new("vaughan-wallet".to_string()) {
+    match OSKeychain::new(crate::security::SERVICE_NAME_PRIVATE_KEYS.to_string()) {
         Ok(keychain) => {
             match SecureKeystoreImpl::new(Box::new(keychain)).await {
                 Ok(mut keystore) => {

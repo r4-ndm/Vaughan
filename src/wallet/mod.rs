@@ -23,6 +23,8 @@ pub mod keystore;
 pub mod keystore_format;
 pub mod manager;
 pub mod backup;
+pub mod provider;
+pub mod transaction;
 
 pub use account::*;
 pub use account_manager::{

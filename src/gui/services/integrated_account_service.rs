@@ -8,7 +8,8 @@
 //! This service serves as the primary entry point for all account operations
 //! in the GUI, ensuring consistent telemetry and error handling.
 
-use crate::error::VaughanError;
+// VaughanError removed as unused
+// Message removed as unused
 use crate::performance::batch::{BatchConfig, BatchProcessor};
 // Re-export Result for convenience
 use crate::error::Result;

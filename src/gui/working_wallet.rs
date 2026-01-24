@@ -45,6 +45,7 @@ pub struct WorkingWalletApp {
     pub state: AppState,
     pub wallet: Option<Arc<tokio::sync::RwLock<crate::wallet::Vaughan>>>,
     pub api_manager: Option<ExplorerApiManager>,
+    pub account_service: Arc<IntegratedAccountService>,
 }
 
 impl Application for WorkingWalletApp {
@@ -79,17 +80,22 @@ impl Application for WorkingWalletApp {
             }
             Err(e) => {
                 tracing::warn!(
-                    "⚠️ Failed to load API config, price fetching will use sample data: {}",
+                    "⚠️ Failed to load API config, price fetchin will use sample data: {}",
                     e
                 );
                 None
             }
         };
 
+        // Initialize Integrated Account Service
+        let account_service = Arc::new(IntegratedAccountService::new());
+        tracing::info!("✅ Integrated Account Service initialized");
+
         let mut wallet_app = Self {
             state,
             wallet: None,
             api_manager,
+            account_service,
         };
 
         // Add some sample error entries for testing (debug builds only)
@@ -3628,7 +3634,7 @@ impl WorkingWalletApp {
                 let mut all_accounts = Vec::new();
 
                 // Load seed-based accounts
-                if let Ok(keychain) = OSKeychain::new("vaughan-wallet-encrypted-seeds".to_string()) {
+                if let Ok(keychain) = OSKeychain::new(crate::security::SERVICE_NAME_ENCRYPTED_SEEDS.to_string()) {
                     if let Ok(keystore) = SecureKeystoreImpl::new(Box::new(keychain)).await {
                         if let Ok(accounts) = keystore.list_accounts().await {
                             all_accounts.extend(accounts);
@@ -3638,7 +3644,7 @@ impl WorkingWalletApp {
                 }
 
                 // Load private-key accounts
-                if let Ok(keychain) = OSKeychain::new("vaughan-wallet".to_string()) {
+                if let Ok(keychain) = OSKeychain::new(crate::security::SERVICE_NAME_PRIVATE_KEYS.to_string()) {
                     if let Ok(keystore) = SecureKeystoreImpl::new(Box::new(keychain)).await {
                         if let Ok(accounts) = keystore.list_accounts().await {
                             all_accounts.extend(accounts);
@@ -3769,19 +3775,7 @@ impl WorkingWalletApp {
         tracing::info!("🚀 Creating new wallet using WalletManager (MetaMask-compatible format)");
 
         // Get keystore path
-        let wallet_dir = match dirs::home_dir() {
-            Some(dir) => dir.join(".vaughan"),
-            None => {
-                tracing::error!("❌ Could not determine home directory for wallet creation");
-                self.state.auth_mut().password_dialog.set_error(
-                    crate::gui::state::auth_state::WalletPasswordError::CreationFailed {
-                        reason: "Could not determine home directory".to_string(),
-                    }
-                    .into(),
-                );
-                return Command::none();
-            }
-        };
+        let wallet_dir = crate::security::keystore::storage::get_vaughan_dir();
 
         // Ensure directory exists
         if let Err(e) = fs::create_dir_all(&wallet_dir) {
@@ -3860,9 +3854,7 @@ impl WorkingWalletApp {
         self.state.auth_mut().password_dialog.hide();
 
         // Save account to persistent storage for future sessions
-        let home_dir = std::env::var("HOME").unwrap_or_else(|_| ".".to_string());
-        let accounts_path = std::path::PathBuf::from(home_dir)
-            .join(".vaughan")
+        let accounts_path = crate::security::keystore::storage::get_vaughan_dir()
             .join("accounts.json");
 
         tracing::info!(
@@ -4001,19 +3993,7 @@ impl WorkingWalletApp {
         tracing::info!("🔓 Wallet unlock attempt with password length: {}", password.len());
 
         // Get wallet directory
-        let wallet_dir = match dirs::home_dir() {
-            Some(dir) => dir.join(".vaughan"),
-            None => {
-                tracing::error!("❌ Could not determine home directory");
-                self.state.auth_mut().password_dialog.set_error(
-                    crate::gui::state::auth_state::WalletPasswordError::CreationFailed {
-                        reason: "Could not determine home directory".to_string(),
-                    }
-                    .into(),
-                );
-                return Command::none();
-            }
-        };
+        let wallet_dir = crate::security::keystore::storage::get_vaughan_dir();
 
         let keystore_path = wallet_dir.join("keystore.json");
         let legacy_wallet_path = wallet_dir.join("wallet.json");

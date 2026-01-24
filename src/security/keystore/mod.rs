@@ -46,7 +46,7 @@ impl SecureKeystoreImpl {
             custom_networks: HashMap::new(),
             keychain,
             is_locked: false,
-            service_name: "vaughan-wallet".to_string(),
+            service_name: crate::security::SERVICE_NAME_PRIVATE_KEYS.to_string(),
         };
 
         // Load existing accounts and networks from persistent storage
@@ -306,7 +306,7 @@ impl SecureKeystoreImpl {
         })?;
 
         // Check if this is a seed-based account or private-key account
-        let is_seed_based = account.key_reference.service == "vaughan-wallet-encrypted-seeds";
+        let is_seed_based = account.key_reference.service == crate::security::SERVICE_NAME_ENCRYPTED_SEEDS;
 
         let key_bytes = if is_seed_based {
             tracing::info!("🌱 Seed-based account detected");

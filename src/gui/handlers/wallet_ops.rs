@@ -77,101 +77,23 @@ impl WorkingWalletApp {
 
         self.state.wallet_mut().creating_account = true;
         let account_name = self.state.wallet().create_account_name.clone();
-
+ 
         tracing::info!("Creating new account: {}", account_name);
-
-        // Implement account creation using Alloy and existing seed management
+ 
+        // Use the standardized account service for creation
         Command::perform(
             async move {
-                use crate::security::keychain::OSKeychain;
-                use crate::security::seed::{SeedManager, SeedStrength};
-                use secrecy::SecretString;
-
-                tracing::info!("🔐 Creating new seed-based account: {}", account_name);
-
-                // Create keychain for encrypted seeds
-                let keychain = Box::new(
-                    OSKeychain::new("vaughan-wallet-encrypted-seeds".to_string())
-                        .map_err(|e| format!("Failed to access keychain: {e}"))?,
-                );
-
-                // Create seed manager
-                let seed_manager = SeedManager::new(keychain);
-
-                // Generate new 12-word seed phrase (Alloy-compatible)
-                let seed_phrase = seed_manager
-                    .generate_seed_phrase(SeedStrength::Words12)
-                    .map_err(|e| format!("Failed to generate seed phrase: {e}"))?;
-
-                // Use wallet session password (passed from unlocked wallet)
-                let master_password = SecretString::new(master_password_str);
-
-                // Create account with encrypted seed storage
-                let account = seed_manager
-                    .create_wallet_from_seed_encrypted(
-                        account_name.clone(),
-                        &seed_phrase,
-                        &master_password,
-                        None, // No passphrase
-                    )
-                    .await
-                    .map_err(|e| format!("Failed to create wallet from seed: {e}"))?;
-
-                // Also save account metadata to accounts.json
-                let config_dir = dirs::config_dir()
-                    .map(|dir| dir.join("vaughan"))
-                    .unwrap_or_else(|| std::path::PathBuf::from("~/.config/vaughan"));
-
-                // Ensure directory exists
-                std::fs::create_dir_all(&config_dir).map_err(|e| format!("Failed to create config directory: {e}"))?;
-
-                let accounts_file = config_dir.join("accounts/accounts.json");
-
-                // Ensure accounts directory exists
-                if let Some(parent) = accounts_file.parent() {
-                    std::fs::create_dir_all(parent).map_err(|e| format!("Failed to create accounts directory: {e}"))?;
-                }
-
-                // Load existing accounts or create empty list
-                let mut accounts: Vec<serde_json::Value> = if accounts_file.exists() {
-                    let content = std::fs::read_to_string(&accounts_file)
-                        .map_err(|e| format!("Failed to read accounts file: {e}"))?;
-                    serde_json::from_str(&content).map_err(|e| format!("Failed to parse accounts file: {e}"))?
-                } else {
-                    Vec::new()
-                };
-
-                // Create account metadata for accounts.json
-                let account_data = serde_json::json!({
-                    "address": format!("{:#x}", account.address),
-                    "created_at": account.created_at,
-                    "derivation_path": account.derivation_path,
-                    "id": account.id,
-                    "is_hardware": false,
-                    "key_reference": {
-                        "account": account.key_reference.account,
-                        "id": account.key_reference.id,
-                        "service": account.key_reference.service
-                    },
-                    "name": account.name
-                });
-
-                // Add new account
-                accounts.push(account_data);
-
-                // Save updated accounts.json
-                let accounts_json = serde_json::to_string_pretty(&accounts)
-                    .map_err(|e| format!("Failed to serialize accounts: {e}"))?;
-
-                std::fs::write(&accounts_file, accounts_json)
-                    .map_err(|e| format!("Failed to write accounts file: {e}"))?;
-
-                tracing::info!(
-                    "✅ Account created successfully: {} ({})",
-                    account.name,
-                    account.address
-                );
-                Ok(account.id)
+                use crate::security::SeedStrength;
+                
+                // Generate a new 12-word seed phrase
+                let seed_phrase = crate::gui::services::account_service::generate_seed_phrase_with_strength(SeedStrength::Words12).await;
+                
+                crate::gui::services::account_service::create_wallet_from_seed(
+                    account_name,
+                    seed_phrase,
+                    master_password_str,
+                )
+                .await
             },
             Message::AccountCreated,
         )
@@ -236,13 +158,23 @@ impl WorkingWalletApp {
         }
 
         self.state.wallet_mut().importing_account = true;
-        let _private_key = self.state.wallet().import_private_key.clone();
+        let private_key = self.state.wallet().import_private_key.clone();
         let account_name = self.state.wallet().import_account_name.clone();
-
+ 
         tracing::info!("Importing account: {}", account_name);
-
-        // TODO: Implement account import
-        Command::none()
+ 
+        // Use the standardized account service for import
+        Command::perform(
+            async move {
+                crate::gui::services::account_service::import_wallet_from_private_key(
+                    account_name,
+                    private_key,
+                    String::new(), // Password not used for private key imports in this flow
+                )
+                .await
+            },
+            Message::AccountImported,
+        )
     }
 
     /// Handle account import result
@@ -448,18 +380,11 @@ impl WorkingWalletApp {
 
             // Use proper accessor method instead of deprecated field
             let available_accounts = &self.state.wallet().available_accounts;
-            tracing::info!(
-                "📋 Available accounts: {:?}",
-                available_accounts
-                    .iter()
-                    .map(|a| (&a.id, &a.address))
-                    .collect::<Vec<_>>()
-            );
-
-            // Find the account address from the account ID
-            let account_address = if let Some(account) = available_accounts.iter().find(|a| &a.id == account_id) {
-                tracing::info!("✅ Found account address: {} for ID: {}", account.address, account_id);
-                account.address
+            
+            // Find the account to get the SecureAccount object
+            let account = if let Some(acc) = available_accounts.iter().find(|a| &a.id == account_id) {
+                tracing::info!("✅ Found account address: {} for ID: {}", acc.address, account_id);
+                acc.clone()
             } else {
                 tracing::error!("❌ Could not find address for account ID: {}", account_id);
                 return Command::none();
@@ -468,10 +393,11 @@ impl WorkingWalletApp {
             self.state.is_loading = true;
             let wallet_clone = wallet.clone();
             let network_id = self.state.network().current_network;
+            let account_service = self.account_service.clone();
 
             tracing::info!(
                 "🚀 Starting async wallet switch operation for account: {}",
-                account_address
+                account.address
             );
 
             Command::perform(
@@ -479,19 +405,34 @@ impl WorkingWalletApp {
                     tracing::info!("🔒 Attempting to acquire wallet write lock for account switch");
                     // First, switch to the selected account in the wallet
                     let mut wallet_write = wallet_clone.write().await;
-                    if let Err(e) = wallet_write.switch_account(account_address).await {
-                        tracing::error!("Failed to switch to account {}: {}", account_address, e);
+                    if let Err(e) = wallet_write.switch_account(account.address).await {
+                        tracing::error!("Failed to switch to account {}: {}", account.address, e);
                         return Err(format!("Failed to switch to account: {e}"));
                     }
                     drop(wallet_write); // Release write lock
 
-                    // Now get the balance for the current (switched) account
-                    let wallet_read = wallet_clone.read().await;
-                    match wallet_read.get_balance(None).await {
+                    // Use IntegratedAccountService to get balance (utilizing cache and telemetry)
+                    // Define fetch function that uses the network manager directly (bypassing current account check)
+                    let wallet_for_fetch = wallet_clone.clone();
+                    let fetch_fn = move |address: alloy::primitives::Address| {
+                        let inner_wallet = wallet_for_fetch.clone();
+                        async move {
+                            let wallet_read = inner_wallet.read().await;
+                            let network_manager = wallet_read.network_manager();
+                            let nm_read = network_manager.read().await;
+                            
+                            // NetworkManager::get_balance returns Result<U256, VaughanError> (if implicit into)
+                            // or Result<U256, NetworkError>. 
+                            // If it's Result<U256, VaughanError>, we don't need map_err.
+                            nm_read.get_balance(address, None).await
+                        }
+                    };
+
+                    match account_service.get_account_balance(&account, fetch_fn).await {
                         Ok(balance_wei) => {
                             tracing::info!(
                                 "✅ Retrieved balance for account {}: {} wei",
-                                account_address,
+                                account.address,
                                 balance_wei
                             );
                             // Format the balance from wei to human-readable format with currency symbol
@@ -499,7 +440,7 @@ impl WorkingWalletApp {
                             Ok(formatted_balance)
                         }
                         Err(e) => {
-                            tracing::error!("❌ Failed to get balance for account {}: {}", account_address, e);
+                            tracing::error!("❌ Failed to get balance for account {}: {}", account.address, e);
                             Err(format!("Failed to get balance: {e}"))
                         }
                     }

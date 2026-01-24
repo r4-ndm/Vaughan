@@ -34,10 +34,8 @@ pub async fn load_available_accounts() -> Result<Vec<SecureAccount>, String> {
 
     tracing::info!("Loading available accounts from persistent storage...");
 
-    // Load account metadata from persistent file
-    let home_dir = std::env::var("HOME").unwrap_or_else(|_| ".".to_string());
-    let mut accounts_path = std::path::PathBuf::from(home_dir);
-    accounts_path.push(".vaughan");
+    // Load account metadata from persistent file using standardized path
+    let mut accounts_path = crate::security::keystore::storage::get_vaughan_dir();
     accounts_path.push("accounts.json");
 
     let mut all_accounts = Vec::new();
@@ -66,9 +64,9 @@ pub async fn load_available_accounts() -> Result<Vec<SecureAccount>, String> {
                 if let Ok(address) = address_str.parse::<alloy::primitives::Address>() {
                     // Validate that the key exists in the appropriate keychain
                     let key_exists = match service {
-                        "vaughan-wallet-encrypted-seeds" => {
+                        "vaughan-wallet-encrypted-seeds" | crate::security::SERVICE_NAME_ENCRYPTED_SEEDS => {
                             // Check encrypted seed keychain
-                            if let Ok(seed_keychain) = OSKeychain::new("vaughan-wallet-encrypted-seeds".to_string()) {
+                            if let Ok(seed_keychain) = OSKeychain::new(crate::security::SERVICE_NAME_ENCRYPTED_SEEDS.to_string()) {
                                 let key_ref = KeyReference {
                                     id: stored["key_reference"]["id"].as_str().unwrap_or("").to_string(),
                                     service: service.to_string(),
@@ -79,9 +77,9 @@ pub async fn load_available_accounts() -> Result<Vec<SecureAccount>, String> {
                                 false
                             }
                         }
-                        "vaughan-wallet" => {
+                        "vaughan-wallet" | crate::security::SERVICE_NAME_PRIVATE_KEYS => {
                             // Check private key keychain
-                            if let Ok(keychain) = OSKeychain::new("vaughan-wallet".to_string()) {
+                            if let Ok(keychain) = OSKeychain::new(crate::security::SERVICE_NAME_PRIVATE_KEYS.to_string()) {
                                 let key_ref = KeyReference {
                                     id: stored["key_reference"]["id"].as_str().unwrap_or("").to_string(),
                                     service: service.to_string(),

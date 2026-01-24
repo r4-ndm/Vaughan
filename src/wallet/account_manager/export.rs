@@ -3,10 +3,10 @@
 //! This module provides secure export capabilities for sensitive account data.
 //! All export operations are strictly controlled via `ExportAuthenticator` and require valid tokens.
 
-use crate::error::{Result, SecurityError};
+use crate::error::{Result, SecurityError, VaughanError};
 use crate::security::{ExportAuthenticator, SecureKeystore, AuthToken};
 use alloy::primitives::Address;
-use secrecy::SecretString;
+use secrecy::{SecretString, ExposeSecret};
 use uuid::Uuid;
 
 /// Manages secure export of account secrets
@@ -50,7 +50,10 @@ impl<'a> AccountExporter<'a> {
         // 1. Verify Authentication Token
         self.authenticator.validate_token(token)?;
 
-        // 2. Retrieve Seed
+        // 2. Check Export Rate Limit (Task 10.2)
+        self.authenticator.check_export_limit()?;
+
+        // 3. Retrieve Seed
         let seed = self.keystore.get_decrypted_seed_phrase(&address, password).await.map_err(|e| {
              tracing::error!("❌ Export failed for {}: {}", correlation_id, e);
              e
@@ -88,7 +91,10 @@ impl<'a> AccountExporter<'a> {
         // 1. Verify Authentication Token
         self.authenticator.validate_token(token)?;
 
-        // 2. Retrieve Private Key
+        // 2. Check Export Rate Limit (Task 10.2)
+        self.authenticator.check_export_limit()?;
+
+        // 3. Retrieve Private Key
         let pk = self.keystore.get_decrypted_private_key(&address, password).await.map_err(|e| {
              tracing::error!("❌ Export failed for {}: {}", correlation_id, e);
              e
@@ -96,6 +102,78 @@ impl<'a> AccountExporter<'a> {
 
         tracing::warn!("✅ PK EXPORT SUCCESS. ID: {}", correlation_id);
         Ok(pk)
+    }
+
+    /// Export to MetaMask V3 Keystore JSON
+    ///
+    /// Requires:
+    /// 1. A valid authentication token.
+    /// 2. The wallet password (to decrypt the private key).
+    /// 3. A *new* password for the keystore encryption (can be same as wallet, but separate arg).
+    ///
+    /// # Returns
+    /// The keystore JSON string.
+    pub async fn export_to_v3_keystore(
+        &self,
+        address: Address,
+        token: &AuthToken,
+        wallet_password: Option<&SecretString>,
+        keystore_password: &SecretString,
+    ) -> Result<String> {
+        use tempfile::tempdir;
+
+        let correlation_id = Uuid::new_v4();
+        tracing::warn!(
+             "🚨 EXPORT_KEYSTORE attempt. ID: {}, Address: {}, Token: {}",
+             correlation_id,
+             address,
+             token.id
+        );
+
+        // 1. Verify Authentication Token
+        self.authenticator.validate_token(token)?;
+
+        // 2. Check Export Rate Limit (Task 10.2)
+        self.authenticator.check_export_limit()?;
+
+        // 3. Retrieve Private Key
+        // We get it as a SecretString (hex)
+        let pk_secret = self.keystore.get_decrypted_private_key(&address, wallet_password).await?;
+        let pk_hex = pk_secret.expose_secret();
+        
+        // 3. Encrypt using eth-keystore
+        // eth-keystore::encrypt_key writes to a directory. We'll use a temp dir.
+        let dir = tempdir().map_err(VaughanError::from)?;
+        
+        // eth-keystore expects bytes or hex? Documentation says:
+        // encrypt_key<P: AsRef<Path>, R: Rng + CryptoRng>(dir: P, rng: &mut R, pk: &[u8], password: &str) -> Result<String, Error>
+        // Ideally we pass it the key bytes.
+        let pk_bytes = hex::decode(pk_hex).map_err(|_| {
+             VaughanError::Security(SecurityError::InvalidPrivateKey)
+        })?;
+
+        // Use a random generator
+        let mut rng = rand::thread_rng();
+
+        let filename = eth_keystore::encrypt_key(
+            dir.path(),
+            &mut rng,
+            &pk_bytes,
+            keystore_password.expose_secret(),
+            None, // Use default options (standard pbkdf2)
+        ).map_err(|e| {
+             tracing::error!("eth-keystore encryption failed: {}", e);
+             VaughanError::Security(SecurityError::KeystoreError { 
+                 message: format!("Encryption failed: {}", e) 
+             })
+        })?;
+
+        // 4. Read the file back
+        let file_path = dir.path().join(filename);
+        let json_content = std::fs::read_to_string(file_path).map_err(VaughanError::from)?;
+
+        tracing::warn!("✅ KEYSTORE EXPORT SUCCESS. ID: {}", correlation_id);
+        Ok(json_content)
     }
 }
 

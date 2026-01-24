@@ -45,11 +45,9 @@ pub struct StoredNetworkMeta {
 
 /// Get the path to the .vaughan directory
 pub fn get_vaughan_dir() -> PathBuf {
-    let home_dir = std::env::var("HOME")
-        .or_else(|_| std::env::var("USERPROFILE"))
-        .unwrap_or_else(|_| ".".to_string());
+    let home_dir = dirs::home_dir().unwrap_or_else(|| PathBuf::from("."));
 
-    let mut path = PathBuf::from(home_dir);
+    let mut path = home_dir;
     path.push(".vaughan");
     path
 }
@@ -131,10 +129,10 @@ pub fn load_accounts(
                     stored.key_reference.id
                 );
                 let key_exists = match stored.key_reference.service.as_str() {
-                    "vaughan-wallet-encrypted-seeds" => {
+                    crate::security::SERVICE_NAME_ENCRYPTED_SEEDS | "vaughan-wallet-encrypted-seeds" => {
                         // For seed-based accounts, check if the encrypted seed exists
                         let seed_keychain =
-                            crate::security::keychain::OSKeychain::new("vaughan-wallet-encrypted-seeds".to_string());
+                            crate::security::keychain::OSKeychain::new(crate::security::SERVICE_NAME_ENCRYPTED_SEEDS.to_string());
                         match seed_keychain {
                             Ok(kc) => {
                                 let result = kc.retrieve(&stored.key_reference).is_ok();
@@ -147,7 +145,7 @@ pub fn load_accounts(
                             }
                         }
                     }
-                    "vaughan-wallet" => {
+                    crate::security::SERVICE_NAME_PRIVATE_KEYS | "vaughan-wallet" => {
                         // For private key accounts, check if the key exists
                         let result = keychain.retrieve(&stored.key_reference).is_ok();
                         tracing::info!(

@@ -10,6 +10,60 @@
 //! - **Async Patterns**: All operations are async for proper concurrency (Requirement 1.4)
 //! - **Separation of Concerns**: UI concerns are completely separated from business logic
 //!
+//! ## Usage Examples
+//!
+//! ### Creating a New Wallet
+//!
+//! ```rust,ignore
+//! use vaughan::wallet::account_manager::{AccountManager, AccountConfig, SeedStrength};
+//! use secrecy::SecretString;
+//!
+//! async fn create_example(manager: &mut AccountManager) -> Result<()> {
+//!     let config = AccountConfig::seed_based("Main Wallet")
+//!         .with_seed_strength(SeedStrength::Words24);
+//!     
+//!     let password = SecretString::new("secure-password".to_string());
+//!     let account = manager.create_account(config, &password).await?;
+//!     println!("Created account: {}", account.address);
+//!     Ok(())
+//! }
+//! ```
+//!
+//! ### Importing a Private Key
+//!
+//! ```rust,ignore
+//! use vaughan::wallet::account_manager::{AccountManager, ImportSource};
+//! use secrecy::SecretString;
+//!
+//! async fn import_example(manager: &mut AccountManager) -> Result<()> {
+//!     let source = ImportSource::PrivateKey {
+//!         key: SecretString::new("0x123...".to_string()),
+//!         name: "Imported Account".to_string(),
+//!         password: SecretString::new("encryption-password".to_string()),
+//!     };
+//!     
+//!     let account = manager.import_account(source).await?;
+//!     Ok(())
+//! }
+//! ```
+//!
+//! ### Integrating with Alloy
+//!
+//! ```rust,ignore
+//! use vaughan::wallet::account_manager::signer_integration::VaughanSigner;
+//! use alloy::providers::ProviderBuilder;
+//!
+//! async fn provider_example(manager: &mut AccountManager, account_address: Address) -> Result<()> {
+//!     // 1. Unlock wallet first
+//!     manager.unlock(&SecretString::new("password".to_string())).await?;
+//!     
+//!     // 2. Get signer (assuming you have access to the internal signer components)
+//!     // Note: In practice, high-level services wrap this.
+//!     
+//!     Ok(())
+//! }
+//! ```
+//!
 //! ## Requirements Addressed
 //!
 //! - **Requirement 1.1**: THE Account_Manager SHALL provide a unified trait interface
@@ -23,6 +77,8 @@ pub mod import;
 pub mod export;
 pub mod metadata;
 pub mod signer_integration;
+pub mod discovery;
+pub mod eip712;
 
 pub use creation::{AccountCreator, AccountCreationConfig, CreatedAccount, KeyValidation, SeedValidation};
 pub use import::{AccountImporter, FormatDetectionResult, ImportedAccount, ImportMetadata, ImportSourceType, ImportValidationResult};
@@ -102,6 +158,8 @@ pub struct AccountConfig {
     pub seed_strength: Option<SeedStrength>,
     /// Custom derivation path (optional, uses default if not specified)
     pub derivation_path: Option<String>,
+    /// Derivation standard to use (optional, overrides derivation_path if set)
+    pub derivation_standard: Option<crate::wallet::hardware::DerivationStandard>,
 }
 
 impl AccountConfig {
@@ -112,6 +170,7 @@ impl AccountConfig {
             account_type: AccountType::SeedBased,
             seed_strength: Some(SeedStrength::Words12),
             derivation_path: None,
+            derivation_standard: None,
         }
     }
 
@@ -122,6 +181,7 @@ impl AccountConfig {
             account_type: AccountType::PrivateKey,
             seed_strength: None,
             derivation_path: None,
+            derivation_standard: None,
         }
     }
 
@@ -132,6 +192,7 @@ impl AccountConfig {
             account_type: AccountType::Hardware,
             seed_strength: None,
             derivation_path: None,
+            derivation_standard: Some(crate::wallet::hardware::DerivationStandard::Bip44),
         }
     }
 
@@ -144,6 +205,12 @@ impl AccountConfig {
     /// Set a custom derivation path
     pub fn with_derivation_path(mut self, path: impl Into<String>) -> Self {
         self.derivation_path = Some(path.into());
+        self
+    }
+
+    /// Set the derivation standard
+    pub fn with_standard(mut self, standard: crate::wallet::hardware::DerivationStandard) -> Self {
+        self.derivation_standard = Some(standard);
         self
     }
 }

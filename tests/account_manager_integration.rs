@@ -20,6 +20,8 @@ use vaughan::wallet::account_manager::{
 };
 use alloy::primitives::{Address, U256};
 
+mod utils;
+use alloy::providers::Provider;
 // ============================================================================
 // Test Helpers
 // ============================================================================
@@ -127,27 +129,61 @@ async fn test_account_import_instrumentation() {
 async fn test_batch_balance_refresh_success() {
     let service = IntegratedAccountService::new();
     
-    // Create test accounts
-    let accounts = vec![
-        create_test_account("account1", Address::from([0x01u8; 20])),
-        create_test_account("account2", Address::from([0x02u8; 20])),
-        create_test_account("account3", Address::from([0x03u8; 20])),
-    ];
-    
-    // Refresh balances using batch processing
-    let balances = service
-        .refresh_account_balances(&accounts, mock_balance_fetcher)
-        .await;
-    
-    assert!(balances.is_ok());
-    let balance_map = balances.unwrap();
-    
-    // Verify all accounts have balances
-    assert_eq!(balance_map.len(), 3);
-    
-    // Verify balances match expected values based on mock fetcher
-    for account in &accounts {
-        assert!(balance_map.contains_key(&account.address));
+    // Try to spawn Anvil for realistic testing
+    if let Some(context) = utils::anvil::AnvilContext::try_new() {
+        // Use real Anvil accounts
+        let signer1 = context.get_signer(0);
+        let signer2 = context.get_signer(1);
+        let signer3 = context.get_signer(2);
+        
+        let accounts = vec![
+            create_test_account("account1", signer1.address()),
+            create_test_account("account2", signer2.address()),
+            create_test_account("account3", signer3.address()),
+        ];
+        
+        // Define a fetcher that uses the real provider
+        let provider_url = context.endpoint();
+        let real_fetcher = move |address: Address| {
+            let url = provider_url.clone();
+            async move {
+                let provider = alloy::providers::ProviderBuilder::new().connect_http(url);
+                provider.get_balance(address).await.map_err(|e| VaughanError::Network(vaughan::error::NetworkError::RpcError { message: e.to_string() }))
+            }
+        };
+
+        // Refresh balances using real network calls
+        let balances = service
+            .refresh_account_balances(&accounts, real_fetcher)
+            .await;
+        
+        assert!(balances.is_ok());
+        let balance_map = balances.unwrap();
+        
+        // Verify all accounts have balances (should be 10000 ETH by default)
+        assert_eq!(balance_map.len(), 3);
+        for account in &accounts {
+            if let Some(balance) = balance_map.get(&account.address) {
+                assert!(*balance > U256::ZERO);
+            } else {
+                panic!("Missing balance for account");
+            }
+        }
+    } else {
+        // Fallback to mock testing if Anvil is missing
+        let accounts = vec![
+            create_test_account("account1", Address::from([0x01u8; 20])),
+            create_test_account("account2", Address::from([0x02u8; 20])),
+            create_test_account("account3", Address::from([0x03u8; 20])),
+        ];
+        
+        let balances = service
+            .refresh_account_balances(&accounts, mock_balance_fetcher)
+            .await;
+        
+        assert!(balances.is_ok());
+        let balance_map = balances.unwrap();
+        assert_eq!(balance_map.len(), 3);
     }
 }
 

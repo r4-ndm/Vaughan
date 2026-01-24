@@ -365,20 +365,25 @@ impl DeviceManager {
     /// Scan for Ledger devices
     #[cfg(feature = "hardware-wallets")]
     async fn scan_ledger_devices(&self) -> Result<Vec<HardwareDevice>> {
-        use alloy_signer_ledger::HDPath as LedgerHDPath;
         use alloy_signer_ledger::LedgerSigner;
+        use crate::wallet::hardware::{DerivationStandard, to_ledger_path};
 
         let mut devices = Vec::new();
 
-        // Try to connect to Ledger
-        match LedgerSigner::new(LedgerHDPath::LedgerLive(0), None).await {
-            Ok(_ledger) => {
+        // Scan using default standard (BIP44) for initial discovery
+        // In a full implementation, we might iterate all standards or accept one as a param
+        let path = to_ledger_path(DerivationStandard::Bip44, 0);
+
+        match LedgerSigner::new(path, None).await {
+            Ok(signer) => {
+                let address = signer.get_address().await.unwrap_or_default();
                 let mut device = HardwareDevice::ledger("Ledger Nano");
+                device.addresses.push(address);
                 device.mark_connected();
                 devices.push(device);
             }
             Err(e) => {
-                tracing::debug!("No Ledger device found: {}", e);
+                tracing::debug!("No Ledger device found on Bip44 path: {}", e);
             }
         }
 
@@ -387,7 +392,6 @@ impl DeviceManager {
 
     #[cfg(not(feature = "hardware-wallets"))]
     async fn scan_ledger_devices(&self) -> Result<Vec<HardwareDevice>> {
-        // Simulated scan for testing without hardware-wallets feature
         tracing::debug!("Hardware wallets feature disabled, simulating Ledger scan");
         Ok(Vec::new())
     }
@@ -395,20 +399,24 @@ impl DeviceManager {
     /// Scan for Trezor devices
     #[cfg(feature = "hardware-wallets")]
     async fn scan_trezor_devices(&self) -> Result<Vec<HardwareDevice>> {
-        use alloy_signer_trezor::HDPath as TrezorHDPath;
         use alloy_signer_trezor::TrezorSigner;
+        use crate::wallet::hardware::{DerivationStandard, to_trezor_path};
 
         let mut devices = Vec::new();
 
-        // Try to connect to Trezor
-        match TrezorSigner::new(TrezorHDPath::TrezorLive(0), None).await {
-            Ok(_trezor) => {
+        // Scan using default standard (BIP44)
+        let path = to_trezor_path(DerivationStandard::Bip44, 0);
+
+        match TrezorSigner::new(path, None).await {
+            Ok(signer) => {
+                let address = signer.get_address().await.unwrap_or_default();
                 let mut device = HardwareDevice::trezor("Trezor Model");
+                device.addresses.push(address);
                 device.mark_connected();
                 devices.push(device);
             }
             Err(e) => {
-                tracing::debug!("No Trezor device found: {}", e);
+                tracing::debug!("No Trezor device found on Bip44 path: {}", e);
             }
         }
 
@@ -417,7 +425,6 @@ impl DeviceManager {
 
     #[cfg(not(feature = "hardware-wallets"))]
     async fn scan_trezor_devices(&self) -> Result<Vec<HardwareDevice>> {
-        // Simulated scan for testing without hardware-wallets feature
         tracing::debug!("Hardware wallets feature disabled, simulating Trezor scan");
         Ok(Vec::new())
     }

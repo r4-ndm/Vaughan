@@ -17,6 +17,9 @@ use vaughan::wallet::{HardwareManager, Vaughan, WalletConfig};
 async fn test_e2e_first_time_user_setup() {
     println!("🧪 E2E Test: First-time user setup");
 
+    // Set mock hardware env var
+    std::env::set_var("VAUGHAN_MOCK_HARDWARE", "1");
+
     // Step 1: User starts wallet with hardware wallet support
     let config = WalletConfig {
         hardware_wallet_enabled: true,
@@ -64,6 +67,8 @@ async fn test_e2e_first_time_user_setup() {
 async fn test_e2e_experienced_user_transaction() {
     println!("🧪 E2E Test: Experienced user transaction workflow");
 
+    // Set mock hardware env var
+    std::env::set_var("VAUGHAN_MOCK_HARDWARE", "1");
     // Step 1: User has wallet already set up
     let mut hw_manager = HardwareManager::new().unwrap();
     hw_manager.detect_wallets().await.unwrap();
@@ -114,6 +119,7 @@ async fn test_e2e_experienced_user_transaction() {
 #[tokio::test]
 async fn test_e2e_multi_device_user() {
     println!("🧪 E2E Test: Multi-device user workflow");
+    std::env::set_var("VAUGHAN_MOCK_HARDWARE", "1");
 
     let mut hw_manager = HardwareManager::new().unwrap();
     let devices = hw_manager.detect_wallets().await.unwrap();
@@ -139,7 +145,9 @@ async fn test_e2e_multi_device_user() {
     println!("✅ Trezor addresses: {}", trezor_addresses.len());
 
     // Step 3: User chooses preferred device for transaction
-    let tx = TransactionRequest::default();
+    let mut tx = TransactionRequest::default();
+    tx.to = Some(Address::from_str("0x742d35cc6c9e4bfe8aa16fd2fde52c74c47b8f18").unwrap().into());
+    tx.value = Some(U256::from(100)); // Non-zero value
 
     // Test both devices
     let ledger_audit = hw_manager
@@ -172,6 +180,7 @@ async fn test_e2e_multi_device_user() {
 #[tokio::test]
 async fn test_e2e_error_recovery() {
     println!("🧪 E2E Test: Error recovery and troubleshooting");
+    std::env::set_var("VAUGHAN_MOCK_HARDWARE", "1");
 
     let mut hw_manager = HardwareManager::new().unwrap();
     hw_manager.detect_wallets().await.unwrap();
@@ -215,6 +224,7 @@ async fn test_e2e_error_recovery() {
 #[tokio::test]
 async fn test_e2e_high_value_transaction() {
     println!("🧪 E2E Test: High-value transaction workflow");
+    std::env::set_var("VAUGHAN_MOCK_HARDWARE", "1");
 
     let mut hw_manager = HardwareManager::new().unwrap();
     hw_manager.detect_wallets().await.unwrap();
@@ -279,6 +289,7 @@ async fn test_e2e_high_value_transaction() {
 #[tokio::test]
 async fn test_e2e_corporate_multi_account() {
     println!("🧪 E2E Test: Corporate multi-account workflow");
+    std::env::set_var("VAUGHAN_MOCK_HARDWARE", "1");
 
     let mut hw_manager = HardwareManager::new().unwrap();
     hw_manager.detect_wallets().await.unwrap();
@@ -333,6 +344,7 @@ async fn test_e2e_corporate_multi_account() {
 #[tokio::test]
 async fn test_e2e_performance_validation() {
     println!("🧪 E2E Test: Performance validation");
+    std::env::set_var("VAUGHAN_MOCK_HARDWARE", "1");
 
     let mut hw_manager = HardwareManager::new().unwrap();
     hw_manager.detect_wallets().await.unwrap();
@@ -362,7 +374,9 @@ async fn test_e2e_performance_validation() {
     }
 
     // Step 2: Bulk signing performance test
-    let tx = TransactionRequest::default();
+    let mut tx = TransactionRequest::default();
+    tx.to = Some(Address::from_str("0x742d35cc6c9e4bfe8aa16fd2fde52c74c47b8f18").unwrap().into());
+    tx.value = Some(U256::from(100)); // Non-zero value
     let start_time = std::time::Instant::now();
 
     let mut signing_results = Vec::new();
@@ -421,6 +435,7 @@ async fn test_e2e_performance_validation() {
 #[tokio::test]
 async fn test_e2e_real_world_simulation() {
     println!("🧪 E2E Test: Real-world simulation with delays");
+    std::env::set_var("VAUGHAN_MOCK_HARDWARE", "1");
 
     let mut hw_manager = HardwareManager::new().unwrap();
 

@@ -228,29 +228,51 @@ impl HardwareWalletTrait for LedgerWallet {
             #[cfg(all(feature = "hardware-wallets", not(test)))]
             {
                 // Real Ledger connection using Alloy LedgerSigner
+                let mut connected_real = false;
                 match LedgerSigner::new(LedgerHDPath::LedgerLive(0), Some(1)).await {
                     Ok(signer) => {
                         self.signer = Some(Arc::new(signer));
                         tracing::info!("✅ Successfully connected to Ledger device");
+                        
+                        // Get device information from Ledger
+                        self.device_info = Some(HardwareWalletInfo {
+                            device_type: "Ledger".to_string(),
+                            firmware_version: "2.1.0+".to_string(), // Real version would be queried
+                            model: "Nano X".to_string(),            // Placeholder
+                            serial_number: None,                    // Placeholder
+                        });
+                        
+                        self.connected = true;
+                        self.last_activity = Some(Instant::now());
+                        connected_real = true;
+                        tracing::info!("✅ Connected to Ledger device: {:?}", self.device_info);
                     }
                     Err(e) => {
                         tracing::error!("❌ Failed to connect to Ledger: {}", e);
-                        return Err(HardwareWalletError::DeviceNotFound.into());
                     }
                 }
+                
+                if !connected_real && std::env::var("VAUGHAN_MOCK_HARDWARE").is_ok() {
+                     tracing::warn!("⚠️ Falling back to simulated Ledger device (VAUGHAN_MOCK_HARDWARE set)");
+                     // Simulated connection for development/testing
+                     tokio::time::sleep(Duration::from_millis(100)).await;
 
-                // Get device information from Ledger
-                self.device_info = Some(HardwareWalletInfo {
-                    device_type: "Ledger".to_string(),
-                    firmware_version: "2.1.0+".to_string(), // Real version would be queried
-                    model: "Nano X".to_string(),            // Placeholder
-                    serial_number: None,                    // Placeholder
-                });
+                     self.device_info = Some(HardwareWalletInfo {
+                         device_type: "Ledger (Simulated)".to_string(),
+                         firmware_version: "2.1.0-sim".to_string(),
+                         model: "Nano S Plus (Simulated)".to_string(),
+                         serial_number: Some("SIM001".to_string()),
+                     });
 
-                self.connected = true;
-                self.last_activity = Some(Instant::now());
-
-                tracing::info!("✅ Connected to Ledger device: {:?}", self.device_info);
+                     self.connected = true;
+                     self.last_activity = Some(Instant::now());
+                     connected_real = true;
+                     tracing::info!("📱 Connected to simulated Ledger device");
+                } 
+                
+                if !connected_real {
+                     return Err(HardwareWalletError::DeviceNotFound.into());
+                }
             }
 
             #[cfg(any(not(feature = "hardware-wallets"), test))]
@@ -329,6 +351,15 @@ impl HardwareWalletTrait for LedgerWallet {
 
                 tracing::info!("✅ Successfully derived {} Ledger addresses", count);
                 Ok(addresses)
+            } else if self.connected && std::env::var("VAUGHAN_MOCK_HARDWARE").is_ok() {
+                 // Simulated address derivation
+                let mut addresses = Vec::new();
+                for i in 0..count {
+                    // Generate a deterministic mock address based on index
+                    let mock_addr_str = format!("0x{:040x}", i + 1);
+                    addresses.push(std::str::FromStr::from_str(&mock_addr_str).unwrap());
+                }
+                Ok(addresses)
             } else {
                 Err(HardwareWalletError::DeviceNotFound.into())
             }
@@ -398,6 +429,10 @@ impl HardwareWalletTrait for LedgerWallet {
                             Err(HardwareWalletError::SigningFailed.into())
                         }
                     }
+                } else if self.connected && std::env::var("VAUGHAN_MOCK_HARDWARE").is_ok() {
+                     // Simulated signing
+                     self.validate_transaction_request(tx)?;
+                     Ok(alloy::primitives::Signature::new(U256::from(1), U256::from(1), false))
                 } else {
                     Err(HardwareWalletError::DeviceNotFound.into())
                 }
@@ -595,30 +630,52 @@ impl HardwareWalletTrait for TrezorWallet {
             {
                 // Real Trezor connection using Alloy TrezorSigner
                 tracing::info!("🔌 Attempting to connect to Trezor device...");
+                let mut connected_real = false;
 
                 match TrezorSigner::new(TrezorHDPath::Other("m/44'/60'/0'/0/0".to_string()), Some(1)).await {
                     Ok(signer) => {
                         self.signer = Some(Arc::new(signer));
                         tracing::info!("✅ Successfully connected to Trezor device");
+                        
+                        // Get device information from Trezor
+                        self.device_info = Some(HardwareWalletInfo {
+                            device_type: "Trezor".to_string(),
+                            firmware_version: "2.5.3+".to_string(), // Real version would be queried
+                            model: "Model T".to_string(),           // Real model would be detected
+                            serial_number: None,                    // Trezor doesn't expose serial numbers
+                        });
+
+                        self.connected = true;
+                        self.last_activity = Some(Instant::now());
+                        connected_real = true;
+                        tracing::info!("✅ Connected to Trezor device: {:?}", self.device_info);
                     }
                     Err(e) => {
                         tracing::error!("❌ Failed to connect to Trezor: {}", e);
-                        return Err(HardwareWalletError::DeviceNotFound.into());
                     }
                 }
+                
+                if !connected_real && std::env::var("VAUGHAN_MOCK_HARDWARE").is_ok() {
+                     tracing::warn!("⚠️ Falling back to simulated Trezor device (VAUGHAN_MOCK_HARDWARE set)");
+                     // Simulated connection for development/testing
+                     tokio::time::sleep(Duration::from_millis(100)).await;
 
-                // Get device information from Trezor
-                self.device_info = Some(HardwareWalletInfo {
-                    device_type: "Trezor".to_string(),
-                    firmware_version: "2.5.3+".to_string(), // Real version would be queried
-                    model: "Model T".to_string(),           // Real model would be detected
-                    serial_number: None,                    // Trezor doesn't expose serial numbers
-                });
+                     self.device_info = Some(HardwareWalletInfo {
+                         device_type: "Trezor (Simulated)".to_string(),
+                         firmware_version: "2.5.3-sim".to_string(),
+                         model: "Model T (Simulated)".to_string(),
+                         serial_number: Some("SIM002".to_string()),
+                     });
 
-                self.connected = true;
-                self.last_activity = Some(Instant::now());
+                     self.connected = true;
+                     self.last_activity = Some(Instant::now());
+                     connected_real = true;
+                     tracing::info!("📱 Connected to simulated Trezor device");
+                }
 
-                tracing::info!("✅ Connected to Trezor device: {:?}", self.device_info);
+                if !connected_real {
+                     return Err(HardwareWalletError::DeviceNotFound.into());
+                }
             }
 
             #[cfg(any(not(feature = "hardware-wallets"), test))]
@@ -694,6 +751,14 @@ impl HardwareWalletTrait for TrezorWallet {
 
                 tracing::info!("✅ Successfully derived {} Trezor addresses", count);
                 Ok(addresses)
+            } else if self.connected && std::env::var("VAUGHAN_MOCK_HARDWARE").is_ok() {
+                 // Simulated address derivation
+                let mut addresses = Vec::new();
+                for i in 0..count {
+                    let mock_addr_str = format!("0x{:040x}", i + 0xABC);
+                    addresses.push(std::str::FromStr::from_str(&mock_addr_str).unwrap());
+                }
+                Ok(addresses)
             } else {
                 Err(HardwareWalletError::DeviceNotFound.into())
             }
@@ -760,6 +825,10 @@ impl HardwareWalletTrait for TrezorWallet {
                             Err(HardwareWalletError::SigningFailed.into())
                         }
                     }
+                } else if self.connected && std::env::var("VAUGHAN_MOCK_HARDWARE").is_ok() {
+                     // Simulated signing
+                     self.validate_transaction_request(tx)?;
+                     Ok(alloy::primitives::Signature::new(U256::from(1), U256::from(1), false))
                 } else {
                     Err(HardwareWalletError::DeviceNotFound.into())
                 }

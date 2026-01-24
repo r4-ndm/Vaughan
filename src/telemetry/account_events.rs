@@ -32,7 +32,7 @@
 
 use chrono::{DateTime, Utc};
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::Arc;
+// unused import removed
 use tracing::{error, info, warn, Span};
 use uuid::Uuid;
 

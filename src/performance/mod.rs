@@ -3,6 +3,7 @@
 //! This module provides performance optimization utilities including:
 //! - Batch processing for RPC calls using Alloy
 //! - LRU caching for frequently accessed data
+//! - Multicall3 contract integration for efficient batching
 //!
 //! # Requirements Addressed
 //!
@@ -18,6 +19,9 @@
 
 pub mod batch;
 pub mod cache;
+pub mod multicall;
 
 pub use batch::*;
 pub use cache::*;
+pub use multicall::*;
+

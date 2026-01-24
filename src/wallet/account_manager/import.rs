@@ -25,6 +25,7 @@ use bip39::Mnemonic;
 use chrono::{DateTime, Utc};
 use k256::ecdsa::SigningKey;
 use secrecy::{ExposeSecret, SecretString};
+use zeroize::{Zeroize, Zeroizing};
 use serde::{Deserialize, Serialize};
 use std::str::FromStr;
 use uuid::Uuid;
@@ -480,6 +481,54 @@ impl AccountImporter {
         Ok((imported, signer))
     }
 
+    /// Import from MetaMask keystore file (using eth-keystore)
+    ///
+    /// This method uses the industry-standard `eth-keystore` crate for robust
+    /// decryption of V3 keystore files.
+    pub fn import_from_keystore_file(
+        &self,
+        path: &std::path::Path,
+        password: &SecretString,
+        metadata: ImportMetadata,
+    ) -> Result<(ImportedAccount, PrivateKeySigner)> {
+        let span = OperationSpan::new("import_from_keystore_file");
+        self.logger.log_operation_start(&span, "Importing account from keystore file");
+
+        // Use eth-keystore to decrypt
+        // eth-keystore 0.5 returns Vec<u8> (the key bytes) or similar
+        // decrypt_key(path, password) -> Result<Vec<u8>, Error>
+        let private_key_bytes = eth_keystore::decrypt_key(path, password.expose_secret()).map_err(|e| {
+            self.logger.log_operation_error(&span, &format!("eth-keystore decryption failed: {}", e));
+             VaughanError::Security(SecurityError::DecryptionError {
+                message: format!("Decryption failed: {}", e),
+            })
+        })?;
+
+        // Create signer
+        let signer = PrivateKeySigner::from_slice(&private_key_bytes).map_err(|e| {
+            self.logger.log_operation_error(&span, &format!("Invalid decrypted key: {}", e));
+             VaughanError::Security(SecurityError::KeyDerivationError {
+                message: format!("Invalid decrypted key: {}", e),
+            })
+        })?;
+
+        let address = signer.address();
+
+        let mut imported = ImportedAccount::new(address, ImportSourceType::MetaMaskKeystore, span.correlation_id)
+            .with_metadata(metadata);
+        imported.metadata.source_type = Some(ImportSourceType::MetaMaskKeystore);
+
+        self.logger.log_account_event(
+            &span,
+            "account_imported",
+            &address.to_string(),
+            "Account imported from keystore file via eth-keystore",
+        );
+        self.logger.log_operation_complete(&span, "Import successful");
+
+        Ok((imported, signer))
+    }
+
     /// Validate keystore structure (Property 21)
     fn validate_keystore_structure(&self, keystore: &MetaMaskKeystore, span: &OperationSpan) -> Result<()> {
         // Check version
@@ -534,7 +583,7 @@ impl AccountImporter {
         let dklen = keystore.crypto.kdfparams.dklen as usize;
         let iterations = keystore.crypto.kdfparams.c;
 
-        let mut derived_key = vec![0u8; dklen];
+        let mut derived_key = Zeroizing::new(vec![0u8; dklen]);
         pbkdf2_hmac::<Sha256>(password_bytes, &salt, iterations, &mut derived_key);
 
         // Verify MAC
@@ -545,12 +594,12 @@ impl AccountImporter {
             })
         })?;
 
-        let mut mac_input = Vec::with_capacity(mac_key.len() + ciphertext.len());
+        let mut mac_input = Zeroizing::new(Vec::with_capacity(mac_key.len() + ciphertext.len()));
         mac_input.extend_from_slice(mac_key);
         mac_input.extend_from_slice(&ciphertext);
 
         use alloy::primitives::keccak256;
-        let computed_mac = keccak256(&mac_input);
+        let computed_mac = keccak256(&*mac_input);
         let stored_mac = hex::decode(&keystore.crypto.mac).map_err(|e| {
             VaughanError::Security(SecurityError::DecryptionError {
                 message: format!("Invalid MAC encoding: {}", e),

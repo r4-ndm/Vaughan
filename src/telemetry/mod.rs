@@ -18,5 +18,7 @@
 //! - Span context propagates across async boundaries
 
 pub mod account_events;
+pub mod opentelemetry;
 
 pub use account_events::*;
+pub use opentelemetry::init_telemetry;
