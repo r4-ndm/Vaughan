@@ -25,8 +25,7 @@ use std::time::Duration;
 use tokio::sync::Semaphore;
 use uuid::Uuid;
 
-use crate::error::Result;
-// NetworkError removed
+use crate::error::{NetworkError, Result};
 
 /// Configuration for batch processing operations
 #[derive(Debug, Clone)]

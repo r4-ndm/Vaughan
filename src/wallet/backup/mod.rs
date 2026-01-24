@@ -184,7 +184,7 @@ impl BackupManager {
         let dealer = sharks.dealer(secret.expose_secret());
         
         let shares: Vec<String> = dealer.take(total as usize)
-            .map(|s| hex::encode(s.to_bytes()))
+            .map(|s| hex::encode(&s))
             .collect();
 
         Ok(shares)
