@@ -1,0 +1,866 @@
+warning: unused import: `crate::error::VaughanError`
+  --> src\gui\services\integrated_account_service.rs:11:5
+   |
+11 | use crate::error::VaughanError;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `NetworkError`
+  --> src\performance\batch.rs:28:20
+   |
+28 | use crate::error::{NetworkError, Result};
+   |                    ^^^^^^^^^^^^
+
+warning: unused imports: `ExposeSecret` and `SecretString`
+  --> src\security\export_auth.rs:13:15
+   |
+13 | use secrecy::{ExposeSecret, SecretString};
+   |               ^^^^^^^^^^^^  ^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:373:26
+    |
+373 |             LastWritten: unsafe { std::mem::zeroed() },
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: requested on the command line with `-W unsafe-code`
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:383:22
+    |
+383 |         let result = unsafe { CredWriteW(&mut credential, 0) };
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:387:30
+    |
+387 |             let error_code = unsafe { GetLastError() };
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:412:22
+    |
+412 |           let result = unsafe {
+    |  ______________________^
+413 | |             CredReadW(
+414 | |                 target_name_wide.as_ptr() as LPCWSTR,
+415 | |                 CRED_TYPE_GENERIC,
+...   |
+419 | |         };
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:423:30
+    |
+423 |             let error_code = unsafe { GetLastError() };
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:433:24
+    |
+433 |           let key_data = unsafe {
+    |  ________________________^
+434 | |             let cred = &*credential;
+435 | |             let blob_size = cred.CredentialBlobSize as usize;
+436 | |             let blob_ptr = cred.CredentialBlob;
+...   |
+447 | |             String::from_utf8_lossy(data).into_owned()
+448 | |         };
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:450:9
+    |
+450 |         unsafe { CredFree(credential as *mut _) };
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:464:22
+    |
+464 | ... = unsafe { CredDeleteW(target_name_wide.as_ptr() as LPCWSTR, CRED_TYPE_GENERIC, 0) };
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:468:30
+    |
+468 |             let error_code = unsafe { GetLastError() };
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+  --> src\security\memory.rs:55:22
+   |
+55 |         let result = unsafe { VirtualLock(addr as *mut winapi::ctypes::c_void, len) };
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+  --> src\security\memory.rs:73:22
+   |
+73 |         let result = unsafe { VirtualUnlock(addr as *mut winapi::ctypes::c_void, len) };
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:154:19
+    |
+154 |         let ptr = unsafe { std::alloc::alloc_zeroed(layout) };
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:184:9
+    |
+184 |         unsafe { std::slice::from_raw_parts_mut(self.ptr, self.len) }
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:202:9
+    |
+202 | /         unsafe {
+203 | |             ptr::write_bytes(self.ptr, 0, self.len);
+204 | |         }
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:227:9
+    |
+227 | /         unsafe {
+228 | |             let layout = std::alloc::Layout::from_size_align_unchecked(self.len, 8);
+229 | |             std::alloc::dealloc(self.ptr, layout);
+230 | |         }
+    | |_________^
+
+warning: implementation of an `unsafe` trait
+   --> src\security\memory.rs:237:1
+    |
+237 | unsafe impl Send for SecureMemory {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: ambiguous glob re-exports
+  --> src\security\mod.rs:38:9
+   |
+38 | pub use keystore::*;
+   |         ^^^^^^^^^^^ the name `encryption` in the type namespace is first re-exported here
+...
+41 | pub use seed::*;
+   |         ------- but the name `encryption` in the type namespace is also re-exported here
+   |
+   = note: `#[warn(ambiguous_glob_reexports)]` on by default
+
+warning: unused import: `std::sync::Arc`
+  --> src\telemetry\account_events.rs:35:5
+   |
+35 | use std::sync::Arc;
+   |     ^^^^^^^^^^^^^^
+
+warning: unused import: `zeroize::Zeroizing`
+  --> src\wallet\account_manager\creation.rs:26:5
+   |
+26 | use zeroize::Zeroizing;
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `KeyReference`
+  --> src\wallet\account_manager\signer_integration.rs:17:23
+   |
+17 | use crate::security::{KeyReference, SecureAccount};
+   |                       ^^^^^^^^^^^^
+
+warning: unused import: `std::sync::Arc`
+  --> src\wallet\account_manager\signer_integration.rs:26:5
+   |
+26 | use std::sync::Arc;
+   |     ^^^^^^^^^^^^^^
+
+warning: unused imports: `error` and `warn`
+  --> src\wallet\account_manager\signer_integration.rs:27:21
+   |
+27 | use tracing::{info, warn, error};
+   |                     ^^^^  ^^^^^
+
+warning: unused import: `SolStruct`
+  --> src\wallet\account_manager\eip712.rs:19:38
+   |
+19 | use alloy::sol_types::{Eip712Domain, SolStruct};
+   |                                      ^^^^^^^^^
+
+warning: unused import: `std::str::FromStr`
+  --> src\wallet\account_manager\eip712.rs:21:5
+   |
+21 | use std::str::FromStr;
+   |     ^^^^^^^^^^^^^^^^^
+
+warning: unused import: `VaughanError`
+  --> src\wallet\backup\mod.rs:11:56
+   |
+11 | use crate::error::{Result, SecurityError, WalletError, VaughanError};
+   |                                                        ^^^^^^^^^^^^
+
+warning: unused import: `SecureExport`
+  --> src\wallet\backup\mod.rs:12:39
+   |
+12 | use crate::security::{SecureKeystore, SecureExport};
+   |                                       ^^^^^^^^^^^^
+
+warning: unused imports: `ExposeSecret` and `SecretVec`
+  --> src\wallet\backup\mod.rs:18:15
+   |
+18 | use secrecy::{ExposeSecret, SecretString, SecretVec};
+   |               ^^^^^^^^^^^^                ^^^^^^^^^
+
+warning: unused imports: `Zeroize` and `Zeroizing`
+  --> src\wallet\backup\mod.rs:22:15
+   |
+22 | use zeroize::{Zeroize, Zeroizing};
+   |               ^^^^^^^  ^^^^^^^^^
+
+warning: unused imports: `B256`, `Bytes`, and `U256`
+  --> src\wallet\provider\eip1193.rs:19:34
+   |
+19 | use alloy::primitives::{Address, Bytes, B256, U256};
+   |                                  ^^^^^  ^^^^  ^^^^
+
+warning: unused import: `std::collections::HashMap`
+  --> src\wallet\provider\eip1193.rs:23:5
+   |
+23 | use std::collections::HashMap;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `VaughanError` and `WalletError`
+  --> src\wallet\provider\eip1193.rs:28:28
+   |
+28 | use crate::error::{Result, VaughanError, WalletError};
+   |                            ^^^^^^^^^^^^  ^^^^^^^^^^^
+
+warning: unused import: `U256`
+  --> src\wallet\transaction\simulator.rs:17:41
+   |
+17 | use alloy::primitives::{Address, Bytes, U256};
+   |                                         ^^^^
+
+warning: unused import: `std::str::FromStr`
+  --> src\wallet\transaction\simulator.rs:20:5
+   |
+20 | use std::str::FromStr;
+   |     ^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `NetworkError`, `Result`, and `VaughanError`
+  --> src\wallet\transaction\simulator.rs:23:20
+   |
+23 | use crate::error::{Result, VaughanError, NetworkError};
+   |                    ^^^^^^  ^^^^^^^^^^^^  ^^^^^^^^^^^^
+
+warning: unused import: `alloy::transports::Transport`
+  --> src\wallet\transaction\fees.rs:16:5
+   |
+16 | use alloy::transports::Transport;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::sync::Arc`
+  --> src\wallet\transaction\fees.rs:19:5
+   |
+19 | use std::sync::Arc;
+   |     ^^^^^^^^^^^^^^
+
+warning: unused import: `alloy::signers::Signer`
+ --> src\wallet\account_manager\discovery.rs:9:5
+  |
+9 | use alloy::signers::Signer;
+  |     ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: variable does not need to be mutable
+  --> src\gui\working_wallet.rs:89:13
+   |
+89 |         let mut wallet_app = Self {
+   |             ----^^^^^^^^^^
+   |             |
+   |             help: remove this `mut`
+   |
+   = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `e`
+  --> src\wallet\account_manager\signer_integration.rs:51:23
+   |
+51 |             .map_err(|e| VaughanError::Wallet(WalletError::InvalidPrivateKey))?;
+   |                       ^ help: if this is intentional, prefix it with an underscore: `_e`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: method `add_error_log_entry` is never used
+    --> src\gui\working_wallet.rs:3194:8
+     |
+3150 | impl WorkingWalletApp {
+     | --------------------- method in this implementation
+...
+3194 |     fn add_error_log_entry(&mut self, error: &VaughanError, additional_context: Option<Stri...
+     |        ^^^^^^^^^^^^^^^^^^^
+     |
+     = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `auto_scan_running` is never read
+   --> src\wallet\hardware\device_manager.rs:256:5
+    |
+250 | pub struct DeviceManager {
+    |            ------------- field in this struct
+...
+256 |     auto_scan_running: Arc<RwLock<bool>>,
+    |     ^^^^^^^^^^^^^^^^^
+    |
+    = note: `DeviceManager` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+
+warning: unused imports: `HDPath as LedgerHDPath` and `HDPath as TrezorHDPath`
+  --> src\security\hardware.rs:30:27
+   |
+30 |     alloy_signer_ledger::{HDPath as LedgerHDPath, LedgerSigner},
+   |                           ^^^^^^^^^^^^^^^^^^^^^^
+31 |     alloy_signer_trezor::{HDPath as TrezorHDPath, TrezorSigner},
+   |                           ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `tokio::time::sleep`
+   --> src\security\export_auth.rs:122:9
+    |
+122 |     use tokio::time::sleep;
+    |         ^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+  --> src\security\memory.rs:55:22
+   |
+55 |         let result = unsafe { VirtualLock(addr as *mut winapi::ctypes::c_void, len) };
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: requested on the command line with `-W unsafe-code`
+
+warning: unused import: `AtomicU32`
+   --> src\security\session.rs:477:41
+    |
+477 |     use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
+    |                                         ^^^^^^^^^
+
+warning: unused import: `EncryptionType`
+    --> src\wallet\account_manager\mod.rs:1031:27
+     |
+1031 |     use crate::security::{EncryptionType, KeyReference};
+     |                           ^^^^^^^^^^^^^^
+
+warning: unreachable expression
+   --> src\security\rate_limiter.rs:105:9
+    |
+103 |           return None;
+    |           ----------- any code following this expression is unreachable
+104 |
+105 | /         if let Ok(home_dir) = std::env::var("HOME") {
+106 | |              Some(PathBuf::from(home_dir).join(".config").join("vaughan").join("rate_limits.json"))
+107 | |         } else if let Ok(appdata_dir) = std::env::var("APPDATA") {
+108 | |              Some(PathBuf::from(appdata_dir).join("Vaughan").join("rate_limits.json"))
+109 | |         } else {
+110 | |              None
+111 | |         }
+    | |_________^ unreachable expression
+    |
+    = note: `#[warn(unreachable_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `alloy::signers::Signer`
+  --> src\security\hardware.rs:13:5
+   |
+13 | use alloy::signers::Signer;
+   |     ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused variable: `e`
+   --> src\security\rate_limiter.rs:243:20
+    |
+243 |         if let Err(e) = self.load() {
+    |                    ^ help: if this is intentional, prefix it with an underscore: `_e`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `details`
+   --> src\telemetry\account_events.rs:737:13
+    |
+737 |             details in "[a-zA-Z0-9 ]{10,50}"
+    |             ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_details`
+
+warning: unused variable: `valid_token`
+   --> src\wallet\account_manager\export.rs:209:13
+    |
+209 |         let valid_token = auth.authenticate(true).await.unwrap();
+    |             ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_valid_token`
+
+warning: unused variable: `e`
+  --> src\wallet\account_manager\signer_integration.rs:51:23
+   |
+51 |             .map_err(|e| VaughanError::Wallet(WalletError::InvalidPrivateKey))?;
+   |                       ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: method `add_error_log_entry` is never used
+    --> src\gui\working_wallet.rs:3194:8
+     |
+3150 | impl WorkingWalletApp {
+     | --------------------- method in this implementation
+...
+3194 |     fn add_error_log_entry(&mut self, error: &VaughanError, additional_context: Option<String>) {
+     |        ^^^^^^^^^^^^^^^^^^^
+     |
+     = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `signer` is never read
+   --> src\security\hardware.rs:154:5
+    |
+146 | pub struct LedgerWallet {
+    |            ------------ field in this struct
+...
+154 |     signer: Option<Arc<LedgerSigner>>,
+    |     ^^^^^^
+    |
+    = note: `LedgerWallet` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: field `signer` is never read
+   --> src\security\hardware.rs:565:5
+    |
+559 | pub struct TrezorWallet {
+    |            ------------ field in this struct
+...
+565 |     signer: Option<Arc<TrezorSigner>>,
+    |     ^^^^^^
+    |
+    = note: `TrezorWallet` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: field `locked` is never read
+  --> src\wallet\mod.rs:67:5
+   |
+61 | pub struct Vaughan {
+   |            ------- field in this struct
+...
+67 |     locked: Arc<RwLock<bool>>,
+   |     ^^^^^^
+   |
+   = note: `Vaughan` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+
+warning: methods `is_read` and `is_write` are never used
+    --> src\wallet\account_manager\mod.rs:1050:12
+     |
+1049 |     impl OperationType {
+     |     ------------------ methods in this implementation
+1050 |         fn is_read(&self) -> bool {
+     |            ^^^^^^^
+...
+1059 |         fn is_write(&self) -> bool {
+     |            ^^^^^^^^
+
+warning: `vaughan` (lib) generated 44 warnings (run `cargo fix --lib -p vaughan` to apply 24 suggestions)
+warning: `vaughan` (lib) generated 44 warnings (44 duplicates)
+warning: `vaughan` (lib test) generated 45 warnings (29 duplicates) (run `cargo fix --lib -p vaughan --tests` to apply 8 suggestions)
+    Finished `bench` profile [optimized] target(s) in 1.11s
+     Running unittests src\lib.rs (target\release\deps\vaughan-775b7560549bd851.exe)
+
+running 399 tests
+test blockchain::explorer_apis::tests::test_config_serialization ... ignored
+test blockchain::explorer_apis::tests::test_rate_limiter ... ignored
+test config::api_config::tests::test_api_config_creation ... ignored
+test config::api_config::tests::test_moralis_configuration ... ignored
+test config::tests::test_config_manager_creation ... ignored
+test config::tests::test_get_config_dir ... ignored
+test error::account::property_tests::prop_account_not_found_has_valid_correlation_id ... ignored
+test error::account::property_tests::prop_all_error_variants_have_correlation_id ... ignored
+test error::account::property_tests::prop_correlation_ids_are_unique ... ignored
+test error::account::property_tests::prop_error_context_builder_preserves_fields ... ignored
+test error::account::property_tests::prop_error_context_display_includes_correlation ... ignored
+test error::account::property_tests::prop_error_context_has_required_fields ... ignored
+test error::account::tests::test_all_error_variants_have_correlation_id ... ignored
+test error::account::tests::test_error_context_builder ... ignored
+test error::account::tests::test_error_context_display ... ignored
+test error::account::tests::test_error_correlation_ids_are_unique ... ignored
+test error::account::tests::test_error_display ... ignored
+test error::recovery::tests::test_non_recoverable_error ... ignored
+test error::recovery::tests::test_retry_with_exponential_backoff ... ignored
+test gui::components::session_indicator::tests::test_session_indicator_locked ... ignored
+test gui::components::session_indicator::tests::test_session_indicator_unlocked ... ignored
+test gui::hd_wallet_service::tests::test_hd_wallet_derivation ... ignored
+test gui::safe_calculations::tests::test_safe_balance ... ignored
+test gui::safe_calculations::tests::test_safe_dimension ... ignored
+test gui::safe_calculations::tests::test_safe_ticker ... ignored
+test gui::services::integrated_account_service::tests::test_balance_caching ... ignored
+test gui::services::integrated_account_service::tests::test_operation_span_creation ... ignored
+test gui::services::integrated_account_service::tests::test_service_creation ... ignored
+test gui::services::qr_service::tests::test_generate_address_qr_code ... ignored
+test gui::services::qr_service::tests::test_generate_payment_request_qr_code ... ignored
+test gui::services::qr_service::tests::test_invalid_address_generates_qr ... ignored
+test gui::state::auth_state::tests::test_password_dialog_error_handling ... ignored
+test gui::state::auth_state::tests::test_password_dialog_show_hide ... ignored
+test gui::state::auth_state::tests::test_password_error_display ... ignored
+test gui::state::auth_state::tests::test_security_state_default ... ignored
+test gui::state::auth_state::tests::test_session_lock_unlock ... ignored
+test gui::state::auth_state::tests::test_session_timeout ... ignored
+test gui::tests::test_amount_validation ... ignored
+test gui::transaction_cancellation::tests::test_cancellation_error_display ... ignored
+test gui::transaction_cancellation::tests::test_gas_settings_creation ... ignored
+test gui::transaction_cancellation::tests::test_pending_transaction_creation ... ignored
+test gui::transaction_errors::tests::test_error_classification ... ignored
+test gui::transaction_errors::tests::test_error_info_generation ... ignored
+test gui::views::locked_view::tests::test_locked_view_shows_unlock_button ... ignored
+test gui::views::locked_view::tests::test_should_not_show_locked_view_when_password_dialog_visible ... ignored
+test gui::views::locked_view::tests::test_should_not_show_locked_view_when_session_unlocked ... ignored
+test gui::views::locked_view::tests::test_should_show_locked_view_when_session_locked ... ignored
+test gui::widgets::tests::test_balance_display_creation ... ignored
+test gui::widgets::tests::test_button_creation ... ignored
+test gui::widgets::tests::test_connection_status_display ... ignored
+test gui::widgets::tests::test_network_selector_creation ... ignored
+test gui::widgets::tests::test_status_message_creation ... ignored
+test gui::widgets::tests::test_text_input_creation ... ignored
+test gui::widgets::tests::test_theme_switcher_creation ... ignored
+test gui::widgets::transaction::tests::test_format_timestamp ... ignored
+test gui::widgets::transaction::tests::test_transaction_confirmation_creation ... ignored
+test gui::widgets::transaction::tests::test_transaction_history_empty ... ignored
+test gui::widgets::transaction::tests::test_transaction_history_with_data ... ignored
+test gui::widgets::transaction::tests::test_validate_amount ... ignored
+test gui::widgets::transaction::tests::test_validate_gas_limit ... ignored
+test gui::widgets::transaction::tests::test_validate_gas_price ... ignored
+test performance::batch::property_tests::prop_batch_concurrency_limiting ... ignored
+test performance::batch::property_tests::prop_batch_partial_failure_handling ... ignored
+test performance::batch::property_tests::prop_batch_retry_with_backoff ... ignored
+test performance::batch::property_tests::prop_batch_rpc_efficiency ... ignored
+test performance::batch::tests::test_backoff_calculation ... ignored
+test performance::batch::tests::test_balance_result_failure ... ignored
+test performance::batch::tests::test_balance_result_success ... ignored
+test performance::batch::tests::test_batch_balance_queries_success ... ignored
+test performance::batch::tests::test_batch_config_defaults ... ignored
+test performance::batch::tests::test_batch_config_with_concurrency ... ignored
+test performance::batch::tests::test_batch_empty_addresses ... ignored
+test performance::batch::tests::test_batch_partial_failure ... ignored
+test performance::batch::tests::test_batch_processor_creation ... ignored
+test performance::batch::tests::test_batch_result_success_rate ... ignored
+test performance::batch::tests::test_concurrency_limiting ... ignored
+test performance::batch::tests::test_results_to_map ... ignored
+test performance::cache::property_tests::prop_cache_correctness ... ignored
+test performance::cache::property_tests::prop_cache_performance ... ignored
+test performance::cache::property_tests::prop_cache_staleness ... ignored
+test performance::cache::property_tests::prop_lru_eviction ... ignored
+test performance::cache::tests::test_cache_basic_ops ... ignored
+test performance::cache::tests::test_cache_eviction ... ignored
+test performance::cache::tests::test_cache_invalidation ... ignored
+test performance::cache::tests::test_cache_ttl ... ignored
+test performance::multicall::tests::test_decode_balance_results ... ignored
+test performance::multicall::tests::test_decode_u256_result ... ignored
+test performance::multicall::tests::test_decode_u256_result_invalid_length ... ignored
+test performance::multicall::tests::test_is_multicall3_supported ... ignored
+test performance::multicall::tests::test_multicall3_address_resolution ... ignored
+test performance::multicall::tests::test_multicall_balance_result_failure ... ignored
+test performance::multicall::tests::test_multicall_balance_result_success ... ignored
+test performance::multicall::tests::test_multicall_builder_add_eth_balance ... ignored
+test performance::multicall::tests::test_multicall_builder_allow_failures ... ignored
+test performance::multicall::tests::test_multicall_builder_build ... ignored
+test performance::multicall::tests::test_multicall_builder_creation ... ignored
+test performance::multicall::tests::test_multicall_builder_with_correlation ... ignored
+test security::export_auth::tests::test_auth_failure ... ignored
+test security::export_auth::tests::test_auth_success ... ignored
+test security::export_auth::tests::test_rate_limiting ... ignored
+test security::export_auth::tests::test_token_expiration ... ignored
+test security::hardware::tests::test_address_validation ... ignored
+test security::hardware::tests::test_address_verification ... ignored
+test security::hardware::tests::test_audit_transaction ... ignored
+test security::hardware::tests::test_concurrent_device_access ... ignored
+test security::hardware::tests::test_derivation_path_validation ... ignored
+test security::hardware::tests::test_error_handling_invalid_device_operations ... ignored
+test security::hardware::tests::test_hardware_wallet_manager ... ignored
+test security::hardware::tests::test_ledger_address_derivation ... ignored
+test security::hardware::tests::test_ledger_connection ... ignored
+test security::hardware::tests::test_ledger_transaction_signing ... ignored
+test security::hardware::tests::test_recovery_connection ... ignored
+test security::hardware::tests::test_security_validator_creation ... ignored
+test security::hardware::tests::test_security_validator_with_custom_limits ... ignored
+test security::hardware::tests::test_transaction_validation_high_value ... ignored
+test security::hardware::tests::test_transaction_validation_success ... ignored
+test security::hardware::tests::test_transaction_validation_zero_gas ... ignored
+test security::hardware::tests::test_trezor_address_derivation ... ignored
+test security::hardware::tests::test_trezor_connection ... ignored
+test security::hardware::tests::test_trezor_transaction_signing ... ignored
+test security::hardware_feedback::tests::test_feedback_manager_creation ... ignored
+test security::hardware_feedback::tests::test_guidance_generation ... ignored
+test security::hardware_feedback::tests::test_progress_tracking ... ignored
+test security::hardware_feedback::tests::test_status_updates ... ignored
+test security::key_cache::tests::test_key_cache_basic ... ignored
+test security::key_cache::tests::test_key_cache_clear ... ignored
+test security::key_cache::tests::test_key_cache_expiration ... ignored
+test security::keychain::tests::test_mock_keychain ... ignored
+test security::keystore::tests::test_create_account ... ignored
+test security::keystore::tests::test_import_account ... ignored
+test security::keystore::tests::test_keystore_locking ... ignored
+test security::memory::tests::test_disable_core_dumps ... ignored
+test security::memory::tests::test_memory_protection_calls ... ignored
+test security::memory::tests::test_secure_memory_allocation ... ignored
+test security::password_validator::tests::test_attempt_recording ... ignored
+test security::password_validator::tests::test_clear_all ... ignored
+test security::password_validator::tests::test_clear_failures_on_success ... ignored
+test security::password_validator::tests::test_failure_increment ... ignored
+test security::password_validator::tests::test_initial_state ... ignored
+test security::password_validator::tests::test_lockout_after_max_failures ... ignored
+test security::password_validator::tests::test_multiple_accounts ... ignored
+test security::password_validator::tests::test_rate_limit_check ... ignored
+test security::rate_limiter::tests::test_rate_limiter_allows_under_limit ... ignored
+test security::rate_limiter::tests::test_rate_limiter_blocks_over_limit ... ignored
+test security::rate_limiter::tests::test_rate_limiter_missing_config ... ignored
+test security::rate_limiter::tests::test_rate_limiter_persistence ... ignored
+test security::rate_limiter::tests::test_rate_limiter_refills_over_time ... ignored
+test security::seed::tests::test_seed_generation ... ignored
+test security::seed::tests::test_seed_strength_detection ... ignored
+test security::seed::tests::test_seed_validation ... ignored
+test security::seed::zeroization::tests::test_secure_guard ... ignored
+test security::seed::zeroization::tests::test_zero_array ... ignored
+test security::seed::zeroization::tests::test_zero_bytes ... ignored
+test security::session::property_tests::prop_activity_prevents_callback ... ignored
+test security::session::property_tests::prop_activity_resets_timeout ... ignored
+test security::session::property_tests::prop_callback_triggered_on_timeout ... ignored
+test security::session::property_tests::prop_no_early_callback_trigger ... ignored
+test security::session::property_tests::prop_session_deactivated_after_timeout ... ignored
+test security::session::property_tests::prop_time_until_lock_decreases ... ignored
+test security::session::property_tests::prop_timeout_detected_after_duration ... ignored
+test security::session::tests::test_activity_recording ... ignored
+test security::session::tests::test_activity_resets_timeout ... ignored
+test security::session::tests::test_auto_lock_monitor ... ignored
+test security::session::tests::test_deactivate_reactivate ... ignored
+test security::session::tests::test_no_timeout_config ... ignored
+test security::session::tests::test_session_manager_creation ... ignored
+test security::session::tests::test_stop_monitor ... ignored
+test security::session::tests::test_time_until_lock ... ignored
+test security::session::tests::test_timeout_detection ... ignored
+test security::transaction_signing::tests::test_derive_key_from_seed ... ignored
+test security::transaction_signing::tests::test_derive_wallet_from_seed ... ignored
+test security::transaction_signing::tests::test_derive_with_custom_path ... ignored
+test security::validation::tests::test_sanitize_input ... ignored
+test security::validation::tests::test_validate_ethereum_address ... ignored
+test security::validation::tests::test_validate_file_path ... ignored
+test security::validation::tests::test_validate_password_strength ... ignored
+test security::validation::tests::test_validate_private_key ... ignored
+test security::validation::tests::test_validate_rpc_endpoint ... ignored
+test security::wallet_config::tests::test_account_metadata_encryption ... ignored
+test security::wallet_config::tests::test_wallet_config_creation ... ignored
+test security::wallet_config::tests::test_wallet_settings_encryption ... ignored
+test security::wallet_password_validator::tests::test_password_strength_validation ... ignored
+test security::wallet_password_validator::tests::test_wallet_password_validator ... ignored
+test security::wallet_storage::tests::test_wallet_config_storage ... ignored
+test security::wallet_storage::tests::test_wallet_export_import ... ignored
+test telemetry::account_events::property_tests::prop_child_hierarchy ... ignored
+test telemetry::account_events::property_tests::prop_complete_operation_logging ... ignored
+test telemetry::account_events::property_tests::prop_correlation_ids_unique ... ignored
+test telemetry::account_events::property_tests::prop_cross_component_correlation ... ignored
+test telemetry::account_events::property_tests::prop_operation_correlation_logging ... ignored
+test telemetry::account_events::property_tests::prop_privacy_mode_log_sanitization ... ignored
+test telemetry::account_events::property_tests::prop_telemetry_anonymity ... ignored
+test telemetry::account_events::tests::test_account_logger_privacy_mode ... ignored
+test telemetry::account_events::tests::test_child_span_creation ... ignored
+test telemetry::account_events::tests::test_contains_sensitive_data ... ignored
+test telemetry::account_events::tests::test_correlation_context_child ... ignored
+test telemetry::account_events::tests::test_operation_span_creation ... ignored
+test telemetry::account_events::tests::test_operation_span_elapsed ... ignored
+test telemetry::account_events::tests::test_sanitize_address ... ignored
+test telemetry::account_events::tests::test_sanitize_disabled ... ignored
+test telemetry::account_events::tests::test_sanitize_private_key ... ignored
+test telemetry::account_events::tests::test_tracked_operation_failure ... ignored
+test telemetry::account_events::tests::test_tracked_operation_success ... ignored
+test wallet::account::tests::test_account_manager_basic_operations ... ignored
+test wallet::account::tests::test_account_tags ... ignored
+test wallet::account_manager::creation::tests::test_account_with_name ... ignored
+test wallet::account_manager::creation::tests::test_create_from_bytes ... ignored
+test wallet::account_manager::creation::tests::test_create_from_private_key ... ignored
+test wallet::account_manager::creation::tests::test_create_from_private_key_no_prefix ... ignored
+test wallet::account_manager::creation::tests::test_create_from_seed ... ignored
+test wallet::account_manager::creation::tests::test_create_from_seed_custom_path ... ignored
+test wallet::account_manager::creation::tests::test_create_multiple_from_seed ... ignored
+test wallet::account_manager::creation::tests::test_invalid_private_key ... ignored
+test wallet::account_manager::creation::tests::test_invalid_seed_phrase ... ignored
+test wallet::account_manager::creation::tests::test_same_seed_same_address ... ignored
+test wallet::account_manager::creation::tests::test_validate_private_key ... ignored
+test wallet::account_manager::creation::tests::test_validate_seed_phrase ... ignored
+test wallet::account_manager::discovery::tests::test_discovery_activity_detection ... ignored
+test wallet::account_manager::discovery::tests::test_discovery_gap_limit_enforcement ... ignored
+test wallet::account_manager::discovery::tests::test_discovery_stops_at_gap_limit ... ignored
+test wallet::account_manager::eip712::tests::test_domain_builder ... ignored
+test wallet::account_manager::eip712::tests::test_permit_struct_hash ... ignored
+test wallet::account_manager::eip712::tests::test_signing_message_construction ... ignored
+test wallet::account_manager::eip712::tests::test_type_hash_constants ... ignored
+test wallet::account_manager::eip712::tests::test_vote_struct_hash ... ignored
+test wallet::account_manager::export::tests::test_export_private_key_auth_failure ... ignored
+test wallet::account_manager::export::tests::test_export_private_key_success ... ignored
+test wallet::account_manager::import::property_tests::prop_error_specificity ... ignored
+test wallet::account_manager::import::property_tests::prop_format_validation ... ignored
+test wallet::account_manager::import::property_tests::prop_metadata_preservation ... ignored
+test wallet::account_manager::import::property_tests::prop_seed_import_determinism ... ignored
+test wallet::account_manager::import::tests::test_detect_format_private_key_no_prefix ... ignored
+test wallet::account_manager::import::tests::test_detect_format_private_key_with_prefix ... ignored
+test wallet::account_manager::import::tests::test_detect_format_seed_phrase ... ignored
+test wallet::account_manager::import::tests::test_detect_format_unknown ... ignored
+test wallet::account_manager::import::tests::test_different_derivation_paths ... ignored
+test wallet::account_manager::import::tests::test_import_from_private_key ... ignored
+test wallet::account_manager::import::tests::test_import_from_seed ... ignored
+test wallet::account_manager::import::tests::test_import_from_seed_determinism ... ignored
+test wallet::account_manager::import::tests::test_invalid_private_key ... ignored
+test wallet::account_manager::import::tests::test_invalid_seed_phrase ... ignored
+test wallet::account_manager::import::tests::test_metadata_preservation ... ignored
+test wallet::account_manager::import::tests::test_validate_import_data_key ... ignored
+test wallet::account_manager::import::tests::test_validate_import_data_seed ... ignored
+test wallet::account_manager::interface_tests::test_concurrent_account_creation ... ignored
+test wallet::account_manager::interface_tests::test_concurrent_mixed_operations ... ignored
+test wallet::account_manager::interface_tests::test_concurrent_read_operations ... ignored
+test wallet::account_manager::interface_tests::test_create_account_through_interface ... ignored
+test wallet::account_manager::interface_tests::test_export_with_invalid_token ... ignored
+test wallet::account_manager::interface_tests::test_export_with_valid_token ... ignored
+test wallet::account_manager::interface_tests::test_get_account_through_interface ... ignored
+test wallet::account_manager::interface_tests::test_import_sources ... ignored
+test wallet::account_manager::interface_tests::test_list_accounts_through_interface ... ignored
+test wallet::account_manager::interface_tests::test_lock_unlock_through_interface ... ignored
+test wallet::account_manager::interface_tests::test_operation_count_tracking ... ignored
+test wallet::account_manager::interface_tests::test_remove_account_with_auth ... ignored
+test wallet::account_manager::interface_tests::test_set_and_get_current_account ... ignored
+test wallet::account_manager::lock_property_tests::prop_lock_clears_current_account ... ignored
+test wallet::account_manager::lock_property_tests::prop_lock_prevents_authenticated_operations ... ignored
+test wallet::account_manager::lock_property_tests::prop_lock_sets_locked_state ... ignored
+test wallet::account_manager::lock_property_tests::prop_operations_work_after_lock_unlock_cycle ... ignored
+test wallet::account_manager::lock_property_tests::prop_unlock_restores_account_access ... ignored
+test wallet::account_manager::lock_property_tests::prop_unlock_sets_correct_account ... ignored
+test wallet::account_manager::metadata::property_tests::prop_avatar_determinism ... ignored
+test wallet::account_manager::metadata::property_tests::prop_nickname_validation ... ignored
+test wallet::account_manager::metadata::property_tests::prop_tag_management ... ignored
+test wallet::account_manager::metadata::tests::test_avatar_determinism ... ignored
+test wallet::account_manager::metadata::tests::test_nickname_validation ... ignored
+test wallet::account_manager::property_tests::prop_concurrent_creations_maintain_consistency ... ignored
+test wallet::account_manager::property_tests::prop_concurrent_operations_no_data_races ... ignored
+test wallet::account_manager::property_tests::prop_concurrent_reads_succeed ... ignored
+test wallet::account_manager::property_tests::prop_lock_unlock_atomic ... ignored
+test wallet::account_manager::signer_integration::tests::test_builder_build_wallet ... ignored
+test wallet::account_manager::signer_integration::tests::test_ethereum_wallet_builder ... ignored
+test wallet::account_manager::signer_integration::tests::test_into_ethereum_wallet ... ignored
+test wallet::account_manager::signer_integration::tests::test_signer_from_private_key ... ignored
+test wallet::account_manager::signer_integration::tests::test_signer_manager_from_key ... ignored
+test wallet::account_manager::signer_integration::tests::test_signer_signing ... ignored
+test wallet::account_manager::signer_integration::tests::test_signer_sync_signing ... ignored
+test wallet::account_manager::signer_integration::tests::test_wallet_builder_no_signer_fails ... ignored
+test wallet::account_manager::tests::test_account_config_builders ... ignored
+test wallet::account_manager::tests::test_account_type_serialization ... ignored
+test wallet::account_manager::tests::test_auth_token_expiration ... ignored
+test wallet::account_manager::tests::test_seed_strength_values ... ignored
+test wallet::backup::tests::test_backup_bad_password ... ignored
+test wallet::backup::tests::test_backup_tampering ... ignored
+test wallet::backup::tests::test_encrypted_backup_roundtrip ... ignored
+test wallet::errors::tests::test_error_debug ... ignored
+test wallet::errors::tests::test_error_display ... ignored
+test wallet::hardware::derivation::tests::test_all_standards ... ignored
+test wallet::hardware::derivation::tests::test_custom_path_creation ... ignored
+test wallet::hardware::derivation::tests::test_derivation_standard_defaults ... ignored
+test wallet::hardware::derivation::tests::test_derivation_standard_descriptions ... ignored
+test wallet::hardware::derivation::tests::test_derivation_standard_serialization ... ignored
+test wallet::hardware::derivation::tests::test_invalid_path_characters ... ignored
+test wallet::hardware::derivation::tests::test_invalid_path_missing_coin_type ... ignored
+test wallet::hardware::derivation::tests::test_invalid_path_missing_purpose ... ignored
+test wallet::hardware::derivation::tests::test_invalid_path_prefix ... ignored
+test wallet::hardware::derivation::tests::test_invalid_path_too_long ... ignored
+test wallet::hardware::derivation::tests::test_invalid_path_too_short ... ignored
+test wallet::hardware::derivation::tests::test_is_custom ... ignored
+test wallet::hardware::derivation::tests::test_ledger_path_conversion ... ignored
+test wallet::hardware::derivation::tests::test_path_templates ... ignored
+test wallet::hardware::derivation::tests::test_trezor_path_conversion ... ignored
+test wallet::hardware::derivation::tests::test_valid_custom_paths ... ignored
+test wallet::hardware::device_manager::property_tests::prop_concurrent_registry_access ... ignored
+test wallet::hardware::device_manager::property_tests::prop_connection_status_updates ... ignored
+test wallet::hardware::device_manager::property_tests::prop_registry_consistency_sequential ... ignored
+test wallet::hardware::device_manager::property_tests::prop_registry_ids_unique ... ignored
+test wallet::hardware::device_manager::property_tests::prop_registry_type_filtering ... ignored
+test wallet::hardware::device_manager::property_tests::prop_scan_integration ... ignored
+test wallet::hardware::device_manager::tests::test_clear_registry ... ignored
+test wallet::hardware::device_manager::tests::test_connected_device_count ... ignored
+test wallet::hardware::device_manager::tests::test_device_connection_status ... ignored
+test wallet::hardware::device_manager::tests::test_device_manager_creation ... ignored
+test wallet::hardware::device_manager::tests::test_firmware_upgrade_guidance ... ignored
+test wallet::hardware::device_manager::tests::test_get_all_devices ... ignored
+test wallet::hardware::device_manager::tests::test_get_connected_devices ... ignored
+test wallet::hardware::device_manager::tests::test_reconnect_attempts ... ignored
+test wallet::hardware::device_manager::tests::test_register_device ... ignored
+test wallet::hardware::device_manager::tests::test_remove_device ... ignored
+test wallet::hardware::manager::tests::test_address_verification_feedback ... ignored
+test wallet::hardware::manager::tests::test_device_detection ... ignored
+test wallet::hardware::manager::tests::test_device_recovery_feedback ... ignored
+test wallet::hardware::manager::tests::test_device_refresh ... ignored
+test wallet::hardware::manager::tests::test_device_type_checking ... ignored
+test wallet::hardware::manager::tests::test_disconnect_all ... ignored
+test wallet::hardware::manager::tests::test_get_addresses_error_handling ... ignored
+test wallet::hardware::manager::tests::test_get_device_info ... ignored
+test wallet::hardware::manager::tests::test_hardware_manager_creation ... ignored
+test wallet::hardware::manager::tests::test_hardware_manager_default ... ignored
+test wallet::hardware::manager::tests::test_sign_transaction_error_handling ... ignored
+test wallet::hardware::manager::tests::test_transaction_audit_feedback ... ignored
+test wallet::keystore::tests::test_account_operations ... ignored
+test wallet::keystore::tests::test_auto_lock ... ignored
+test wallet::keystore::tests::test_wallet_keystore_creation ... ignored
+test wallet::keystore_format::tests::test_crypto_section_structure ... ignored
+test wallet::keystore_format::tests::test_keystore_serialization ... ignored
+test wallet::keystore_format::tests::test_keystore_structure ... ignored
+test wallet::manager::tests::test_create_wallet ... ignored
+test wallet::manager::tests::test_encrypt_decrypt_roundtrip ... ignored
+test wallet::manager::tests::test_export_private_key ... ignored
+test wallet::manager::tests::test_export_seed_phrase ... ignored
+test wallet::manager::tests::test_export_while_locked_fails ... ignored
+test wallet::manager::tests::test_full_wallet_lifecycle ... ignored
+test wallet::manager::tests::test_lock_unlock_cycle ... ignored
+test wallet::manager::tests::test_mac_verification ... ignored
+test wallet::manager::tests::test_memory_is_cleared_after_lock ... ignored
+test wallet::manager::tests::test_metamask_keystore_format ... ignored
+test wallet::manager::tests::test_multiple_sessions ... ignored
+test wallet::manager::tests::test_password_1234_works_for_development ... ignored
+test wallet::manager::tests::test_unlock_wallet ... ignored
+test wallet::manager::tests::test_wrong_password ... ignored
+test wallet::manager::tests::test_wrong_password_fails_gracefully ... ignored
+test wallet::provider::eip1193::tests::test_disconnected_provider ... ignored
+test wallet::provider::eip1193::tests::test_eth_accounts_empty ... ignored
+test wallet::provider::eip1193::tests::test_eth_accounts_with_accounts ... ignored
+test wallet::provider::eip1193::tests::test_eth_chain_id ... ignored
+test wallet::provider::eip1193::tests::test_provider_creation ... ignored
+test wallet::provider::eip1193::tests::test_provider_error_codes ... ignored
+test wallet::provider::eip1193::tests::test_provider_request_creation ... ignored
+test wallet::provider::eip1193::tests::test_request_accounts_grants_permission ... ignored
+test wallet::provider::eip1193::tests::test_switch_chain ... ignored
+test wallet::provider::eip1193::tests::test_unsupported_method ... ignored
+test wallet::provider::events::tests::test_emitter_clone ... ignored
+test wallet::provider::events::tests::test_event_emission ... ignored
+test wallet::provider::events::tests::test_event_emitter_creation ... ignored
+test wallet::provider::events::tests::test_event_serialization ... ignored
+test wallet::provider::events::tests::test_event_subscription ... ignored
+test wallet::provider::events::tests::test_event_types ... ignored
+test wallet::provider::events::tests::test_multiple_events ... ignored
+test wallet::provider::events::tests::test_multiple_subscribers ... ignored
+test wallet::provider::permissions::tests::test_get_grant_for_origin ... ignored
+test wallet::provider::permissions::tests::test_get_grants ... ignored
+test wallet::provider::permissions::tests::test_grant_permission ... ignored
+test wallet::provider::permissions::tests::test_multiple_permissions ... ignored
+test wallet::provider::permissions::tests::test_permission_grant_creation ... ignored
+test wallet::provider::permissions::tests::test_permission_manager_creation ... ignored
+test wallet::provider::permissions::tests::test_revoke_all ... ignored
+test wallet::provider::permissions::tests::test_revoke_permission ... ignored
+test wallet::transaction::fees::tests::test_fee_calculation_custom ... ignored
+test wallet::transaction::fees::tests::test_fee_calculation_fast ... ignored
+test wallet::transaction::fees::tests::test_fee_calculation_slow ... ignored
+test wallet::transaction::fees::tests::test_fee_calculation_standard ... ignored
+test wallet::transaction::fees::tests::test_priority_custom_values ... ignored
+test wallet::transaction::simulator::tests::test_decode_arithmetic_overflow ... ignored
+test wallet::transaction::simulator::tests::test_decode_division_by_zero ... ignored
+test wallet::transaction::simulator::tests::test_decode_panic_code ... ignored
+test wallet::transaction::simulator::tests::test_decode_short_data ... ignored
+test wallet::transaction::simulator::tests::test_decode_unknown_selector ... ignored
+test wallet::transaction::simulator::tests::test_extract_revert_from_error ... ignored
+test wallet::transaction::simulator::tests::test_extract_revert_no_hex ... ignored
+test wallet::transaction::simulator::tests::test_prepare_simulation ... ignored
+test wallet::transaction::simulator::tests::test_prepare_simulation_with_sender ... ignored
+test wallet::transaction::simulator::tests::test_simulation_result_failure ... ignored
+test wallet::transaction::simulator::tests::test_simulation_result_success ... ignored
+test wallet::transaction::simulator::tests::test_simulation_warning_messages ... ignored
+test wallet::transaction::simulator::tests::test_simulator_creation ... ignored
+test wallet::transaction::simulator::tests::test_warning_levels ... ignored
+
+test result: ok. 0 passed; 0 failed; 399 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests src\main.rs (target\release\deps\vaughan-0e3e1b32cf4cf06f.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running benches\wallet_benchmarks.rs (target\release\deps\wallet_benchmarks-0f1cd853209e5533.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

@@ -1,0 +1,389 @@
+warning: unused import: `crate::error::VaughanError`
+  --> src\gui\services\integrated_account_service.rs:11:5
+   |
+11 | use crate::error::VaughanError;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `NetworkError`
+  --> src\performance\batch.rs:28:20
+   |
+28 | use crate::error::{NetworkError, Result};
+   |                    ^^^^^^^^^^^^
+
+warning: unused imports: `ExposeSecret` and `SecretString`
+  --> src\security\export_auth.rs:13:15
+   |
+13 | use secrecy::{ExposeSecret, SecretString};
+   |               ^^^^^^^^^^^^  ^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:373:26
+    |
+373 |             LastWritten: unsafe { std::mem::zeroed() },
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: requested on the command line with `-W unsafe-code`
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:383:22
+    |
+383 |         let result = unsafe { CredWriteW(&mut credential, 0) };
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:387:30
+    |
+387 |             let error_code = unsafe { GetLastError() };
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:412:22
+    |
+412 |           let result = unsafe {
+    |  ______________________^
+413 | |             CredReadW(
+414 | |                 target_name_wide.as_ptr() as LPCWSTR,
+415 | |                 CRED_TYPE_GENERIC,
+...   |
+419 | |         };
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:423:30
+    |
+423 |             let error_code = unsafe { GetLastError() };
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:433:24
+    |
+433 |           let key_data = unsafe {
+    |  ________________________^
+434 | |             let cred = &*credential;
+435 | |             let blob_size = cred.CredentialBlobSize as usize;
+436 | |             let blob_ptr = cred.CredentialBlob;
+...   |
+447 | |             String::from_utf8_lossy(data).into_owned()
+448 | |         };
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:450:9
+    |
+450 |         unsafe { CredFree(credential as *mut _) };
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:464:22
+    |
+464 | ... = unsafe { CredDeleteW(target_name_wide.as_ptr() as LPCWSTR, CRED_TYPE_GENERIC, 0) };
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:468:30
+    |
+468 |             let error_code = unsafe { GetLastError() };
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+  --> src\security\memory.rs:55:22
+   |
+55 |         let result = unsafe { VirtualLock(addr as *mut winapi::ctypes::c_void, len) };
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+  --> src\security\memory.rs:73:22
+   |
+73 |         let result = unsafe { VirtualUnlock(addr as *mut winapi::ctypes::c_void, len) };
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:154:19
+    |
+154 |         let ptr = unsafe { std::alloc::alloc_zeroed(layout) };
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:184:9
+    |
+184 |         unsafe { std::slice::from_raw_parts_mut(self.ptr, self.len) }
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:202:9
+    |
+202 | /         unsafe {
+203 | |             ptr::write_bytes(self.ptr, 0, self.len);
+204 | |         }
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:227:9
+    |
+227 | /         unsafe {
+228 | |             let layout = std::alloc::Layout::from_size_align_unchecked(self.len, 8);
+229 | |             std::alloc::dealloc(self.ptr, layout);
+230 | |         }
+    | |_________^
+
+warning: implementation of an `unsafe` trait
+   --> src\security\memory.rs:237:1
+    |
+237 | unsafe impl Send for SecureMemory {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: ambiguous glob re-exports
+  --> src\security\mod.rs:38:9
+   |
+38 | pub use keystore::*;
+   |         ^^^^^^^^^^^ the name `encryption` in the type namespace is first re-exported here
+...
+41 | pub use seed::*;
+   |         ------- but the name `encryption` in the type namespace is also re-exported here
+   |
+   = note: `#[warn(ambiguous_glob_reexports)]` on by default
+
+warning: unused import: `std::sync::Arc`
+  --> src\telemetry\account_events.rs:35:5
+   |
+35 | use std::sync::Arc;
+   |     ^^^^^^^^^^^^^^
+
+warning: unused import: `zeroize::Zeroizing`
+  --> src\wallet\account_manager\creation.rs:26:5
+   |
+26 | use zeroize::Zeroizing;
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `KeyReference`
+  --> src\wallet\account_manager\signer_integration.rs:17:23
+   |
+17 | use crate::security::{KeyReference, SecureAccount};
+   |                       ^^^^^^^^^^^^
+
+warning: unused import: `std::sync::Arc`
+  --> src\wallet\account_manager\signer_integration.rs:26:5
+   |
+26 | use std::sync::Arc;
+   |     ^^^^^^^^^^^^^^
+
+warning: unused imports: `error` and `warn`
+  --> src\wallet\account_manager\signer_integration.rs:27:21
+   |
+27 | use tracing::{info, warn, error};
+   |                     ^^^^  ^^^^^
+
+warning: unused import: `SolStruct`
+  --> src\wallet\account_manager\eip712.rs:19:38
+   |
+19 | use alloy::sol_types::{Eip712Domain, SolStruct};
+   |                                      ^^^^^^^^^
+
+warning: unused import: `std::str::FromStr`
+  --> src\wallet\account_manager\eip712.rs:21:5
+   |
+21 | use std::str::FromStr;
+   |     ^^^^^^^^^^^^^^^^^
+
+warning: unused import: `VaughanError`
+  --> src\wallet\backup\mod.rs:11:56
+   |
+11 | use crate::error::{Result, SecurityError, WalletError, VaughanError};
+   |                                                        ^^^^^^^^^^^^
+
+warning: unused import: `SecureExport`
+  --> src\wallet\backup\mod.rs:12:39
+   |
+12 | use crate::security::{SecureKeystore, SecureExport};
+   |                                       ^^^^^^^^^^^^
+
+warning: unused imports: `ExposeSecret` and `SecretVec`
+  --> src\wallet\backup\mod.rs:18:15
+   |
+18 | use secrecy::{ExposeSecret, SecretString, SecretVec};
+   |               ^^^^^^^^^^^^                ^^^^^^^^^
+
+warning: unused imports: `Zeroize` and `Zeroizing`
+  --> src\wallet\backup\mod.rs:22:15
+   |
+22 | use zeroize::{Zeroize, Zeroizing};
+   |               ^^^^^^^  ^^^^^^^^^
+
+warning: unused imports: `B256`, `Bytes`, and `U256`
+  --> src\wallet\provider\eip1193.rs:19:34
+   |
+19 | use alloy::primitives::{Address, Bytes, B256, U256};
+   |                                  ^^^^^  ^^^^  ^^^^
+
+warning: unused import: `std::collections::HashMap`
+  --> src\wallet\provider\eip1193.rs:23:5
+   |
+23 | use std::collections::HashMap;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `VaughanError` and `WalletError`
+  --> src\wallet\provider\eip1193.rs:28:28
+   |
+28 | use crate::error::{Result, VaughanError, WalletError};
+   |                            ^^^^^^^^^^^^  ^^^^^^^^^^^
+
+warning: unused import: `U256`
+  --> src\wallet\transaction\simulator.rs:17:41
+   |
+17 | use alloy::primitives::{Address, Bytes, U256};
+   |                                         ^^^^
+
+warning: unused import: `std::str::FromStr`
+  --> src\wallet\transaction\simulator.rs:20:5
+   |
+20 | use std::str::FromStr;
+   |     ^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `NetworkError`, `Result`, and `VaughanError`
+  --> src\wallet\transaction\simulator.rs:23:20
+   |
+23 | use crate::error::{Result, VaughanError, NetworkError};
+   |                    ^^^^^^  ^^^^^^^^^^^^  ^^^^^^^^^^^^
+
+warning: unused import: `alloy::transports::Transport`
+  --> src\wallet\transaction\fees.rs:16:5
+   |
+16 | use alloy::transports::Transport;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::sync::Arc`
+  --> src\wallet\transaction\fees.rs:19:5
+   |
+19 | use std::sync::Arc;
+   |     ^^^^^^^^^^^^^^
+
+warning: unused import: `alloy::signers::Signer`
+ --> src\wallet\account_manager\discovery.rs:9:5
+  |
+9 | use alloy::signers::Signer;
+  |     ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused variable: `e`
+  --> src\wallet\account_manager\signer_integration.rs:51:23
+   |
+51 |             .map_err(|e| VaughanError::Wallet(WalletError::InvalidPrivateKey))?;
+   |                       ^ help: if this is intentional, prefix it with an underscore: `_e`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `auto_scan_running` is never read
+   --> src\wallet\hardware\device_manager.rs:256:5
+    |
+250 | pub struct DeviceManager {
+    |            ------------- field in this struct
+...
+256 |     auto_scan_running: Arc<RwLock<bool>>,
+    |     ^^^^^^^^^^^^^^^^^
+    |
+    = note: `DeviceManager` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `vaughan` (lib) generated 42 warnings (run `cargo fix --lib -p vaughan` to apply 23 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.99s
+     Running tests\hardware_wallet_e2e.rs (target\debug\deps\hardware_wallet_e2e-625befd029fd2c14.exe)
+
+running 8 tests
+test test_e2e_corporate_multi_account ... FAILED
+test test_e2e_performance_validation ... FAILED
+test test_e2e_multi_device_user ... FAILED
+test test_e2e_experienced_user_transaction ... FAILED
+test test_e2e_first_time_user_setup ... FAILED
+test test_e2e_high_value_transaction ... FAILED
+test test_e2e_real_world_simulation ... FAILED
+test test_e2e_error_recovery ... ok
+
+failures:
+
+---- test_e2e_corporate_multi_account stdout ----
+🧪 E2E Test: Corporate multi-account workflow
+🏢 Setting up Treasury account at m/44'/60'/0'/0
+
+thread 'test_e2e_corporate_multi_account' (4508) panicked at tests\hardware_wallet_e2e.rs:306:73:
+called `Result::unwrap()` on an `Err` value: HardwareWallet(DeviceNotFound)
+
+---- test_e2e_performance_validation stdout ----
+🧪 E2E Test: Performance validation
+⚡ Bulk address derivation: 20 operations in 89.3µs
+
+thread 'test_e2e_performance_validation' (19724) panicked at tests\hardware_wallet_e2e.rs:371:9:
+assertion failed: result.is_ok()
+
+---- test_e2e_multi_device_user stdout ----
+🧪 E2E Test: Multi-device user workflow
+✅ Detected 2 devices
+📱 Device 0: Ledger (Simulated) (Healthy: Operational)
+📱 Device 1: Trezor (Simulated) (Healthy: Operational)
+
+thread 'test_e2e_multi_device_user' (4628) panicked at tests\hardware_wallet_e2e.rs:141:83:
+called `Result::unwrap()` on an `Err` value: HardwareWallet(DeviceNotFound)
+
+---- test_e2e_experienced_user_transaction stdout ----
+🧪 E2E Test: Experienced user transaction workflow
+✅ Hardware wallets already detected and ready
+📝 Transaction prepared: 0.5 ETH to recipient
+🔍 Security audit: ✅ Transaction passed all security checks
+⚠️ Risk level: Low
+  1. Review transaction details on hardware device
+  2. Verify recipient address matches intended destination
+  3. Confirm transaction amount is correct
+
+thread 'test_e2e_experienced_user_transaction' (13864) panicked at tests\hardware_wallet_e2e.rs:108:83:
+called `Result::unwrap()` on an `Err` value: HardwareWallet(DeviceNotFound)
+
+---- test_e2e_first_time_user_setup stdout ----
+🧪 E2E Test: First-time user setup
+✅ Wallet initialized with hardware wallet support
+✅ Detected 2 hardware wallet(s)
+📱 Device 0: Ledger (Simulated) (ID: SIM001)
+📱 Device 1: Trezor (Simulated) (ID: SIM002)
+
+thread 'test_e2e_first_time_user_setup' (15964) panicked at tests\hardware_wallet_e2e.rs:49:63:
+called `Result::unwrap()` on an `Err` value: HardwareWallet(DeviceNotFound)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- test_e2e_high_value_transaction stdout ----
+🧪 E2E Test: High-value transaction workflow
+💰 High-value transaction: 50 ETH
+🔍 Security audit result: ✅ Transaction passed all security checks
+⚠️ Risk level: Low
+💡 Recommendations:
+  1. Review transaction details on hardware device
+  2. Verify recipient address matches intended destination
+  3. Confirm transaction amount is correct
+🔍 Address verification: ✅ Address verified successfully on hardware device
+🔐 Requiring multiple confirmations for high-value transaction...
+
+thread 'test_e2e_high_value_transaction' (11304) panicked at tests\hardware_wallet_e2e.rs:279:83:
+called `Result::unwrap()` on an `Err` value: HardwareWallet(DeviceNotFound)
+
+---- test_e2e_real_world_simulation stdout ----
+🧪 E2E Test: Real-world simulation with delays
+🔍 Device detection attempt #1
+✅ Devices detected after 1 attempt(s)
+👤 User reading device information...
+📱 Using device: Ledger (Simulated)
+👤 User reviewing derivation path...
+
+thread 'test_e2e_real_world_simulation' (17464) panicked at tests\hardware_wallet_e2e.rs:469:76:
+called `Result::unwrap()` on an `Err` value: HardwareWallet(DeviceNotFound)
+
+
+failures:
+    test_e2e_corporate_multi_account
+    test_e2e_experienced_user_transaction
+    test_e2e_first_time_user_setup
+    test_e2e_high_value_transaction
+    test_e2e_multi_device_user
+    test_e2e_performance_validation
+    test_e2e_real_world_simulation
+
+test result: FAILED. 1 passed; 7 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.78s
+
+error: test failed, to rerun pass `--test hardware_wallet_e2e`

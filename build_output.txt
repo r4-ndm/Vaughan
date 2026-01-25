@@ -1,0 +1,633 @@
+﻿cargo : warning: unused import: `crate::error::VaughanError`
+At line:1 char:1
++ cargo check --tests --lib 2>&1 | Out-File -FilePath build_output.txt  ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (warning: unused...::VaughanError`:String) [], RemoteExc 
+   eption
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  --> src\gui\services\integrated_account_service.rs:11:5
+   |
+11 | use crate::error::VaughanError;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `NetworkError`
+  --> src\performance\batch.rs:28:20
+   |
+28 | use crate::error::{NetworkError, Result};
+   |                    ^^^^^^^^^^^^
+
+warning: unused imports: `ExposeSecret` and `SecretString`
+  --> src\security\export_auth.rs:13:15
+   |
+13 | use secrecy::{ExposeSecret, SecretString};
+   |               ^^^^^^^^^^^^  ^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:373:26
+    |
+373 |             LastWritten: unsafe { std::mem::zeroed() },
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: requested on the command line with `-W unsafe-code`
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:383:22
+    |
+383 |         let result = unsafe { CredWriteW(&mut credential, 0) };
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:387:30
+    |
+387 |             let error_code = unsafe { GetLastError() };
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:412:22
+    |
+412 |           let result = unsafe {
+    |  ______________________^
+413 | |             CredReadW(
+414 | |                 target_name_wide.as_ptr() as LPCWSTR,
+415 | |                 CRED_TYPE_GENERIC,
+...   |
+419 | |         };
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:423:30
+    |
+423 |             let error_code = unsafe { GetLastError() };
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:433:24
+    |
+433 |           let key_data = unsafe {
+    |  ________________________^
+434 | |             let cred = &*credential;
+435 | |             let blob_size = cred.CredentialBlobSize as usize;
+436 | |             let blob_ptr = cred.CredentialBlob;
+...   |
+447 | |             String::from_utf8_lossy(data).into_owned()
+448 | |         };
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:450:9
+    |
+450 |         unsafe { CredFree(credential as *mut _) };
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:464:22
+    |
+464 |         let result = unsafe { CredDeleteW(target_name_wide.as_ptr() as LPCWSTR, 
+CRED_TYPE_GENERIC, 0) };
+    |                      
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:468:30
+    |
+468 |             let error_code = unsafe { GetLastError() };
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+  --> src\security\memory.rs:55:22
+   |
+55 |         let result = unsafe { VirtualLock(addr as *mut winapi::ctypes::c_void, len) };
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+  --> src\security\memory.rs:73:22
+   |
+73 |         let result = unsafe { VirtualUnlock(addr as *mut winapi::ctypes::c_void, len) };
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:154:19
+    |
+154 |         let ptr = unsafe { std::alloc::alloc_zeroed(layout) };
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:184:9
+    |
+184 |         unsafe { std::slice::from_raw_parts_mut(self.ptr, self.len) }
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:202:9
+    |
+202 | /         unsafe {
+203 | |             ptr::write_bytes(self.ptr, 0, self.len);
+204 | |         }
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:227:9
+    |
+227 | /         unsafe {
+228 | |             let layout = std::alloc::Layout::from_size_align_unchecked(self.len, 8);
+229 | |             std::alloc::dealloc(self.ptr, layout);
+230 | |         }
+    | |_________^
+
+warning: implementation of an `unsafe` trait
+   --> src\security\memory.rs:237:1
+    |
+237 | unsafe impl Send for SecureMemory {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: ambiguous glob re-exports
+  --> src\security\mod.rs:37:9
+   |
+37 | pub use keystore::*;
+   |         ^^^^^^^^^^^ the name `encryption` in the type namespace is first re-exported here
+...
+40 | pub use seed::*;
+   |         ------- but the name `encryption` in the type namespace is also re-exported here
+   |
+   = note: `#[warn(ambiguous_glob_reexports)]` on by default
+
+warning: unused import: `std::sync::Arc`
+  --> src\telemetry\account_events.rs:35:5
+   |
+35 | use std::sync::Arc;
+   |     ^^^^^^^^^^^^^^
+
+warning: unused import: `zeroize::Zeroizing`
+  --> src\wallet\account_manager\creation.rs:26:5
+   |
+26 | use zeroize::Zeroizing;
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `KeyReference`
+  --> src\wallet\account_manager\signer_integration.rs:17:23
+   |
+17 | use crate::security::{KeyReference, SecureAccount};
+   |                       ^^^^^^^^^^^^
+
+warning: unused import: `std::sync::Arc`
+  --> src\wallet\account_manager\signer_integration.rs:26:5
+   |
+26 | use std::sync::Arc;
+   |     ^^^^^^^^^^^^^^
+
+warning: unused imports: `error` and `warn`
+  --> src\wallet\account_manager\signer_integration.rs:27:21
+   |
+27 | use tracing::{info, warn, error};
+   |                     ^^^^  ^^^^^
+
+warning: unused import: `alloy::dyn_abi::Eip712Domain`
+  --> src\wallet\account_manager\eip712.rs:17:5
+   |
+17 | use alloy::dyn_abi::Eip712Domain;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `SolStruct`
+  --> src\wallet\account_manager\eip712.rs:20:59
+   |
+20 | use alloy::sol_types::{Eip712Domain as AlloyEip712Domain, SolStruct};
+   |                                                           ^^^^^^^^^
+
+warning: unused import: `std::str::FromStr`
+  --> src\wallet\account_manager\eip712.rs:22:5
+   |
+22 | use std::str::FromStr;
+   |     ^^^^^^^^^^^^^^^^^
+
+warning: unused import: `VaughanError`
+  --> src\wallet\backup\mod.rs:11:56
+   |
+11 | use crate::error::{Result, SecurityError, WalletError, VaughanError};
+   |                                                        ^^^^^^^^^^^^
+
+warning: unused import: `SecureExport`
+  --> src\wallet\backup\mod.rs:12:39
+   |
+12 | use crate::security::{SecureKeystore, SecureExport};
+   |                                       ^^^^^^^^^^^^
+
+warning: unused imports: `ExposeSecret` and `SecretVec`
+  --> src\wallet\backup\mod.rs:18:15
+   |
+18 | use secrecy::{ExposeSecret, SecretString, SecretVec};
+   |               ^^^^^^^^^^^^                ^^^^^^^^^
+
+warning: unused imports: `Zeroize` and `Zeroizing`
+  --> src\wallet\backup\mod.rs:22:15
+   |
+22 | use zeroize::{Zeroize, Zeroizing};
+   |               ^^^^^^^  ^^^^^^^^^
+
+warning: unused imports: `B256`, `Bytes`, and `U256`
+  --> src\wallet\provider\eip1193.rs:19:34
+   |
+19 | use alloy::primitives::{Address, Bytes, B256, U256};
+   |                                  ^^^^^  ^^^^  ^^^^
+
+warning: unused import: `std::collections::HashMap`
+  --> src\wallet\provider\eip1193.rs:23:5
+   |
+23 | use std::collections::HashMap;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `VaughanError` and `WalletError`
+  --> src\wallet\provider\eip1193.rs:28:28
+   |
+28 | use crate::error::{Result, VaughanError, WalletError};
+   |                            ^^^^^^^^^^^^  ^^^^^^^^^^^
+
+warning: unused import: `U256`
+  --> src\wallet\transaction\simulator.rs:17:41
+   |
+17 | use alloy::primitives::{Address, Bytes, U256};
+   |                                         ^^^^
+
+warning: unused import: `std::str::FromStr`
+  --> src\wallet\transaction\simulator.rs:20:5
+   |
+20 | use std::str::FromStr;
+   |     ^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `NetworkError`, `Result`, and `VaughanError`
+  --> src\wallet\transaction\simulator.rs:23:20
+   |
+23 | use crate::error::{Result, VaughanError, NetworkError};
+   |                    ^^^^^^  ^^^^^^^^^^^^  ^^^^^^^^^^^^
+
+warning: unused variable: `e`
+  --> src\wallet\account_manager\signer_integration.rs:51:23
+   |
+51 |             .map_err(|e| VaughanError::Wallet(WalletError::InvalidPrivateKey))?;
+   |                       ^ help: if this is intentional, prefix it with an underscore: `_e`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `auto_scan_running` is never read
+   --> src\wallet\hardware\device_manager.rs:256:5
+    |
+250 | pub struct DeviceManager {
+    |            ------------- field in this struct
+...
+256 |     auto_scan_running: Arc<RwLock<bool>>,
+    |     ^^^^^^^^^^^^^^^^^
+    |
+    = note: `DeviceManager` has a derived impl for the trait `Debug`, but this is intentionally 
+ignored during dead code analysis
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `vaughan` (lib) generated 40 warnings (run `cargo fix --lib -p vaughan` to apply 22 
+suggestions)
+warning: unused variable: `keychain`
+   --> tests\test_seed_encryption_standalone.rs:168:9
+    |
+168 |     let keychain = Arc::new(OSKeychain::new("test-service".to_string()).unwrap());
+    |         ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_keychain`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `std::io::Cursor`
+  --> tests\test_audio_alerts.rs:10:9
+   |
+10 |     use std::io::Cursor;
+   |         ^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `manager`
+   --> tests\integration_test.rs:100:9
+    |
+100 |     let manager = HardwareWalletManager::new();
+    |         ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_manager`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `wallet`
+   --> tests\integration_test.rs:119:9
+    |
+119 |     let wallet = vaughan::wallet::Vaughan::new(config).await?;
+    |         ^^^^^^ help: if this is intentional, prefix it with an underscore: `_wallet`
+
+warning: unused imports: `Address` and `U256`
+ --> tests\signer_integration_tests.rs:2:25
+  |
+2 | use alloy::primitives::{Address, B256, U256};
+  |                         ^^^^^^^        ^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `Provider`
+ --> tests\signer_integration_tests.rs:3:24
+  |
+3 | use alloy::providers::{Provider, ProviderBuilder};
+  |                        ^^^^^^^^
+
+warning: unused import: `alloy::rpc::types::TransactionRequest`
+ --> tests\signer_integration_tests.rs:4:5
+  |
+4 | use alloy::rpc::types::TransactionRequest;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `alloy::signers::local::PrivateKeySigner`
+ --> tests\signer_integration_tests.rs:5:5
+  |
+5 | use alloy::signers::local::PrivateKeySigner;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `TransactionBuilder`
+ --> tests\signer_integration_tests.rs:1:38
+  |
+1 | use alloy::network::{EthereumWallet, TransactionBuilder};
+  |                                      ^^^^^^^^^^^^^^^^^^
+
+warning: unused variable: `expected_address`
+  --> tests\signer_integration_tests.rs:18:9
+   |
+18 |     let expected_address = signer.address();
+   |         ^^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: 
+`_expected_address`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `wallet`
+  --> tests\signer_integration_tests.rs:25:9
+   |
+25 |     let wallet = EthereumWalletBuilder::new()
+   |         ^^^^^^ help: if this is intentional, prefix it with an underscore: `_wallet`
+
+warning: unused import: `std::time::Duration`
+  --> tests\password_integration_tests.rs:12:9
+   |
+12 |     use std::time::Duration;
+   |         ^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `session`
+   --> tests\transaction_flow_tests.rs:145:9
+    |
+145 |         session in prop_oneof![arb_unlocked_session(), arb_locked_session()]
+    |         ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_session`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `BatchProcessor`
+  --> tests\account_manager_performance.rs:15:48
+   |
+15 | use vaughan::performance::batch::{BatchConfig, BatchProcessor};
+   |                                                ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `vaughan` (test "test_seed_encryption_standalone") generated 1 warning (run `cargo fix 
+--test "test_seed_encryption_standalone" -p vaughan` to apply 1 suggestion)
+warning: `vaughan` (test "test_audio_alerts") generated 1 warning (run `cargo fix --test 
+"test_audio_alerts" -p vaughan` to apply 1 suggestion)
+warning: `vaughan` (test "integration_test") generated 2 warnings (run `cargo fix --test 
+"integration_test" -p vaughan` to apply 2 suggestions)
+warning: `vaughan` (test "signer_integration_tests") generated 7 warnings (run `cargo fix --test 
+"signer_integration_tests" -p vaughan` to apply 6 suggestions)
+warning: `vaughan` (test "password_integration_tests") generated 1 warning (run `cargo fix --test 
+"password_integration_tests" -p vaughan` to apply 1 suggestion)
+warning: `vaughan` (test "transaction_flow_tests") generated 1 warning (run `cargo fix --test 
+"transaction_flow_tests" -p vaughan` to apply 1 suggestion)
+warning: `vaughan` (test "account_manager_performance") generated 1 warning (run `cargo fix --test 
+"account_manager_performance" -p vaughan` to apply 1 suggestion)
+    Checking vaughan v0.1.0 (C:\Users\rb3y9\Desktop\Vaughan\Vaughan-main)
+warning: fields `weights` and `current_weights` are never read
+   --> tests\professional_test.rs:215:5
+    |
+214 | struct WeightedRoundRobinBalancer {
+    |        -------------------------- fields in this struct
+215 |     weights: std::sync::Arc<tokio::sync::RwLock<Vec<f32>>>,
+    |     ^^^^^^^
+216 |     current_weights: std::sync::Arc<tokio::sync::RwLock<Vec<f32>>>,
+    |     ^^^^^^^^^^^^^^^
+    |
+    = note: `WeightedRoundRobinBalancer` has a derived impl for the trait `Debug`, but this is 
+intentionally ignored during dead code analysis
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `PasswordValidator` and `SecureSeedStorage`
+  --> tests\password_validation_tests.rs:13:39
+   |
+13 | use vaughan::security::{KeyReference, PasswordValidator, SecureSeedStorage};
+   |                                       ^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `arb_incorrect_password` is never used
+  --> tests\password_validation_tests.rs:21:4
+   |
+21 | fn arb_incorrect_password(correct: String) -> impl Strategy<Value = String> {
+   |    ^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `arb_seed_key_reference` is never used
+  --> tests\password_validation_tests.rs:26:4
+   |
+26 | fn arb_seed_key_reference() -> impl Strategy<Value = KeyReference> {
+   |    ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unexpected `cfg` condition value: `gui-tests`
+ --> tests\test_export_window_integration.rs:1:8
+  |
+1 | #![cfg(feature = "gui-tests")]
+  |        ^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: expected values for `feature` are: `audio`, `custom-tokens`, `default`, `full`, 
+`hardware-wallets`, `minimal`, `professional`, `qr`, and `shamir`
+  = help: consider adding `gui-tests` as a feature in `Cargo.toml`
+  = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more 
+information about checking conditional configuration
+  = note: `#[warn(unexpected_cfgs)]` on by default
+
+warning: `vaughan` (test "professional_test") generated 1 warning
+warning: `vaughan` (test "password_validation_tests") generated 3 warnings (run `cargo fix --test 
+"password_validation_tests" -p vaughan` to apply 1 suggestion)
+warning: `vaughan` (test "test_export_window_integration") generated 1 warning
+warning: unused variable: `seed_account`
+  --> tests\account_type_switching_tests.rs:71:9
+   |
+71 |         seed_account in arb_secure_account_with_type(AccountType::SeedBased),
+   |         ^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_seed_account`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `super::*`
+  --> tests\session_management_tests.rs:16:9
+   |
+16 |     use super::*;
+   |         ^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `vaughan::security::hardware::HardwareWallet`
+  --> tests\hardware_wallet_integration.rs:10:5
+   |
+10 | use vaughan::security::hardware::HardwareWallet;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `service`
+   --> tests\account_manager_integration.rs:269:9
+    |
+269 |     let service = IntegratedAccountService::new();
+    |         ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_service`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `service`
+   --> tests\account_manager_integration.rs:279:9
+    |
+279 |     let service = IntegratedAccountService::with_config(config);
+    |         ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_service`
+
+warning: `vaughan` (test "account_type_switching_tests") generated 1 warning (run `cargo fix --test 
+"account_type_switching_tests" -p vaughan` to apply 1 suggestion)
+warning: `vaughan` (test "session_management_tests") generated 1 warning (run `cargo fix --test 
+"session_management_tests" -p vaughan` to apply 1 suggestion)
+warning: `vaughan` (test "hardware_wallet_integration") generated 1 warning (run `cargo fix --test 
+"hardware_wallet_integration" -p vaughan` to apply 1 suggestion)
+warning: `vaughan` (test "account_manager_integration") generated 2 warnings (run `cargo fix --test 
+"account_manager_integration" -p vaughan` to apply 2 suggestions)
+warning: unused imports: `HDPath as LedgerHDPath` and `HDPath as TrezorHDPath`
+  --> src\security\hardware.rs:30:27
+   |
+30 |     alloy_signer_ledger::{HDPath as LedgerHDPath, LedgerSigner},
+   |                           ^^^^^^^^^^^^^^^^^^^^^^
+31 |     alloy_signer_trezor::{HDPath as TrezorHDPath, TrezorSigner},
+   |                           ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `tokio::time::sleep`
+   --> src\security\export_auth.rs:172:9
+    |
+172 |     use tokio::time::sleep;
+    |         ^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+  --> src\security\memory.rs:55:22
+   |
+55 |         let result = unsafe { VirtualLock(addr as *mut winapi::ctypes::c_void, len) };
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: requested on the command line with `-W unsafe-code`
+
+warning: unused import: `AtomicU32`
+   --> src\security\session.rs:477:41
+    |
+477 |     use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
+    |                                         ^^^^^^^^^
+
+warning: unused import: `b256`
+   --> src\wallet\account_manager\eip712.rs:123:38
+    |
+123 |     use alloy::primitives::{address, b256};
+    |                                      ^^^^
+
+warning: unused import: `EncryptionType`
+    --> src\wallet\account_manager\mod.rs:1030:27
+     |
+1030 |     use crate::security::{EncryptionType, KeyReference};
+     |                           ^^^^^^^^^^^^^^
+
+error[E0599]: no associated item named `TYPE_HASH` found for struct `eip712::Permit` in the current 
+scope
+   --> src\wallet\account_manager\eip712.rs:179:28
+    |
+ 28 | / sol! {
+ 29 | |     /// EIP-2612 Permit struct for ERC-20 tokens
+ 30 | |     /// 
+ 31 | |     /// Allows gasless approvals via signature
+...   |
+ 50 | | }
+    | |_- associated item `TYPE_HASH` not found for this struct
+...
+179 |           assert_ne!(Permit::TYPE_HASH, B256::ZERO);
+    |                              ^^^^^^^^^ associated item not found in `eip712::Permit`
+
+error[E0599]: no associated item named `TYPE_HASH` found for struct `eip712::Vote` in the current 
+scope
+   --> src\wallet\account_manager\eip712.rs:180:26
+    |
+ 28 | / sol! {
+ 29 | |     /// EIP-2612 Permit struct for ERC-20 tokens
+ 30 | |     /// 
+ 31 | |     /// Allows gasless approvals via signature
+...   |
+ 50 | | }
+    | |_- associated item `TYPE_HASH` not found for this struct
+...
+180 |           assert_ne!(Vote::TYPE_HASH, B256::ZERO);
+    |                            ^^^^^^^^^ associated item not found in `eip712::Vote`
+
+error[E0599]: no associated item named `TYPE_HASH` found for struct `eip712::Permit` in the current 
+scope
+   --> src\wallet\account_manager\eip712.rs:183:28
+    |
+ 28 | / sol! {
+ 29 | |     /// EIP-2612 Permit struct for ERC-20 tokens
+ 30 | |     /// 
+ 31 | |     /// Allows gasless approvals via signature
+...   |
+ 50 | | }
+    | |_- associated item `TYPE_HASH` not found for this struct
+...
+183 |           assert_ne!(Permit::TYPE_HASH, Vote::TYPE_HASH);
+    |                              ^^^^^^^^^ associated item not found in `eip712::Permit`
+
+error[E0599]: no associated item named `TYPE_HASH` found for struct `eip712::Vote` in the current 
+scope
+   --> src\wallet\account_manager\eip712.rs:183:45
+    |
+ 28 | / sol! {
+ 29 | |     /// EIP-2612 Permit struct for ERC-20 tokens
+ 30 | |     /// 
+ 31 | |     /// Allows gasless approvals via signature
+...   |
+ 50 | | }
+    | |_- associated item `TYPE_HASH` not found for this struct
+...
+183 |           assert_ne!(Permit::TYPE_HASH, Vote::TYPE_HASH);
+    |                                               ^^^^^^^^^ associated item not found in 
+`eip712::Vote`
+
+warning: unused import: `alloy::signers::Signer`
+  --> src\security\hardware.rs:13:5
+   |
+13 | use alloy::signers::Signer;
+   |     ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused variable: `details`
+   --> src\telemetry\account_events.rs:737:13
+    |
+737 |             details in "[a-zA-Z0-9 ]{10,50}"
+    |             ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_details`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `valid_token`
+   --> src\wallet\account_manager\export.rs:200:13
+    |
+200 |         let valid_token = auth.authenticate(true).await.unwrap();
+    |             ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: 
+`_valid_token`
+
+warning: unused variable: `e`
+  --> src\wallet\account_manager\signer_integration.rs:51:23
+   |
+51 |             .map_err(|e| VaughanError::Wallet(WalletError::InvalidPrivateKey))?;
+   |                       ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+For more information about this error, try `rustc --explain E0599`.
+warning: `vaughan` (lib test) generated 35 warnings (25 duplicates)
+error: could not compile `vaughan` (lib test) due to 4 previous errors; 35 warnings emitted

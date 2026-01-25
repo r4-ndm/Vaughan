@@ -1,0 +1,1400 @@
+warning: unused import: `crate::error::VaughanError`
+  --> src\gui\services\integrated_account_service.rs:11:5
+   |
+11 | use crate::error::VaughanError;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `NetworkError`
+  --> src\performance\batch.rs:28:20
+   |
+28 | use crate::error::{NetworkError, Result};
+   |                    ^^^^^^^^^^^^
+
+warning: unused imports: `ExposeSecret` and `SecretString`
+  --> src\security\export_auth.rs:13:15
+   |
+13 | use secrecy::{ExposeSecret, SecretString};
+   |               ^^^^^^^^^^^^  ^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:373:26
+    |
+373 |             LastWritten: unsafe { std::mem::zeroed() },
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: requested on the command line with `-W unsafe-code`
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:383:22
+    |
+383 |         let result = unsafe { CredWriteW(&mut credential, 0) };
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:387:30
+    |
+387 |             let error_code = unsafe { GetLastError() };
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:412:22
+    |
+412 |           let result = unsafe {
+    |  ______________________^
+413 | |             CredReadW(
+414 | |                 target_name_wide.as_ptr() as LPCWSTR,
+415 | |                 CRED_TYPE_GENERIC,
+...   |
+419 | |         };
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:423:30
+    |
+423 |             let error_code = unsafe { GetLastError() };
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:433:24
+    |
+433 |           let key_data = unsafe {
+    |  ________________________^
+434 | |             let cred = &*credential;
+435 | |             let blob_size = cred.CredentialBlobSize as usize;
+436 | |             let blob_ptr = cred.CredentialBlob;
+...   |
+447 | |             String::from_utf8_lossy(data).into_owned()
+448 | |         };
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:450:9
+    |
+450 |         unsafe { CredFree(credential as *mut _) };
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:464:22
+    |
+464 | ... = unsafe { CredDeleteW(target_name_wide.as_ptr() as LPCWSTR, CRED_TYPE_GENERIC, 0) };
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:468:30
+    |
+468 |             let error_code = unsafe { GetLastError() };
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+  --> src\security\memory.rs:55:22
+   |
+55 |         let result = unsafe { VirtualLock(addr as *mut winapi::ctypes::c_void, len) };
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+  --> src\security\memory.rs:73:22
+   |
+73 |         let result = unsafe { VirtualUnlock(addr as *mut winapi::ctypes::c_void, len) };
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:154:19
+    |
+154 |         let ptr = unsafe { std::alloc::alloc_zeroed(layout) };
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:184:9
+    |
+184 |         unsafe { std::slice::from_raw_parts_mut(self.ptr, self.len) }
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:202:9
+    |
+202 | /         unsafe {
+203 | |             ptr::write_bytes(self.ptr, 0, self.len);
+204 | |         }
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:227:9
+    |
+227 | /         unsafe {
+228 | |             let layout = std::alloc::Layout::from_size_align_unchecked(self.len, 8);
+229 | |             std::alloc::dealloc(self.ptr, layout);
+230 | |         }
+    | |_________^
+
+warning: implementation of an `unsafe` trait
+   --> src\security\memory.rs:237:1
+    |
+237 | unsafe impl Send for SecureMemory {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: ambiguous glob re-exports
+  --> src\security\mod.rs:38:9
+   |
+38 | pub use keystore::*;
+   |         ^^^^^^^^^^^ the name `encryption` in the type namespace is first re-exported here
+...
+41 | pub use seed::*;
+   |         ------- but the name `encryption` in the type namespace is also re-exported here
+   |
+   = note: `#[warn(ambiguous_glob_reexports)]` on by default
+
+warning: unused import: `std::sync::Arc`
+  --> src\telemetry\account_events.rs:35:5
+   |
+35 | use std::sync::Arc;
+   |     ^^^^^^^^^^^^^^
+
+warning: unused import: `zeroize::Zeroizing`
+  --> src\wallet\account_manager\creation.rs:26:5
+   |
+26 | use zeroize::Zeroizing;
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `KeyReference`
+  --> src\wallet\account_manager\signer_integration.rs:17:23
+   |
+17 | use crate::security::{KeyReference, SecureAccount};
+   |                       ^^^^^^^^^^^^
+
+warning: unused import: `std::sync::Arc`
+  --> src\wallet\account_manager\signer_integration.rs:26:5
+   |
+26 | use std::sync::Arc;
+   |     ^^^^^^^^^^^^^^
+
+warning: unused imports: `error` and `warn`
+  --> src\wallet\account_manager\signer_integration.rs:27:21
+   |
+27 | use tracing::{info, warn, error};
+   |                     ^^^^  ^^^^^
+
+warning: unused import: `SolStruct`
+  --> src\wallet\account_manager\eip712.rs:19:38
+   |
+19 | use alloy::sol_types::{Eip712Domain, SolStruct};
+   |                                      ^^^^^^^^^
+
+warning: unused import: `std::str::FromStr`
+  --> src\wallet\account_manager\eip712.rs:21:5
+   |
+21 | use std::str::FromStr;
+   |     ^^^^^^^^^^^^^^^^^
+
+warning: unused import: `VaughanError`
+  --> src\wallet\backup\mod.rs:11:56
+   |
+11 | use crate::error::{Result, SecurityError, WalletError, VaughanError};
+   |                                                        ^^^^^^^^^^^^
+
+warning: unused import: `SecureExport`
+  --> src\wallet\backup\mod.rs:12:39
+   |
+12 | use crate::security::{SecureKeystore, SecureExport};
+   |                                       ^^^^^^^^^^^^
+
+warning: unused imports: `ExposeSecret` and `SecretVec`
+  --> src\wallet\backup\mod.rs:18:15
+   |
+18 | use secrecy::{ExposeSecret, SecretString, SecretVec};
+   |               ^^^^^^^^^^^^                ^^^^^^^^^
+
+warning: unused imports: `Zeroize` and `Zeroizing`
+  --> src\wallet\backup\mod.rs:22:15
+   |
+22 | use zeroize::{Zeroize, Zeroizing};
+   |               ^^^^^^^  ^^^^^^^^^
+
+warning: unused imports: `B256`, `Bytes`, and `U256`
+  --> src\wallet\provider\eip1193.rs:19:34
+   |
+19 | use alloy::primitives::{Address, Bytes, B256, U256};
+   |                                  ^^^^^  ^^^^  ^^^^
+
+warning: unused import: `std::collections::HashMap`
+  --> src\wallet\provider\eip1193.rs:23:5
+   |
+23 | use std::collections::HashMap;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `VaughanError` and `WalletError`
+  --> src\wallet\provider\eip1193.rs:28:28
+   |
+28 | use crate::error::{Result, VaughanError, WalletError};
+   |                            ^^^^^^^^^^^^  ^^^^^^^^^^^
+
+warning: unused import: `U256`
+  --> src\wallet\transaction\simulator.rs:17:41
+   |
+17 | use alloy::primitives::{Address, Bytes, U256};
+   |                                         ^^^^
+
+warning: unused import: `std::str::FromStr`
+  --> src\wallet\transaction\simulator.rs:20:5
+   |
+20 | use std::str::FromStr;
+   |     ^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `NetworkError`, `Result`, and `VaughanError`
+  --> src\wallet\transaction\simulator.rs:23:20
+   |
+23 | use crate::error::{Result, VaughanError, NetworkError};
+   |                    ^^^^^^  ^^^^^^^^^^^^  ^^^^^^^^^^^^
+
+warning: unused import: `alloy::transports::Transport`
+  --> src\wallet\transaction\fees.rs:16:5
+   |
+16 | use alloy::transports::Transport;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::sync::Arc`
+  --> src\wallet\transaction\fees.rs:19:5
+   |
+19 | use std::sync::Arc;
+   |     ^^^^^^^^^^^^^^
+
+warning: unused import: `alloy::signers::Signer`
+ --> src\wallet\account_manager\discovery.rs:9:5
+  |
+9 | use alloy::signers::Signer;
+  |     ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused variable: `e`
+  --> src\wallet\account_manager\signer_integration.rs:51:23
+   |
+51 |             .map_err(|e| VaughanError::Wallet(WalletError::InvalidPrivateKey))?;
+   |                       ^ help: if this is intentional, prefix it with an underscore: `_e`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `auto_scan_running` is never read
+   --> src\wallet\hardware\device_manager.rs:256:5
+    |
+250 | pub struct DeviceManager {
+    |            ------------- field in this struct
+...
+256 |     auto_scan_running: Arc<RwLock<bool>>,
+    |     ^^^^^^^^^^^^^^^^^
+    |
+    = note: `DeviceManager` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `vaughan` (lib) generated 42 warnings (run `cargo fix --lib -p vaughan` to apply 23 suggestions)
+warning: fields `weights` and `current_weights` are never read
+   --> tests\professional_test.rs:215:5
+    |
+214 | struct WeightedRoundRobinBalancer {
+    |        -------------------------- fields in this struct
+215 |     weights: std::sync::Arc<tokio::sync::RwLock<Vec<f32>>>,
+    |     ^^^^^^^
+216 |     current_weights: std::sync::Arc<tokio::sync::RwLock<Vec<f32>>>,
+    |     ^^^^^^^^^^^^^^^
+    |
+    = note: `WeightedRoundRobinBalancer` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `keychain`
+   --> tests\test_seed_encryption_standalone.rs:168:9
+    |
+168 |     let keychain = Arc::new(OSKeychain::new("test-service".to_string()).unwrap());
+    |         ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_keychain`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `std::time::Duration`
+  --> tests\password_integration_tests.rs:12:9
+   |
+12 |     use std::time::Duration;
+   |         ^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unexpected `cfg` condition value: `gui-tests`
+ --> tests\test_export_window_integration.rs:1:8
+  |
+1 | #![cfg(feature = "gui-tests")]
+  |        ^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: expected values for `feature` are: `audio`, `custom-tokens`, `default`, `full`, `hardware-wallets`, `minimal`, `professional`, `qr`, `shamir`, and `telemetry`
+  = help: consider adding `gui-tests` as a feature in `Cargo.toml`
+  = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+  = note: `#[warn(unexpected_cfgs)]` on by default
+
+warning: unused imports: `PasswordValidator` and `SecureSeedStorage`
+  --> tests\password_validation_tests.rs:13:39
+   |
+13 | use vaughan::security::{KeyReference, PasswordValidator, SecureSeedStorage};
+   |                                       ^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `arb_incorrect_password` is never used
+  --> tests\password_validation_tests.rs:21:4
+   |
+21 | fn arb_incorrect_password(correct: String) -> impl Strategy<Value = String> {
+   |    ^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `arb_seed_key_reference` is never used
+  --> tests\password_validation_tests.rs:26:4
+   |
+26 | fn arb_seed_key_reference() -> impl Strategy<Value = KeyReference> {
+   |    ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused variable: `service`
+   --> tests\account_manager_integration.rs:305:9
+    |
+305 |     let service = IntegratedAccountService::new();
+    |         ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_service`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `service`
+   --> tests\account_manager_integration.rs:315:9
+    |
+315 |     let service = IntegratedAccountService::with_config(config);
+    |         ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_service`
+
+warning: field `provider` is never read
+  --> tests\utils\anvil.rs:11:9
+   |
+ 9 | pub struct AnvilContext {
+   |            ------------ field in this struct
+10 |     pub anvil: AnvilInstance,
+11 |     pub provider: reqwest::Url, // We keep the URL for cloning providers
+   |         ^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: methods `provider` and `provider_with_wallet` are never used
+  --> tests\utils\anvil.rs:38:12
+   |
+14 | impl AnvilContext {
+   | ----------------- methods in this implementation
+...
+38 |     pub fn provider(&self) -> impl Provider {
+   |            ^^^^^^^^
+...
+53 |     pub fn provider_with_wallet(&self, index: usize) -> impl Provider {
+   |            ^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `super::*`
+  --> tests\session_management_tests.rs:16:9
+   |
+16 |     use super::*;
+   |         ^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `vaughan` (test "professional_test") generated 1 warning
+warning: `vaughan` (test "test_seed_encryption_standalone") generated 1 warning (run `cargo fix --test "test_seed_encryption_standalone" -p vaughan` to apply 1 suggestion)
+warning: `vaughan` (test "password_integration_tests") generated 1 warning (run `cargo fix --test "password_integration_tests" -p vaughan` to apply 1 suggestion)
+warning: `vaughan` (test "test_export_window_integration") generated 1 warning
+warning: `vaughan` (test "password_validation_tests") generated 3 warnings (run `cargo fix --test "password_validation_tests" -p vaughan` to apply 1 suggestion)
+warning: `vaughan` (test "account_manager_integration") generated 4 warnings (run `cargo fix --test "account_manager_integration" -p vaughan` to apply 2 suggestions)
+warning: `vaughan` (test "session_management_tests") generated 1 warning (run `cargo fix --test "session_management_tests" -p vaughan` to apply 1 suggestion)
+warning: unused import: `std::io::Cursor`
+  --> tests\test_audio_alerts.rs:10:9
+   |
+10 |     use std::io::Cursor;
+   |         ^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `HDPath as LedgerHDPath` and `HDPath as TrezorHDPath`
+  --> src\security\hardware.rs:30:27
+   |
+30 |     alloy_signer_ledger::{HDPath as LedgerHDPath, LedgerSigner},
+   |                           ^^^^^^^^^^^^^^^^^^^^^^
+31 |     alloy_signer_trezor::{HDPath as TrezorHDPath, TrezorSigner},
+   |                           ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `tokio::time::sleep`
+   --> src\security\export_auth.rs:122:9
+    |
+122 |     use tokio::time::sleep;
+    |         ^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+  --> src\security\memory.rs:55:22
+   |
+55 |         let result = unsafe { VirtualLock(addr as *mut winapi::ctypes::c_void, len) };
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: requested on the command line with `-W unsafe-code`
+
+warning: unused import: `AtomicU32`
+   --> src\security\session.rs:477:41
+    |
+477 |     use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
+    |                                         ^^^^^^^^^
+
+warning: unused import: `EncryptionType`
+    --> src\wallet\account_manager\mod.rs:1031:27
+     |
+1031 |     use crate::security::{EncryptionType, KeyReference};
+     |                           ^^^^^^^^^^^^^^
+
+warning: unreachable expression
+   --> src\security\rate_limiter.rs:105:9
+    |
+103 |   ...   return None;
+    |         ----------- any code following this expression is unreachable
+104 |   ...
+105 | / ...   if let Ok(home_dir) = std::env::var("HOME") {
+106 | | ...        Some(PathBuf::from(home_dir).join(".config").join("vaughan").join("rate_limits.js...
+107 | | ...   } else if let Ok(appdata_dir) = std::env::var("APPDATA") {
+108 | | ...        Some(PathBuf::from(appdata_dir).join("Vaughan").join("rate_limits.json"))
+109 | | ...   } else {
+110 | | ...        None
+111 | | ...   }
+    | |_______^ unreachable expression
+    |
+    = note: `#[warn(unreachable_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `alloy::signers::Signer`
+  --> src\security\hardware.rs:13:5
+   |
+13 | use alloy::signers::Signer;
+   |     ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused variable: `e`
+   --> src\security\rate_limiter.rs:243:20
+    |
+243 |         if let Err(e) = self.load() {
+    |                    ^ help: if this is intentional, prefix it with an underscore: `_e`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `details`
+   --> src\telemetry\account_events.rs:737:13
+    |
+737 |             details in "[a-zA-Z0-9 ]{10,50}"
+    |             ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_details`
+
+warning: unused variable: `valid_token`
+   --> src\wallet\account_manager\export.rs:209:13
+    |
+209 |         let valid_token = auth.authenticate(true).await.unwrap();
+    |             ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_valid_token`
+
+warning: unused variable: `e`
+  --> src\wallet\account_manager\signer_integration.rs:51:23
+   |
+51 |             .map_err(|e| VaughanError::Wallet(WalletError::InvalidPrivateKey))?;
+   |                       ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: field `signer` is never read
+   --> src\security\hardware.rs:154:5
+    |
+146 | pub struct LedgerWallet {
+    |            ------------ field in this struct
+...
+154 |     signer: Option<Arc<LedgerSigner>>,
+    |     ^^^^^^
+    |
+    = note: `LedgerWallet` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `signer` is never read
+   --> src\security\hardware.rs:565:5
+    |
+559 | pub struct TrezorWallet {
+    |            ------------ field in this struct
+...
+565 |     signer: Option<Arc<TrezorSigner>>,
+    |     ^^^^^^
+    |
+    = note: `TrezorWallet` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: field `locked` is never read
+  --> src\wallet\mod.rs:67:5
+   |
+61 | pub struct Vaughan {
+   |            ------- field in this struct
+...
+67 |     locked: Arc<RwLock<bool>>,
+   |     ^^^^^^
+   |
+   = note: `Vaughan` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+
+warning: methods `is_read` and `is_write` are never used
+    --> src\wallet\account_manager\mod.rs:1050:12
+     |
+1049 |     impl OperationType {
+     |     ------------------ methods in this implementation
+1050 |         fn is_read(&self) -> bool {
+     |            ^^^^^^^
+...
+1059 |         fn is_write(&self) -> bool {
+     |            ^^^^^^^^
+
+warning: field `auto_scan_running` is never read
+   --> src\wallet\hardware\device_manager.rs:256:5
+    |
+250 | pub struct DeviceManager {
+    |            ------------- field in this struct
+...
+256 |     auto_scan_running: Arc<RwLock<bool>>,
+    |     ^^^^^^^^^^^^^^^^^
+    |
+    = note: `DeviceManager` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+
+warning: method `provider_with_wallet` is never used
+  --> tests\utils\anvil.rs:53:12
+   |
+14 | impl AnvilContext {
+   | ----------------- method in this implementation
+...
+53 |     pub fn provider_with_wallet(&self, index: usize) -> impl Provider {
+   |            ^^^^^^^^^^^^^^^^^^^^
+
+warning: comparison is useless due to type limits
+  --> tests\anvil_integration.rs:10:17
+   |
+10 |         assert!(block_number >= 0);
+   |                 ^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_comparisons)]` on by default
+
+warning: unused variable: `session`
+   --> tests\transaction_flow_tests.rs:145:9
+    |
+145 |         session in prop_oneof![arb_unlocked_session(), arb_locked_session()]
+    |         ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_session`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `vaughan::security::hardware::HardwareWallet`
+  --> tests\hardware_wallet_integration.rs:10:5
+   |
+10 | use vaughan::security::hardware::HardwareWallet;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `vaughan` (test "test_audio_alerts") generated 1 warning (run `cargo fix --test "test_audio_alerts" -p vaughan` to apply 1 suggestion)
+warning: `vaughan` (lib test) generated 43 warnings (27 duplicates) (run `cargo fix --lib -p vaughan --tests` to apply 8 suggestions)
+warning: `vaughan` (test "anvil_integration") generated 3 warnings (1 duplicate)
+warning: `vaughan` (test "transaction_flow_tests") generated 1 warning (run `cargo fix --test "transaction_flow_tests" -p vaughan` to apply 1 suggestion)
+warning: `vaughan` (test "transaction_integration") generated 1 warning (1 duplicate)
+warning: `vaughan` (test "hardware_wallet_integration") generated 1 warning (run `cargo fix --test "hardware_wallet_integration" -p vaughan` to apply 1 suggestion)
+warning: unused import: `BatchProcessor`
+  --> tests\account_manager_performance.rs:15:48
+   |
+15 | use vaughan::performance::batch::{BatchConfig, BatchProcessor};
+   |                                                ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `manager`
+   --> tests\integration_test.rs:100:9
+    |
+100 |     let manager = HardwareWalletManager::new();
+    |         ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_manager`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `wallet`
+   --> tests\integration_test.rs:119:9
+    |
+119 |     let wallet = vaughan::wallet::Vaughan::new(config).await?;
+    |         ^^^^^^ help: if this is intentional, prefix it with an underscore: `_wallet`
+
+warning: unused import: `DiscoveredAccount`
+ --> tests\discovery_property_tests.rs:3:23
+  |
+3 |     AccountDiscovery, DiscoveredAccount, DiscoveryClient, DiscoveryConfig,
+  |                       ^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `HashMap`
+  --> tests\discovery_property_tests.rs:11:24
+   |
+11 | use std::collections::{HashMap, HashSet};
+   |                        ^^^^^^^
+
+warning: unused import: `Mutex`
+  --> tests\discovery_property_tests.rs:12:22
+   |
+12 | use std::sync::{Arc, Mutex};
+   |                      ^^^^^
+
+warning: type `fastIndexProvider` should have an upper camel case name
+  --> tests\discovery_property_tests.rs:41:8
+   |
+41 | struct fastIndexProvider {
+   |        ^^^^^^^^^^^^^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `FastIndexProvider`
+   |
+   = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: unused variable: `address`
+  --> tests\discovery_property_tests.rs:31:31
+   |
+31 |     fn is_index_active(&self, address: Address) -> bool {
+   |                               ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_address`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+   --> tests\discovery_property_tests.rs:100:17
+    |
+100 |             let mut last_found_index = -1i64;
+    |                 ----^^^^^^^^^^^^^^^^
+    |                 |
+    |                 help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `last_found_index`
+   --> tests\discovery_property_tests.rs:100:17
+    |
+100 |             let mut last_found_index = -1i64;
+    |                 ^^^^^^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_last_found_index`
+
+warning: struct `ProptestProvider` is never constructed
+  --> tests\discovery_property_tests.rs:16:8
+   |
+16 | struct ProptestProvider {
+   |        ^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: associated items `new` and `is_index_active` are never used
+  --> tests\discovery_property_tests.rs:23:8
+   |
+22 | impl ProptestProvider {
+   | --------------------- associated items in this implementation
+23 |     fn new(active_indices: HashSet<u32>, seed: String) -> Self {
+   |        ^^^
+...
+31 |     fn is_index_active(&self, address: Address) -> bool {
+   |        ^^^^^^^^^^^^^^^
+
+warning: unused variable: `seed_account`
+  --> tests\account_type_switching_tests.rs:71:9
+   |
+71 |         seed_account in arb_secure_account_with_type(AccountType::SeedBased),
+   |         ^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_seed_account`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `Address` and `U256`
+ --> tests\signer_integration_tests.rs:2:25
+  |
+2 | use alloy::primitives::{Address, B256, U256};
+  |                         ^^^^^^^        ^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `Provider`
+ --> tests\signer_integration_tests.rs:3:24
+  |
+3 | use alloy::providers::{Provider, ProviderBuilder};
+  |                        ^^^^^^^^
+
+warning: unused import: `alloy::rpc::types::TransactionRequest`
+ --> tests\signer_integration_tests.rs:4:5
+  |
+4 | use alloy::rpc::types::TransactionRequest;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `alloy::signers::local::PrivateKeySigner`
+ --> tests\signer_integration_tests.rs:5:5
+  |
+5 | use alloy::signers::local::PrivateKeySigner;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `TransactionBuilder`
+ --> tests\signer_integration_tests.rs:1:38
+  |
+1 | use alloy::network::{EthereumWallet, TransactionBuilder};
+  |                                      ^^^^^^^^^^^^^^^^^^
+
+warning: unused variable: `expected_address`
+  --> tests\signer_integration_tests.rs:18:9
+   |
+18 |     let expected_address = signer.address();
+   |         ^^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_expected_address`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `wallet`
+  --> tests\signer_integration_tests.rs:25:9
+   |
+25 |     let wallet = EthereumWalletBuilder::new()
+   |         ^^^^^^ help: if this is intentional, prefix it with an underscore: `_wallet`
+
+warning: unused import: `DiscoveredAccount`
+ --> tests\discovery_integration_tests.rs:3:23
+  |
+3 |     AccountDiscovery, DiscoveredAccount, DiscoveryClient, DiscoveryConfig,
+  |                       ^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `vaughan` (test "account_manager_performance") generated 1 warning (run `cargo fix --test "account_manager_performance" -p vaughan` to apply 1 suggestion)
+warning: `vaughan` (test "integration_test") generated 2 warnings (run `cargo fix --test "integration_test" -p vaughan` to apply 2 suggestions)
+warning: `vaughan` (test "discovery_property_tests") generated 9 warnings (run `cargo fix --test "discovery_property_tests" -p vaughan` to apply 6 suggestions)
+warning: `vaughan` (test "account_type_switching_tests") generated 1 warning (run `cargo fix --test "account_type_switching_tests" -p vaughan` to apply 1 suggestion)
+warning: `vaughan` (test "signer_integration_tests") generated 7 warnings (run `cargo fix --test "signer_integration_tests" -p vaughan` to apply 6 suggestions)
+warning: `vaughan` (test "discovery_integration_tests") generated 1 warning (run `cargo fix --test "discovery_integration_tests" -p vaughan` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.60s
+     Running unittests src\lib.rs (target\debug\deps\vaughan-dcc1bd4e6d61d376.exe)
+
+running 399 tests
+test config::tests::test_get_config_dir ... ok
+test config::tests::test_config_manager_creation ... ok
+test blockchain::explorer_apis::tests::test_config_serialization ... ok
+test blockchain::explorer_apis::tests::test_rate_limiter ... ok
+test error::account::tests::test_all_error_variants_have_correlation_id ... ok
+test error::account::tests::test_error_context_builder ... ok
+test config::api_config::tests::test_api_config_creation ... ok
+test error::account::tests::test_error_correlation_ids_are_unique ... ok
+test error::account::tests::test_error_context_display ... ok
+test error::account::tests::test_error_display ... ok
+test error::recovery::tests::test_non_recoverable_error ... ok
+test gui::components::session_indicator::tests::test_session_indicator_unlocked ... ok
+test gui::components::session_indicator::tests::test_session_indicator_locked ... ok
+test gui::safe_calculations::tests::test_safe_balance ... ok
+test gui::safe_calculations::tests::test_safe_dimension ... ok
+test gui::safe_calculations::tests::test_safe_ticker ... ok
+test gui::services::integrated_account_service::tests::test_operation_span_creation ... ok
+test gui::services::integrated_account_service::tests::test_balance_caching ... ok
+test gui::services::integrated_account_service::tests::test_service_creation ... ok
+test config::api_config::tests::test_moralis_configuration ... ok
+test gui::state::auth_state::tests::test_password_dialog_error_handling ... ok
+test gui::state::auth_state::tests::test_password_dialog_show_hide ... ok
+test gui::state::auth_state::tests::test_password_error_display ... ok
+test gui::state::auth_state::tests::test_security_state_default ... ok
+test gui::state::auth_state::tests::test_session_lock_unlock ... ok
+test gui::tests::test_amount_validation ... ok
+test gui::transaction_cancellation::tests::test_cancellation_error_display ... ok
+test gui::transaction_cancellation::tests::test_gas_settings_creation ... ok
+test gui::transaction_cancellation::tests::test_pending_transaction_creation ... ok
+test gui::transaction_errors::tests::test_error_classification ... ok
+test gui::transaction_errors::tests::test_error_info_generation ... ok
+test gui::views::locked_view::tests::test_locked_view_shows_unlock_button ... ok
+test gui::views::locked_view::tests::test_should_not_show_locked_view_when_password_dialog_visible ... ok
+test gui::views::locked_view::tests::test_should_not_show_locked_view_when_session_unlocked ... ok
+test gui::views::locked_view::tests::test_should_show_locked_view_when_session_locked ... ok
+test gui::widgets::tests::test_balance_display_creation ... ok
+test gui::widgets::tests::test_button_creation ... ok
+test gui::widgets::tests::test_connection_status_display ... ok
+test gui::widgets::tests::test_status_message_creation ... ok
+test gui::widgets::tests::test_network_selector_creation ... ok
+test gui::widgets::tests::test_text_input_creation ... ok
+test gui::widgets::tests::test_theme_switcher_creation ... ok
+test gui::widgets::transaction::tests::test_format_timestamp ... ok
+test gui::widgets::transaction::tests::test_transaction_confirmation_creation ... ok
+test gui::widgets::transaction::tests::test_transaction_history_empty ... ok
+test gui::widgets::transaction::tests::test_transaction_history_with_data ... ok
+test gui::widgets::transaction::tests::test_validate_amount ... ok
+test gui::widgets::transaction::tests::test_validate_gas_limit ... ok
+test gui::widgets::transaction::tests::test_validate_gas_price ... ok
+test error::account::property_tests::prop_error_context_has_required_fields ... ok
+test error::account::property_tests::prop_error_context_display_includes_correlation ... ok
+test performance::batch::tests::test_backoff_calculation ... ok
+test performance::batch::tests::test_balance_result_failure ... ok
+test performance::batch::tests::test_balance_result_success ... ok
+test performance::batch::tests::test_batch_config_defaults ... ok
+test gui::services::qr_service::tests::test_invalid_address_generates_qr ... ok
+test performance::batch::tests::test_batch_balance_queries_success ... ok
+test performance::batch::tests::test_batch_config_with_concurrency ... ok
+test performance::batch::tests::test_batch_empty_addresses ... ok
+test performance::batch::tests::test_batch_processor_creation ... ok
+test performance::batch::tests::test_batch_result_success_rate ... ok
+test performance::batch::tests::test_results_to_map ... ok
+test error::account::property_tests::prop_account_not_found_has_valid_correlation_id ... ok
+test gui::hd_wallet_service::tests::test_hd_wallet_derivation ... ok
+test gui::services::qr_service::tests::test_generate_address_qr_code ... ok
+test error::account::property_tests::prop_correlation_ids_are_unique ... ok
+test gui::services::qr_service::tests::test_generate_payment_request_qr_code ... ok
+test performance::cache::tests::test_cache_basic_ops ... ok
+test performance::cache::tests::test_cache_invalidation ... ok
+test performance::cache::tests::test_cache_eviction ... ok
+test error::account::property_tests::prop_error_context_builder_preserves_fields ... ok
+test performance::multicall::tests::test_decode_balance_results ... ok
+test performance::multicall::tests::test_decode_u256_result ... ok
+test performance::multicall::tests::test_is_multicall3_supported ... ok
+test performance::multicall::tests::test_decode_u256_result_invalid_length ... ok
+test performance::multicall::tests::test_multicall3_address_resolution ... ok
+test performance::multicall::tests::test_multicall_balance_result_failure ... ok
+test performance::multicall::tests::test_multicall_balance_result_success ... ok
+test performance::multicall::tests::test_multicall_builder_add_eth_balance ... ok
+test performance::multicall::tests::test_multicall_builder_allow_failures ... ok
+test error::account::property_tests::prop_all_error_variants_have_correlation_id ... ok
+test performance::multicall::tests::test_multicall_builder_creation ... ok
+test performance::multicall::tests::test_multicall_builder_build ... ok
+test performance::multicall::tests::test_multicall_builder_with_correlation ... ok
+test security::export_auth::tests::test_auth_failure ... ok
+test security::export_auth::tests::test_rate_limiting ... ok
+test security::export_auth::tests::test_auth_success ... ok
+test security::export_auth::tests::test_token_expiration ... ok
+test security::hardware::tests::test_address_verification ... ok
+test security::hardware::tests::test_address_validation ... ok
+test security::hardware::tests::test_audit_transaction ... ok
+test security::hardware::tests::test_derivation_path_validation ... ok
+test security::hardware::tests::test_error_handling_invalid_device_operations ... ok
+test performance::batch::tests::test_concurrency_limiting ... ok
+test performance::cache::tests::test_cache_ttl ... ok
+test performance::batch::tests::test_batch_partial_failure ... ok
+test error::recovery::tests::test_retry_with_exponential_backoff ... ok
+test security::hardware::tests::test_security_validator_creation ... ok
+test security::hardware::tests::test_security_validator_with_custom_limits ... ok
+test security::hardware::tests::test_transaction_validation_high_value ... ok
+test security::hardware::tests::test_transaction_validation_success ... ok
+test gui::state::auth_state::tests::test_session_timeout ... ok
+test security::hardware::tests::test_ledger_address_derivation ... ok
+test security::hardware::tests::test_ledger_connection ... ok
+test security::hardware::tests::test_ledger_transaction_signing ... ok
+test security::hardware_feedback::tests::test_feedback_manager_creation ... ok
+test security::hardware_feedback::tests::test_guidance_generation ... ok
+test security::hardware_feedback::tests::test_progress_tracking ... ok
+test security::hardware_feedback::tests::test_status_updates ... ok
+test security::key_cache::tests::test_key_cache_basic ... ok
+test security::key_cache::tests::test_key_cache_clear ... ok
+test security::hardware::tests::test_trezor_address_derivation ... ok
+test security::keychain::tests::test_mock_keychain ... ok
+test security::keystore::tests::test_create_account ... ok
+test security::keystore::tests::test_import_account ... ok
+test security::hardware::tests::test_hardware_wallet_manager ... ok
+test security::hardware::tests::test_concurrent_device_access ... ok
+test security::keystore::tests::test_keystore_locking ... ok
+test security::memory::tests::test_disable_core_dumps ... ok
+test security::memory::tests::test_secure_memory_allocation ... ok
+test security::memory::tests::test_memory_protection_calls ... ok
+test security::password_validator::tests::test_attempt_recording ... ok
+test security::password_validator::tests::test_clear_all ... ok
+test security::password_validator::tests::test_failure_increment ... ok
+test security::password_validator::tests::test_clear_failures_on_success ... ok
+test security::password_validator::tests::test_initial_state ... ok
+test security::password_validator::tests::test_lockout_after_max_failures ... ok
+test security::password_validator::tests::test_multiple_accounts ... ok
+test security::password_validator::tests::test_rate_limit_check ... ok
+test security::rate_limiter::tests::test_rate_limiter_allows_under_limit ... ok
+test security::rate_limiter::tests::test_rate_limiter_blocks_over_limit ... ok
+test security::rate_limiter::tests::test_rate_limiter_missing_config ... ok
+test security::seed::tests::test_seed_generation ... ok
+test security::seed::tests::test_seed_strength_detection ... ok
+test security::hardware::tests::test_trezor_connection ... ok
+test security::seed::tests::test_seed_validation ... ok
+test security::seed::zeroization::tests::test_secure_guard ... ok
+test security::rate_limiter::tests::test_rate_limiter_persistence ... ok
+test security::seed::zeroization::tests::test_zero_array ... ok
+test security::seed::zeroization::tests::test_zero_bytes ... ok
+test security::hardware::tests::test_trezor_transaction_signing ... ok
+test performance::cache::property_tests::prop_cache_correctness ... ok
+test performance::cache::property_tests::prop_cache_performance ... ok
+test performance::cache::property_tests::prop_lru_eviction ... ok
+test security::hardware::tests::test_transaction_validation_zero_gas ... ok
+test security::key_cache::tests::test_key_cache_expiration ... ok
+test security::rate_limiter::tests::test_rate_limiter_refills_over_time ... ok
+test performance::batch::property_tests::prop_batch_retry_with_backoff ... ok
+test security::session::tests::test_deactivate_reactivate ... ok
+test performance::batch::property_tests::prop_batch_rpc_efficiency ... ok
+test security::session::tests::test_session_manager_creation ... ok
+test security::session::tests::test_activity_recording ... ok
+test security::session::tests::test_time_until_lock ... ok
+test security::session::tests::test_activity_resets_timeout ... ok
+test security::transaction_signing::tests::test_derive_key_from_seed ... ok
+test security::session::tests::test_timeout_detection ... ok
+test security::transaction_signing::tests::test_derive_wallet_from_seed ... ok
+test security::session::tests::test_stop_monitor ... ok
+test security::session::tests::test_no_timeout_config ... ok
+test security::validation::tests::test_sanitize_input ... ok
+test security::validation::tests::test_validate_ethereum_address ... ok
+test security::validation::tests::test_validate_password_strength ... ok
+test security::validation::tests::test_validate_private_key ... ok
+test security::validation::tests::test_validate_rpc_endpoint ... ok
+test security::validation::tests::test_validate_file_path ... ok
+test security::transaction_signing::tests::test_derive_with_custom_path ... ok
+test security::wallet_password_validator::tests::test_password_strength_validation ... ok
+test security::session::tests::test_auto_lock_monitor ... ok
+test performance::cache::property_tests::prop_cache_staleness ... ok
+test security::hardware::tests::test_recovery_connection ... ok
+test telemetry::account_events::property_tests::prop_child_hierarchy ... ok
+test telemetry::account_events::property_tests::prop_complete_operation_logging ... ok
+test telemetry::account_events::property_tests::prop_correlation_ids_unique ... ok
+test telemetry::account_events::property_tests::prop_cross_component_correlation ... ok
+test telemetry::account_events::property_tests::prop_operation_correlation_logging ... ok
+test telemetry::account_events::property_tests::prop_privacy_mode_log_sanitization ... ok
+test telemetry::account_events::property_tests::prop_telemetry_anonymity ... ok
+test telemetry::account_events::tests::test_account_logger_privacy_mode ... ok
+test telemetry::account_events::tests::test_child_span_creation ... ok
+test telemetry::account_events::tests::test_contains_sensitive_data ... ok
+test telemetry::account_events::tests::test_correlation_context_child ... ok
+test telemetry::account_events::tests::test_operation_span_creation ... ok
+test telemetry::account_events::tests::test_operation_span_elapsed ... ok
+test telemetry::account_events::tests::test_sanitize_address ... ok
+test telemetry::account_events::tests::test_sanitize_disabled ... ok
+test telemetry::account_events::tests::test_sanitize_private_key ... ok
+test telemetry::account_events::tests::test_tracked_operation_failure ... ok
+test telemetry::account_events::tests::test_tracked_operation_success ... ok
+test wallet::account::tests::test_account_manager_basic_operations ... ok
+test wallet::account::tests::test_account_tags ... ok
+test wallet::account_manager::creation::tests::test_account_with_name ... ok
+test wallet::account_manager::creation::tests::test_create_from_bytes ... ok
+test wallet::account_manager::creation::tests::test_create_from_private_key ... ok
+test wallet::account_manager::creation::tests::test_create_from_private_key_no_prefix ... ok
+test wallet::account_manager::creation::tests::test_create_from_seed ... ok
+test wallet::account_manager::creation::tests::test_create_from_seed_custom_path ... ok
+test wallet::account_manager::creation::tests::test_create_multiple_from_seed ... ok
+test wallet::account_manager::creation::tests::test_invalid_private_key ... ok
+test wallet::account_manager::creation::tests::test_invalid_seed_phrase ... ok
+test wallet::account_manager::creation::tests::test_same_seed_same_address ... ok
+test wallet::account_manager::creation::tests::test_validate_private_key ... ok
+test wallet::account_manager::creation::tests::test_validate_seed_phrase ... ok
+test wallet::account_manager::discovery::tests::test_discovery_activity_detection ... ok
+test wallet::account_manager::discovery::tests::test_discovery_gap_limit_enforcement ... ok
+test security::session::property_tests::prop_time_until_lock_decreases ... ok
+test wallet::account_manager::eip712::tests::test_domain_builder ... ok
+test wallet::account_manager::eip712::tests::test_permit_struct_hash ... ok
+test wallet::account_manager::eip712::tests::test_signing_message_construction ... ok
+test wallet::account_manager::eip712::tests::test_type_hash_constants ... ok
+test wallet::account_manager::eip712::tests::test_vote_struct_hash ... ok
+test wallet::account_manager::export::tests::test_export_private_key_auth_failure ... ok
+test wallet::account_manager::export::tests::test_export_private_key_success ... ok
+test wallet::account_manager::import::property_tests::prop_error_specificity ... ok
+test wallet::account_manager::import::property_tests::prop_format_validation ... ok
+test wallet::account_manager::discovery::tests::test_discovery_stops_at_gap_limit ... ok
+test wallet::account_manager::import::property_tests::prop_metadata_preservation ... ok
+test wallet::account_manager::import::tests::test_detect_format_private_key_no_prefix ... ok
+test wallet::account_manager::import::tests::test_detect_format_private_key_with_prefix ... ok
+test wallet::account_manager::import::tests::test_detect_format_seed_phrase ... ok
+test wallet::account_manager::import::tests::test_detect_format_unknown ... ok
+test wallet::account_manager::import::tests::test_different_derivation_paths ... ok
+test wallet::account_manager::import::tests::test_import_from_private_key ... ok
+test wallet::account_manager::import::tests::test_import_from_seed ... ok
+test wallet::account_manager::import::tests::test_import_from_seed_determinism ... ok
+test wallet::account_manager::import::tests::test_invalid_private_key ... ok
+test wallet::account_manager::import::tests::test_invalid_seed_phrase ... ok
+test wallet::account_manager::import::tests::test_metadata_preservation ... ok
+test wallet::account_manager::import::tests::test_validate_import_data_key ... ok
+test wallet::account_manager::import::tests::test_validate_import_data_seed ... ok
+test wallet::account_manager::interface_tests::test_concurrent_account_creation ... ok
+test wallet::account_manager::interface_tests::test_concurrent_mixed_operations ... ok
+test wallet::account_manager::interface_tests::test_concurrent_read_operations ... ok
+test wallet::account_manager::interface_tests::test_create_account_through_interface ... ok
+test wallet::account_manager::interface_tests::test_export_with_invalid_token ... ok
+test wallet::account_manager::interface_tests::test_export_with_valid_token ... ok
+test wallet::account_manager::interface_tests::test_get_account_through_interface ... ok
+test wallet::account_manager::interface_tests::test_import_sources ... ok
+test wallet::account_manager::interface_tests::test_list_accounts_through_interface ... ok
+test wallet::account_manager::interface_tests::test_lock_unlock_through_interface ... ok
+test wallet::account_manager::interface_tests::test_operation_count_tracking ... ok
+test wallet::account_manager::interface_tests::test_remove_account_with_auth ... ok
+test wallet::account_manager::interface_tests::test_set_and_get_current_account ... ok
+test wallet::account_manager::lock_property_tests::prop_lock_clears_current_account ... ok
+test wallet::account_manager::lock_property_tests::prop_lock_prevents_authenticated_operations ... ok
+test wallet::account_manager::lock_property_tests::prop_lock_sets_locked_state ... ok
+test wallet::account_manager::lock_property_tests::prop_operations_work_after_lock_unlock_cycle ... ok
+test wallet::account_manager::lock_property_tests::prop_unlock_restores_account_access ... ok
+test wallet::account_manager::lock_property_tests::prop_unlock_sets_correct_account ... ok
+test wallet::account_manager::metadata::property_tests::prop_avatar_determinism ... ok
+test wallet::account_manager::metadata::property_tests::prop_nickname_validation ... ok
+test wallet::account_manager::metadata::property_tests::prop_tag_management ... ok
+test wallet::account_manager::metadata::tests::test_avatar_determinism ... ok
+test wallet::account_manager::metadata::tests::test_nickname_validation ... ok
+test performance::batch::property_tests::prop_batch_concurrency_limiting ... ok
+test wallet::account_manager::import::property_tests::prop_seed_import_determinism ... ok
+test wallet::account_manager::property_tests::prop_concurrent_creations_maintain_consistency ... ok
+test wallet::account_manager::property_tests::prop_lock_unlock_atomic ... ok
+test wallet::account_manager::signer_integration::tests::test_builder_build_wallet ... ok
+test wallet::account_manager::signer_integration::tests::test_ethereum_wallet_builder ... ok
+test wallet::account_manager::signer_integration::tests::test_into_ethereum_wallet ... ok
+test wallet::account_manager::signer_integration::tests::test_signer_from_private_key ... ok
+test wallet::account_manager::signer_integration::tests::test_signer_manager_from_key ... ok
+test wallet::account_manager::signer_integration::tests::test_signer_signing ... ok
+test wallet::account_manager::signer_integration::tests::test_signer_sync_signing ... ok
+test wallet::account_manager::signer_integration::tests::test_wallet_builder_no_signer_fails ... ok
+test wallet::account_manager::tests::test_account_config_builders ... ok
+test wallet::account_manager::tests::test_account_type_serialization ... ok
+test wallet::account_manager::tests::test_auth_token_expiration ... ok
+test wallet::account_manager::tests::test_seed_strength_values ... ok
+test security::wallet_config::tests::test_wallet_settings_encryption ... ok
+test security::wallet_config::tests::test_wallet_config_creation ... ok
+test security::wallet_config::tests::test_account_metadata_encryption ... ok
+test wallet::errors::tests::test_error_debug ... ok
+test wallet::errors::tests::test_error_display ... ok
+test wallet::hardware::derivation::tests::test_all_standards ... ok
+test wallet::hardware::derivation::tests::test_custom_path_creation ... ok
+test wallet::hardware::derivation::tests::test_derivation_standard_defaults ... ok
+test wallet::hardware::derivation::tests::test_derivation_standard_descriptions ... ok
+test wallet::hardware::derivation::tests::test_derivation_standard_serialization ... ok
+test wallet::hardware::derivation::tests::test_invalid_path_characters ... ok
+test wallet::hardware::derivation::tests::test_invalid_path_missing_coin_type ... ok
+test wallet::hardware::derivation::tests::test_invalid_path_missing_purpose ... ok
+test wallet::hardware::derivation::tests::test_invalid_path_prefix ... ok
+test wallet::hardware::derivation::tests::test_invalid_path_too_long ... ok
+test wallet::hardware::derivation::tests::test_invalid_path_too_short ... ok
+test wallet::hardware::derivation::tests::test_is_custom ... ok
+test wallet::hardware::derivation::tests::test_ledger_path_conversion ... ok
+test wallet::hardware::derivation::tests::test_path_templates ... ok
+test wallet::hardware::derivation::tests::test_trezor_path_conversion ... ok
+test wallet::hardware::derivation::tests::test_valid_custom_paths ... ok
+test security::session::property_tests::prop_callback_triggered_on_timeout ... ok
+test wallet::hardware::device_manager::property_tests::prop_concurrent_registry_access ... ok
+test security::session::property_tests::prop_session_deactivated_after_timeout ... ok
+test wallet::hardware::device_manager::property_tests::prop_connection_status_updates ... ok
+test security::session::property_tests::prop_no_early_callback_trigger ... ok
+test wallet::hardware::device_manager::property_tests::prop_registry_ids_unique ... ok
+test wallet::hardware::device_manager::tests::test_clear_registry ... ok
+test wallet::hardware::device_manager::tests::test_connected_device_count ... ok
+test wallet::hardware::device_manager::tests::test_device_connection_status ... ok
+test wallet::hardware::device_manager::tests::test_device_manager_creation ... ok
+test wallet::hardware::device_manager::tests::test_firmware_upgrade_guidance ... ok
+test wallet::hardware::device_manager::tests::test_get_all_devices ... ok
+test wallet::hardware::device_manager::tests::test_get_connected_devices ... ok
+test wallet::hardware::device_manager::tests::test_reconnect_attempts ... ok
+test wallet::hardware::device_manager::tests::test_register_device ... ok
+test wallet::hardware::device_manager::tests::test_remove_device ... ok
+test wallet::hardware::manager::tests::test_address_verification_feedback ... ok
+test wallet::hardware::device_manager::property_tests::prop_registry_consistency_sequential ... ok
+test wallet::hardware::device_manager::property_tests::prop_registry_type_filtering ... ok
+test wallet::hardware::device_manager::property_tests::prop_scan_integration ... ok
+test wallet::hardware::manager::tests::test_device_detection ... ok
+test wallet::hardware::manager::tests::test_disconnect_all ... ok
+test wallet::hardware::manager::tests::test_device_type_checking ... ok
+test wallet::hardware::manager::tests::test_get_addresses_error_handling ... ok
+test wallet::hardware::manager::tests::test_hardware_manager_creation ... ok
+test wallet::hardware::manager::tests::test_hardware_manager_default ... ok
+test wallet::hardware::manager::tests::test_sign_transaction_error_handling ... ok
+test wallet::hardware::manager::tests::test_device_refresh ... ok
+test wallet::keystore::tests::test_account_operations ... ok
+test wallet::hardware::manager::tests::test_get_device_info ... ok
+test wallet::hardware::manager::tests::test_transaction_audit_feedback ... ok
+test wallet::keystore_format::tests::test_crypto_section_structure ... ok
+test wallet::keystore::tests::test_wallet_keystore_creation ... ok
+test wallet::keystore_format::tests::test_keystore_serialization ... ok
+test wallet::keystore_format::tests::test_keystore_structure ... ok
+test wallet::keystore::tests::test_auto_lock ... ok
+test wallet::hardware::manager::tests::test_device_recovery_feedback ... ok
+test security::wallet_password_validator::tests::test_wallet_password_validator ... ok
+test security::wallet_storage::tests::test_wallet_config_storage ... ok
+test wallet::account_manager::property_tests::prop_concurrent_operations_no_data_races ... ok
+test wallet::backup::tests::test_backup_bad_password ... ok
+test performance::batch::property_tests::prop_batch_partial_failure_handling ... ok
+test security::session::property_tests::prop_timeout_detected_after_duration ... ok
+test wallet::manager::tests::test_create_wallet ... ok
+test wallet::manager::tests::test_export_private_key ... ok
+test wallet::backup::tests::test_backup_tampering ... ok
+test wallet::backup::tests::test_encrypted_backup_roundtrip ... ok
+test wallet::manager::tests::test_export_seed_phrase ... ok
+test wallet::manager::tests::test_export_while_locked_fails ... ok
+test wallet::provider::eip1193::tests::test_disconnected_provider ... ok
+test wallet::provider::eip1193::tests::test_eth_accounts_empty ... ok
+test wallet::provider::eip1193::tests::test_eth_accounts_with_accounts ... ok
+test wallet::provider::eip1193::tests::test_eth_chain_id ... ok
+test wallet::provider::eip1193::tests::test_provider_creation ... ok
+test wallet::provider::eip1193::tests::test_provider_error_codes ... ok
+test wallet::provider::eip1193::tests::test_provider_request_creation ... ok
+test wallet::provider::eip1193::tests::test_request_accounts_grants_permission ... ok
+test wallet::provider::eip1193::tests::test_switch_chain ... ok
+test wallet::provider::eip1193::tests::test_unsupported_method ... ok
+test wallet::provider::events::tests::test_emitter_clone ... ok
+test wallet::provider::events::tests::test_event_emission ... ok
+test wallet::provider::events::tests::test_event_emitter_creation ... ok
+test wallet::provider::events::tests::test_event_serialization ... ok
+test wallet::provider::events::tests::test_event_subscription ... ok
+test wallet::provider::events::tests::test_event_types ... ok
+test wallet::provider::events::tests::test_multiple_events ... ok
+test wallet::provider::events::tests::test_multiple_subscribers ... ok
+test wallet::provider::permissions::tests::test_get_grant_for_origin ... ok
+test wallet::provider::permissions::tests::test_get_grants ... ok
+test wallet::provider::permissions::tests::test_grant_permission ... ok
+test wallet::provider::permissions::tests::test_multiple_permissions ... ok
+test wallet::provider::permissions::tests::test_permission_grant_creation ... ok
+test wallet::provider::permissions::tests::test_permission_manager_creation ... ok
+test wallet::provider::permissions::tests::test_revoke_all ... ok
+test wallet::provider::permissions::tests::test_revoke_permission ... ok
+test wallet::transaction::fees::tests::test_fee_calculation_custom ... ok
+test wallet::transaction::fees::tests::test_fee_calculation_fast ... ok
+test wallet::transaction::fees::tests::test_fee_calculation_slow ... ok
+test wallet::transaction::fees::tests::test_fee_calculation_standard ... ok
+test wallet::transaction::fees::tests::test_priority_custom_values ... ok
+test wallet::transaction::simulator::tests::test_decode_arithmetic_overflow ... ok
+test wallet::transaction::simulator::tests::test_decode_division_by_zero ... ok
+test wallet::transaction::simulator::tests::test_decode_panic_code ... ok
+test wallet::transaction::simulator::tests::test_decode_short_data ... ok
+test wallet::transaction::simulator::tests::test_decode_unknown_selector ... ok
+test wallet::transaction::simulator::tests::test_extract_revert_from_error ... ok
+test wallet::transaction::simulator::tests::test_extract_revert_no_hex ... ok
+test wallet::transaction::simulator::tests::test_prepare_simulation ... ok
+test wallet::transaction::simulator::tests::test_prepare_simulation_with_sender ... ok
+test wallet::transaction::simulator::tests::test_simulation_result_failure ... ok
+test wallet::transaction::simulator::tests::test_simulation_result_success ... ok
+test wallet::transaction::simulator::tests::test_simulation_warning_messages ... ok
+test wallet::transaction::simulator::tests::test_simulator_creation ... ok
+test wallet::transaction::simulator::tests::test_warning_levels ... ok
+test wallet::manager::tests::test_memory_is_cleared_after_lock ... ok
+test wallet::manager::tests::test_metamask_keystore_format ... ok
+test wallet::account_manager::property_tests::prop_concurrent_reads_succeed ... ok
+test wallet::manager::tests::test_encrypt_decrypt_roundtrip ... ok
+test wallet::manager::tests::test_password_1234_works_for_development ... ok
+test wallet::manager::tests::test_full_wallet_lifecycle ... ok
+test wallet::manager::tests::test_mac_verification ... ok
+test wallet::manager::tests::test_unlock_wallet ... ok
+test wallet::manager::tests::test_wrong_password ... ok
+test security::session::property_tests::prop_activity_prevents_callback ... ok
+test wallet::manager::tests::test_wrong_password_fails_gracefully ... ok
+test wallet::manager::tests::test_multiple_sessions ... ok
+test security::session::property_tests::prop_activity_resets_timeout ... ok
+test wallet::manager::tests::test_lock_unlock_cycle ... ok
+test security::wallet_storage::tests::test_wallet_export_import ... ok
+
+test result: ok. 399 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 34.99s
+
+     Running unittests src\main.rs (target\debug\deps\vaughan-5e0ba780ab5d08f2.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\account_manager_integration.rs (target\debug\deps\account_manager_integration-352c4f03491634ac.exe)
+
+running 17 tests
+test test_account_config_builders ... ok
+test test_auth_token_creation ... ok
+test test_batch_balance_empty_accounts ... ok
+test test_correlation_id_generation ... ok
+test test_account_export_instrumentation ... ok
+test test_service_default_configuration ... ok
+test test_account_import_instrumentation ... ok
+test test_seed_strength_values ... ok
+test test_integrated_workflow ... ok
+test test_batch_balance_caching ... ok
+test test_error_correlation ... ok
+test test_account_lifecycle_create_lock_unlock ... ok
+test test_service_custom_batch_config ... ok
+test test_service_telemetry_integration ... ok
+test test_batch_balance_refresh_success ... ok
+test test_operation_span_tracking ... ok
+test test_batch_partial_failure_handling ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.03s
+
+     Running tests\account_manager_performance.rs (target\debug\deps\account_manager_performance-bd854fda0f045751.exe)
+
+running 11 tests
+test test_lock_unlock_instrumentation_time ... ok
+test test_service_creation_time ... ok
+test test_batch_vs_individual_performance ... ok
+test test_cache_hit_performance ... ok
+test test_performance_summary ... ok
+test test_batch_scalability ... ok
+test test_operation_span_creation_time ... ok
+test test_cache_memory_efficiency ... ok
+test test_instrumentation_overhead ... ok
+test test_cache_vs_uncached_performance ... ok
+test test_batch_concurrency_benefits ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests\account_type_detection_tests.rs (target\debug\deps\account_type_detection_tests-32f171abfd268bd8.exe)
+
+running 5 tests
+test unit_tests::test_private_key_account_detection ... ok
+test unit_tests::test_seed_based_account_detection ... ok
+test prop_account_type_detection_is_deterministic ... ok
+test prop_account_type_detection_is_correct ... ok
+test prop_account_type_depends_only_on_service ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+
+     Running tests\account_type_switching_tests.rs (target\debug\deps\account_type_switching_tests-7c611a5e0d3763a6.exe)
+
+running 8 tests
+test unit_tests::test_account_type_identification ... ok
+test unit_tests::test_switch_from_seed_to_private_key_clears_cache ... ok
+test unit_tests::test_switch_preserves_session_lock_state ... ok
+test unit_tests::test_switch_to_seed_preserves_cache ... ok
+test prop_cache_cleared_only_for_pk_switch ... ok
+test prop_switching_to_seed_preserves_session ... ok
+test prop_account_type_switch_clears_cache_when_needed ... ok
+test prop_account_type_consistent_during_switches ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+
+     Running tests\anvil_integration.rs (target\debug\deps\anvil_integration-bad707210645dc87.exe)
+
+running 2 tests
+test test_prefunded_account ... ok
+test test_anvil_spawning ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\auth_state_tests.rs (target\debug\deps\auth_state_tests-7700794c35682fa6.exe)
+
+running 4 tests
+test test_auth_state_initialization ... ok
+test test_auth_state_locking_unlocking ... ok
+test test_auth_state_timeout ... ok
+test test_password_dialog_config_consolidation ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\auto_balance_integration.rs (target\debug\deps\auto_balance_integration-cc49482fe164a010.exe)
+
+running 1 test
+test test_auto_balance_service_placeholder ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\dead_code_compliance.rs (target\debug\deps\dead_code_compliance-e377ec433da22285.exe)
+
+running 3 tests
+test test_dead_code_annotation_count ... ok
+test test_all_dead_code_annotations_are_documented ... ok
+test test_no_undocumented_allow_attributes ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+     Running tests\dependency_compliance.rs (target\debug\deps\dependency_compliance-d196197d24c6c0b9.exe)
+
+running 1 test
+test verify_optimized_dependencies ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\discovery_integration_tests.rs (target\debug\deps\discovery_integration_tests-82834c92625f9f24.exe)
+
+running 2 tests
+test test_discovery_error_propagation ... ok
+test test_discovery_full_integration_flow ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.65s
+
+     Running tests\discovery_property_tests.rs (target\debug\deps\discovery_property_tests-8b08a231ef3967a7.exe)
+
+running 1 test
+test prop_discovery_finds_all_active_before_gap ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 31.16s
+
+     Running tests\feature_gating_compliance.rs (target\debug\deps\feature_gating_compliance-b63c34f8f4a56c71.exe)
+
+running 2 tests
+test verify_default_feature_configuration ... ok
+test verify_dependency_gating ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\gui_tx_build.rs (target\debug\deps\gui_tx_build-f3f1a784b5fdf42d.exe)
+
+running 2 tests
+test test_build_eip1559_fees ... ok
+test test_build_legacy_with_nonce_override ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\hardware_tests.rs (target\debug\deps\hardware_tests-c1af781511e5747e.exe)
+
+running 13 tests
+test tests::test_gui_wallet_operations ... ignored
+test tests::test_hardware_wallet_feedback ... ok
+test tests::test_hardware_manager_initialization ... ok
+test tests::test_hardware_wallet_detection ... ok
+test tests::test_error_handling ... ok
+test tests::test_comprehensive_error_scenarios ... ok
+test tests::test_transaction_signing_flow ... ok
+test tests::test_trezor_wallet_operations ... ok
+test tests::test_timeout_handling ... ok
+test tests::test_hardware_operation_with_timeout ... ok
+test tests::test_ledger_wallet_operations ... ok
+test tests::test_address_derivation_performance ... ok
+test tests::test_main_wallet_hardware_integration ... ok
+
+test result: ok. 12 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.20s
+
+     Running tests\hardware_wallet_e2e.rs (target\debug\deps\hardware_wallet_e2e-625befd029fd2c14.exe)
+
+running 8 tests
+test test_e2e_experienced_user_transaction ... FAILED
+test test_e2e_first_time_user_setup ... FAILED
+test test_e2e_multi_device_user ... FAILED
+test test_e2e_performance_validation ... FAILED
+test test_e2e_corporate_multi_account ... FAILED
+test test_e2e_high_value_transaction ... FAILED
+test test_e2e_real_world_simulation ... FAILED
+test test_e2e_error_recovery ... ok
+
+failures:
+
+---- test_e2e_experienced_user_transaction stdout ----
+🧪 E2E Test: Experienced user transaction workflow
+✅ Hardware wallets already detected and ready
+📝 Transaction prepared: 0.5 ETH to recipient
+
+thread 'test_e2e_experienced_user_transaction' (10836) panicked at tests\hardware_wallet_e2e.rs:88:10:
+called `Result::unwrap()` on an `Err` value: HardwareWallet(DeviceNotFound)
+
+---- test_e2e_first_time_user_setup stdout ----
+🧪 E2E Test: First-time user setup
+✅ Wallet initialized with hardware wallet support
+
+thread 'test_e2e_first_time_user_setup' (12768) panicked at tests\hardware_wallet_e2e.rs:30:5:
+assertion failed: !detected_wallets.is_empty()
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- test_e2e_multi_device_user stdout ----
+🧪 E2E Test: Multi-device user workflow
+✅ Detected 0 devices
+
+thread 'test_e2e_multi_device_user' (15796) panicked at tests\hardware_wallet_e2e.rs:123:5:
+assertion failed: devices.len() >= 2
+
+---- test_e2e_performance_validation stdout ----
+🧪 E2E Test: Performance validation
+⚡ Bulk address derivation: 20 operations in 38.8µs
+
+thread 'test_e2e_performance_validation' (4736) panicked at tests\hardware_wallet_e2e.rs:361:9:
+assertion failed: result.is_ok()
+
+---- test_e2e_corporate_multi_account stdout ----
+🧪 E2E Test: Corporate multi-account workflow
+🏢 Setting up Treasury account at m/44'/60'/0'/0
+
+thread 'test_e2e_corporate_multi_account' (8624) panicked at tests\hardware_wallet_e2e.rs:297:73:
+called `Result::unwrap()` on an `Err` value: HardwareWallet(DeviceNotFound)
+
+---- test_e2e_high_value_transaction stdout ----
+🧪 E2E Test: High-value transaction workflow
+💰 High-value transaction: 50 ETH
+
+thread 'test_e2e_high_value_transaction' (18588) panicked at tests\hardware_wallet_e2e.rs:239:10:
+called `Result::unwrap()` on an `Err` value: HardwareWallet(DeviceNotFound)
+
+---- test_e2e_real_world_simulation stdout ----
+🧪 E2E Test: Real-world simulation with delays
+🔍 Device detection attempt #1
+⏳ No devices found, waiting...
+🔍 Device detection attempt #2
+⏳ No devices found, waiting...
+🔍 Device detection attempt #3
+⏳ No devices found, waiting...
+
+thread 'test_e2e_real_world_simulation' (14864) panicked at tests\hardware_wallet_e2e.rs:441:5:
+assertion failed: !devices.is_empty()
+
+
+failures:
+    test_e2e_corporate_multi_account
+    test_e2e_experienced_user_transaction
+    test_e2e_first_time_user_setup
+    test_e2e_high_value_transaction
+    test_e2e_multi_device_user
+    test_e2e_performance_validation
+    test_e2e_real_world_simulation
+
+test result: FAILED. 1 passed; 7 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.26s
+
+error: test failed, to rerun pass `--test hardware_wallet_e2e`
