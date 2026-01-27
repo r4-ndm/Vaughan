@@ -163,11 +163,9 @@ impl SecureKeystoreImpl {
         let private_key_str = private_key.expose_secret();
 
         // Remove 0x prefix if present
-        let clean_key = if private_key_str.starts_with("0x") {
-            &private_key_str[2..]
-        } else {
-            private_key_str
-        };
+        let clean_key = private_key_str
+            .strip_prefix("0x")
+            .unwrap_or(private_key_str);
 
         // Validate hex format and length
         if clean_key.len() != 64 {
@@ -183,8 +181,7 @@ impl SecureKeystoreImpl {
         let signing_key = SigningKey::from_bytes(
             key_bytes
                 .as_slice()
-                .try_into()
-                .map_err(|_| SecurityError::InvalidPrivateKey)?,
+                .into(),
         )
         .map_err(|_| SecurityError::InvalidPrivateKey)?;
 
@@ -377,11 +374,9 @@ impl SecureKeystoreImpl {
 
             let private_key = self.keychain.retrieve(&account.key_reference)?;
             let private_key_str = private_key.expose_secret();
-            let clean_key = if private_key_str.starts_with("0x") {
-                &private_key_str[2..]
-            } else {
-                private_key_str
-            };
+            let clean_key = private_key_str
+                .strip_prefix("0x")
+                .unwrap_or(private_key_str);
 
             hex::decode(clean_key).map_err(|_| SecurityError::InvalidPrivateKey)?
         };
@@ -389,8 +384,7 @@ impl SecureKeystoreImpl {
         let signing_key = SigningKey::from_bytes(
             key_bytes
                 .as_slice()
-                .try_into()
-                .map_err(|_| SecurityError::InvalidPrivateKey)?,
+                .into(),
         )
         .map_err(|_| SecurityError::InvalidPrivateKey)?;
 

@@ -84,10 +84,11 @@ fn test_invalid_json_rejected() {
     let file_path = dir.path().join("invalid.json");
 
     // Write invalid JSON
-    std::fs::write(&file_path, "{ this is not valid json }").unwrap();
+    let invalid_json = "{ this is not valid json }";
+    std::fs::write(&file_path, invalid_json).unwrap();
 
     let password = SecretString::new("testpassword123".to_string());
-    let result = importer.import_from_keystore_file(&file_path, &password, ImportMetadata::new());
+    let result = importer.import_from_keystore(invalid_json, &password, ImportMetadata::new());
 
     assert!(result.is_err(), "Should reject invalid JSON");
 }
@@ -99,10 +100,11 @@ fn test_empty_json_rejected() {
     let file_path = dir.path().join("empty.json");
 
     // Write empty JSON
-    std::fs::write(&file_path, "{}").unwrap();
+    let empty_json = "{}";
+    std::fs::write(&file_path, empty_json).unwrap();
 
     let password = SecretString::new("testpassword123".to_string());
-    let result = importer.import_from_keystore_file(&file_path, &password, ImportMetadata::new());
+    let result = importer.import_from_keystore(empty_json, &password, ImportMetadata::new());
 
     assert!(result.is_err(), "Should reject empty JSON");
 }
@@ -122,7 +124,7 @@ fn test_missing_crypto_section_rejected() {
     std::fs::write(&file_path, invalid_keystore).unwrap();
 
     let password = SecretString::new("testpassword123".to_string());
-    let result = importer.import_from_keystore_file(&file_path, &password, ImportMetadata::new());
+    let result = importer.import_from_keystore(invalid_keystore, &password, ImportMetadata::new());
 
     assert!(result.is_err(), "Should reject keystore missing crypto section");
 }
@@ -168,7 +170,7 @@ async fn test_corrupted_mac_detected() {
     let file_path = dir.path().join("corrupted_mac.json");
     std::fs::write(&file_path, &corrupted_json).unwrap();
 
-    let result = importer.import_from_keystore_file(&file_path, &password, ImportMetadata::new());
+    let result = importer.import_from_keystore(&corrupted_json, &password, ImportMetadata::new());
 
     assert!(result.is_err(), "Should detect corrupted MAC");
 }
@@ -211,7 +213,7 @@ async fn test_corrupted_ciphertext_detected() {
     let file_path = dir.path().join("corrupted_ct.json");
     std::fs::write(&file_path, &corrupted_json).unwrap();
 
-    let result = importer.import_from_keystore_file(&file_path, &password, ImportMetadata::new());
+    let result = importer.import_from_keystore(&corrupted_json, &password, ImportMetadata::new());
 
     assert!(result.is_err(), "Should detect corrupted ciphertext");
 }
@@ -247,7 +249,7 @@ async fn test_wrong_password_rejected() {
 
     let wrong_password = SecretString::new("wrongpassword456".to_string());
     let result =
-        importer.import_from_keystore_file(&file_path, &wrong_password, ImportMetadata::new());
+        importer.import_from_keystore(&json, &wrong_password, ImportMetadata::new());
 
     assert!(result.is_err(), "Should reject wrong password");
 }
@@ -279,7 +281,7 @@ async fn test_empty_password_rejected() {
 
     let empty_password = SecretString::new("".to_string());
     let result =
-        importer.import_from_keystore_file(&file_path, &empty_password, ImportMetadata::new());
+        importer.import_from_keystore(&json, &empty_password, ImportMetadata::new());
 
     assert!(result.is_err(), "Should reject empty password");
 }
@@ -327,3 +329,4 @@ fn test_v3_keystore_serialization_roundtrip() {
     assert_eq!(parsed.version, keystore.version);
     assert_eq!(parsed.id, keystore.id);
 }
+

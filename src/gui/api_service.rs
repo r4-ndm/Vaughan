@@ -56,7 +56,9 @@ pub async fn fetch_token_info(token_address: String, network_id: NetworkId) -> R
     };
 
     // Create provider
-    let url = rpc_url.parse().unwrap();
+    let url = rpc_url
+        .parse()
+        .map_err(|e| format!("Invalid RPC URL: {}", e))?;
     let provider = ProviderBuilder::new().connect_http(url);
 
     // Helper function to call contract method

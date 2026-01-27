@@ -1,0 +1,9 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc e9bf2e0bfef1e50c32c2cbda62d6f13dcd3e2ab803d8d7fc57d188bed7372f82 # shrinks to sensitive_data = "5a97a7182ac83019ea95dd5a563a826e116ce6ddec31c269120ffa5a1b958ed9", address = "0x8ca2ecaa4d16e36eec7fbbcfee4f69346ef4ccda", details = "55a6c2mEJ c 4G299m48W4T 3  ld 0 "
+cc 7a2d0f6fdf35b4f5795968fbc520e759536f13871bb70838958fe23180d23651 # shrinks to sensitive_data = "ad113afd8bfbc8f518e11f82abadbd31359ec42cc17fcdff481aab7bde7af0aa", password = "&8&$$%*JYO#"
+cc 8c13d7a8373b3bf9febb72a5c8f13e726af6f0a11ca98a9e2339b5679f6c80d2 # shrinks to sensitive_data = "6f4b7cdb4ccbed0b4731ea0a4a1cb8bd29e4876be2b8dde64f85da7daa00ef5b", password = "g*%8v#4pufzydwu47"

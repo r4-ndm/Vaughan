@@ -23,42 +23,61 @@ pub type Result<T> = std::result::Result<T, VaughanError>;
 /// Main error type for Vaughan wallet operations
 #[derive(Error, Debug, Clone)]
 pub enum VaughanError {
+    /// Wallet-related errors (account management, key operations)
     #[error("Wallet error: {0}")]
     Wallet(#[from] WalletError),
 
+    /// Network connectivity and RPC errors
     #[error("Network error: {0}")]
     Network(#[from] NetworkError),
 
+    /// Smart contract interaction errors
     #[error("Contract error: {0}")]
     Contract(#[from] ContractError),
 
+    /// GUI and user interface errors
     #[error("GUI error: {0}")]
     Gui(#[from] GuiError),
 
+    /// Security and cryptographic errors
     #[error("Security error: {0}")]
     Security(#[from] SecurityError),
 
+    /// File system and I/O errors
     #[error("IO error: {message}")]
-    Io { message: String },
+    Io {
+        /// Error message describing the I/O failure
+        message: String
+    },
 
+    /// JSON serialization/deserialization errors
     #[error("Serialization error: {message}")]
-    Serialization { message: String },
+    Serialization {
+        /// Error message describing the serialization failure
+        message: String
+    },
 
+    /// Configuration file and settings errors
     #[error("Configuration error: {0}")]
     Configuration(#[from] ConfigurationError),
 
+    /// Hardware wallet (Ledger/Trezor) errors
     #[error("Hardware wallet error: {0}")]
     HardwareWallet(#[from] HardwareWalletError),
 
+    /// Token-related errors (ERC-20, custom tokens)
     #[error("Token error: {0}")]
     Token(#[from] TokenError),
 
+    /// Foundry/Forge integration errors
     #[error("Foundry integration error: {0}")]
     Foundry(#[from] FoundryError),
 
+    /// Input validation errors
     #[error("Validation error: {0}")]
     ValidationError(String),
 
+    /// Resource not found errors
     #[error("Not found: {0}")]
     NotFound(String),
 }
@@ -130,174 +149,331 @@ impl From<anyhow::Error> for VaughanError {
     }
 }
 
+/// Wallet-specific errors for account and key management operations
 #[derive(Error, Debug, Clone)]
 pub enum WalletError {
+    /// Account with the specified address was not found
     #[error("Account not found: {address}")]
-    AccountNotFound { address: String },
+    AccountNotFound {
+        /// The address that was not found
+        address: String
+    },
 
+    /// Private key format is invalid or corrupted
     #[error("Invalid private key format")]
     InvalidPrivateKey,
 
+    /// Wallet is locked and requires authentication
     #[error("Wallet is locked")]
     WalletLocked,
 
+    /// Account has insufficient balance for the operation
     #[error("Insufficient balance")]
     InsufficientBalance,
 
+    /// General wallet operation error
     #[error("Wallet error: {message}")]
-    WalletError { message: String },
+    WalletError {
+        /// Error message describing the failure
+        message: String
+    },
 
+    /// Failed to serialize wallet data
     #[error("Serialization error: {0}")]
     SerializationError(String),
 
+    /// Failed to deserialize wallet data
     #[error("Deserialization error: {0}")]
     DeserializationError(String),
 
+    /// Generic wallet error
     #[error("Generic error: {0}")]
     Generic(String),
 }
 
+/// Network connectivity and RPC errors
 #[derive(Error, Debug, Clone)]
 pub enum NetworkError {
+    /// The requested network is not supported
     #[error("Network not supported: {network_id}")]
-    UnsupportedNetwork { network_id: u64 },
+    UnsupportedNetwork {
+        /// The unsupported network ID
+        network_id: u64
+    },
 
+    /// Failed to connect to RPC endpoint
     #[error("RPC connection failed: {url}")]
-    RpcConnectionFailed { url: String },
+    RpcConnectionFailed {
+        /// The RPC URL that failed
+        url: String
+    },
 
+    /// RPC call returned an error
     #[error("RPC error: {message}")]
-    RpcError { message: String },
+    RpcError {
+        /// Error message from the RPC provider
+        message: String
+    },
 
+    /// Network configuration is invalid
     #[error("Invalid network configuration")]
     InvalidConfiguration,
 
+    /// Chain ID doesn't match expected value
     #[error("Chain ID mismatch: expected {expected}, got {actual}")]
-    ChainIdMismatch { expected: u64, actual: u64 },
+    ChainIdMismatch {
+        /// Expected chain ID
+        expected: u64,
+        /// Actual chain ID received
+        actual: u64
+    },
 
+    /// Network operation timed out
     #[error("Network timeout")]
     Timeout,
 
+    /// General network error
     #[error("Network error: {message}")]
-    NetworkError { message: String },
+    NetworkError {
+        /// Error message describing the network failure
+        message: String
+    },
 }
 
+/// Smart contract interaction errors
 #[derive(Error, Debug, Clone)]
 pub enum ContractError {
+    /// Contract function call failed
     #[error("Contract call failed: {reason}")]
-    CallFailed { reason: String },
+    CallFailed {
+        /// Reason for the call failure
+        reason: String
+    },
 
+    /// Contract address is invalid or malformed
     #[error("Invalid contract address: {address}")]
-    InvalidAddress { address: String },
+    InvalidAddress {
+        /// The invalid address
+        address: String
+    },
 
+    /// Failed to parse contract ABI
     #[error("ABI parsing error: {error}")]
-    AbiError { error: String },
+    AbiError {
+        /// ABI parsing error details
+        error: String
+    },
 }
 
+/// GUI and user interface errors
 #[derive(Error, Debug, Clone)]
 pub enum GuiError {
+    /// Failed to create a GUI widget
     #[error("Widget creation failed: {widget}")]
-    WidgetCreationFailed { widget: String },
+    WidgetCreationFailed {
+        /// Name of the widget that failed to create
+        widget: String
+    },
 
+    /// GUI layout error
     #[error("Layout error: {message}")]
-    LayoutError { message: String },
+    LayoutError {
+        /// Error message describing the layout issue
+        message: String
+    },
 
+    /// Event handling error
     #[error("Event handling error: {event}")]
-    EventHandlingError { event: String },
+    EventHandlingError {
+        /// Name of the event that failed
+        event: String
+    },
 
+    /// Window management error
     #[error("Window error: {message}")]
-    WindowError { message: String },
+    WindowError {
+        /// Error message describing the window issue
+        message: String
+    },
 }
 
+/// Security and cryptographic operation errors
 #[derive(Error, Debug, Clone)]
 pub enum SecurityError {
+    /// Private key format is invalid
     #[error("Invalid private key")]
     InvalidPrivateKey,
 
+    /// Hardware wallet device is not connected
     #[error("Hardware wallet not connected")]
     HardwareWalletNotConnected,
 
+    /// Transaction requires user confirmation on hardware device
     #[error("Transaction confirmation required")]
     ConfirmationRequired,
 
+    /// Ethereum address is invalid
     #[error("Invalid address: {0}")]
     InvalidAddress(String),
 
+    /// Keystore operation failed
     #[error("Keystore error: {message}")]
-    KeystoreError { message: String },
+    KeystoreError {
+        /// Error message describing the keystore failure
+        message: String
+    },
 
+    /// Seed phrase (mnemonic) is invalid
     #[error("Invalid seed phrase: {reason}")]
-    InvalidSeedPhrase { reason: String },
+    InvalidSeedPhrase {
+        /// Reason why the seed phrase is invalid
+        reason: String
+    },
 
+    /// BIP-32/BIP-44 key derivation failed
     #[error("Key derivation error: {message}")]
-    KeyDerivationError { message: String },
+    KeyDerivationError {
+        /// Error message describing the derivation failure
+        message: String
+    },
 
+    /// System keychain access failed
     #[error("Keychain error: {message}")]
-    KeychainError { message: String },
+    KeychainError {
+        /// Error message describing the keychain failure
+        message: String
+    },
 
+    /// Data encryption failed
     #[error("Encryption error: {message}")]
-    EncryptionError { message: String },
+    EncryptionError {
+        /// Error message describing the encryption failure
+        message: String
+    },
 
+    /// Data decryption failed
     #[error("Decryption error: {message}")]
-    DecryptionError { message: String },
+    DecryptionError {
+        /// Error message describing the decryption failure
+        message: String
+    },
 
+    /// Failed to serialize security data
     #[error("Serialization error: {message}")]
-    SerializationError { message: String },
+    SerializationError {
+        /// Error message describing the serialization failure
+        message: String
+    },
 
+    /// Failed to deserialize security data
     #[error("Deserialization error: {message}")]
-    DeserializationError { message: String },
+    DeserializationError {
+        /// Error message describing the deserialization failure
+        message: String
+    },
 
+    /// Rate limit exceeded for security operation
     #[error("Rate limit exceeded for {operation}. Try again in {wait_time_seconds} seconds.")]
     RateLimitExceeded {
+        /// The operation that was rate limited
         operation: String,
+        /// Seconds to wait before retrying
         wait_time_seconds: u64,
     },
 
+    /// Password authentication failed
     #[error("Invalid password")]
     InvalidPassword,
 
+    /// Authentication token has expired
     #[error("Authentication token expired")]
     TokenExpired,
 
+    /// Data integrity check failed
     #[error("Integrity check failed: {message}")]
-    IntegrityCheckFailed { message: String },
+    IntegrityCheckFailed {
+        /// Error message describing the integrity failure
+        message: String
+    },
 }
 
+/// Foundry/Forge integration errors for smart contract development
 #[derive(Error, Debug, Clone)]
 pub enum FoundryError {
+    /// Forge command execution failed
     #[error("Forge command failed: {command} (exit code: {exit_code}): {stderr}")]
     ForgeCommandFailed {
+        /// The forge command that failed
         command: String,
+        /// Exit code from the forge process
         exit_code: i32,
+        /// Standard error output from forge
         stderr: String,
     },
 
+    /// Contract build failed
     #[error("Build failed for contract {contract}: {reason}")]
-    BuildFailed { contract: String, reason: String },
+    BuildFailed {
+        /// Name of the contract that failed to build
+        contract: String,
+        /// Reason for the build failure
+        reason: String
+    },
 
+    /// Contract deployment failed
     #[error("Deployment failed: {reason}")]
-    DeploymentFailed { reason: String },
+    DeploymentFailed {
+        /// Reason for the deployment failure
+        reason: String
+    },
 
+    /// Test execution failed
     #[error("Test execution failed: {reason}")]
-    TestExecutionFailed { reason: String },
+    TestExecutionFailed {
+        /// Reason for the test failure
+        reason: String
+    },
 
+    /// Contract verification on block explorer failed
     #[error("Contract verification failed: {reason}")]
-    VerificationFailed { reason: String },
+    VerificationFailed {
+        /// Reason for the verification failure
+        reason: String
+    },
 
+    /// Foundry project structure is invalid
     #[error("Invalid Foundry project structure")]
     InvalidProjectStructure,
 
+    /// Build artifacts are missing for contract
     #[error("Missing build artifacts for contract: {contract}")]
-    MissingArtifacts { contract: String },
+    MissingArtifacts {
+        /// Name of the contract with missing artifacts
+        contract: String
+    },
 
+    /// Contract compilation failed
     #[error("Contract compilation failed: {error}")]
-    CompilationFailed { error: String },
+    CompilationFailed {
+        /// Compilation error details
+        error: String
+    },
 
+    /// ABI generation failed
     #[error("ABI generation failed: {contract}")]
-    AbiGenerationFailed { contract: String },
+    AbiGenerationFailed {
+        /// Name of the contract with ABI generation failure
+        contract: String
+    },
 
+    /// Sandbox execution failed
     #[error("Sandbox execution failed: {reason}")]
-    SandboxFailed { reason: String },
+    SandboxFailed {
+        /// Reason for the sandbox failure
+        reason: String
+    },
 
+    /// Script execution timed out
     #[error("Script execution timeout")]
     ExecutionTimeout,
 }
@@ -725,24 +901,24 @@ impl VaughanError {
 
     /// Check if this error is recoverable
     pub fn is_recoverable(&self) -> bool {
-        match self {
-            VaughanError::Network(_) => true,
-            VaughanError::Configuration(_) => true,
-            VaughanError::HardwareWallet(HardwareWalletError::DeviceNotFound) => true,
-            VaughanError::HardwareWallet(HardwareWalletError::ConnectionFailed { .. }) => true,
-            VaughanError::HardwareWallet(HardwareWalletError::UserCancelled) => true,
-            VaughanError::HardwareWallet(HardwareWalletError::DeviceLocked) => true,
-            VaughanError::HardwareWallet(HardwareWalletError::TransactionRejected) => true,
-            VaughanError::HardwareWallet(HardwareWalletError::CommunicationError) => true,
-            VaughanError::HardwareWallet(HardwareWalletError::OperationTimeout { .. }) => true,
-            VaughanError::HardwareWallet(HardwareWalletError::ConfirmationRequired) => true,
-            VaughanError::HardwareWallet(HardwareWalletError::AppNotOpen { .. }) => true,
-            VaughanError::HardwareWallet(HardwareWalletError::DeviceNotConnected) => true,
-            VaughanError::HardwareWallet(HardwareWalletError::BlindSigningDisabled) => true,
-            VaughanError::Wallet(WalletError::InsufficientBalance) => true,
-            VaughanError::Security(SecurityError::ConfirmationRequired) => true,
-            _ => false,
-        }
+        matches!(
+            self,
+            VaughanError::Network(_)
+                | VaughanError::Configuration(_)
+                | VaughanError::HardwareWallet(HardwareWalletError::DeviceNotFound)
+                | VaughanError::HardwareWallet(HardwareWalletError::ConnectionFailed { .. })
+                | VaughanError::HardwareWallet(HardwareWalletError::UserCancelled)
+                | VaughanError::HardwareWallet(HardwareWalletError::DeviceLocked)
+                | VaughanError::HardwareWallet(HardwareWalletError::TransactionRejected)
+                | VaughanError::HardwareWallet(HardwareWalletError::CommunicationError)
+                | VaughanError::HardwareWallet(HardwareWalletError::OperationTimeout { .. })
+                | VaughanError::HardwareWallet(HardwareWalletError::ConfirmationRequired)
+                | VaughanError::HardwareWallet(HardwareWalletError::AppNotOpen { .. })
+                | VaughanError::HardwareWallet(HardwareWalletError::DeviceNotConnected)
+                | VaughanError::HardwareWallet(HardwareWalletError::BlindSigningDisabled)
+                | VaughanError::Wallet(WalletError::InsufficientBalance)
+                | VaughanError::Security(SecurityError::ConfirmationRequired)
+        )
     }
 
     /// Get suggested recovery actions

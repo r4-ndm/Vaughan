@@ -1,6 +1,6 @@
 
 use vaughan::wallet::account_manager::discovery::{
-    AccountDiscovery, DiscoveredAccount, DiscoveryClient, DiscoveryConfig,
+    AccountDiscovery, DiscoveryClient, DiscoveryConfig,
 };
 use vaughan::error::account::AccountResult;
 use alloy::primitives::{Address, Bytes, U256};
@@ -8,8 +8,8 @@ use alloy::rpc::types::TransactionRequest;
 use alloy::signers::local::MnemonicBuilder;
 use coins_bip39::English;
 use async_trait::async_trait;
-use std::collections::{HashMap, HashSet};
-use std::sync::{Arc, Mutex};
+use std::collections::HashSet;
+use std::sync::Arc;
 use proptest::prelude::*;
 
 // --- Mock Provider (Simplified for Property Tests) ---
@@ -28,7 +28,7 @@ impl ProptestProvider {
         }
     }
 
-    fn is_index_active(&self, address: Address) -> bool {
+    fn is_index_active(&self, _address: Address) -> bool {
         // Reverse lookup could be slow, so we derive and check.
         // But for proptest, maybe we pre-calculate map?
         // Let's derive on the fly? No, that's slow.
@@ -97,7 +97,7 @@ proptest! {
             
             // Calculate which indices should be found based on gap limit
             let mut expected_indices = Vec::new();
-            let mut last_found_index = -1i64;
+            let _last_found_index = -1i64;
             
             // Also need to include index 0? The loop starts at 0.
             // Wait, discovery scans 0, 1, 2...

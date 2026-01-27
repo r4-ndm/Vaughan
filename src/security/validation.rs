@@ -133,11 +133,9 @@ pub fn validate_file_path(path: &str, base_dir: &Path) -> Result<PathBuf> {
 /// Validates private key format
 pub fn validate_private_key(private_key: &str) -> Result<String> {
     // Remove 0x prefix if present
-    let clean_key = if private_key.starts_with("0x") {
-        &private_key[2..]
-    } else {
-        private_key
-    };
+    let clean_key = private_key
+        .strip_prefix("0x")
+        .unwrap_or(private_key);
 
     // Check length (64 hex characters for 256-bit key)
     if clean_key.len() != 64 {
@@ -172,11 +170,9 @@ pub fn validate_private_key(private_key: &str) -> Result<String> {
 /// Validates an Ethereum address
 pub fn validate_ethereum_address(address: &str) -> Result<()> {
     // Check if it starts with 0x (optional but recommended for clarity)
-    let clean_address = if address.starts_with("0x") {
-        &address[2..]
-    } else {
-        address
-    };
+    let clean_address = address
+        .strip_prefix("0x")
+        .unwrap_or(address);
 
     // Check length (40 hex characters)
     if clean_address.len() != 40 {

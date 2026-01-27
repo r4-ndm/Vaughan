@@ -1,9 +1,79 @@
 //! Hardware wallet integration for Ledger and Trezor devices
 //!
-//! This module provides secure integration with hardware wallets,
-//! supporting both Ledger and Trezor devices for maximum security.
-//! Includes security features like transaction validation, timeout handling,
-//! and user confirmation requirements.
+//! This module provides secure integration with hardware wallets using
+//! **Alloy native signers** (NOT MetaMask patterns):
+//! - [`alloy-signer-ledger`](https://docs.rs/alloy-signer-ledger/) v1.1 for Ledger devices
+//! - [`alloy-signer-trezor`](https://docs.rs/alloy-signer-trezor/) v1.1 for Trezor devices
+//!
+//! # Security Properties
+//!
+//! - **On-Device Signing**: Private keys never leave the hardware device
+//! - **User Confirmation**: All transactions require physical button press on device
+//! - **Secure Communication**: Direct USB HID protocol (no network communication)
+//! - **Thread-Safe**: Safe concurrent access to hardware devices
+//!
+//! # Supported Devices
+//!
+//! - **Ledger**: Nano S, Nano S Plus, Nano X
+//! - **Trezor**: Model One, Model T
+//!
+//! # Feature Flag
+//!
+//! This module requires the `hardware-wallets` feature flag:
+//! ```toml
+//! [dependencies]
+//! vaughan = { version = "*", features = ["hardware-wallets"] }
+//! ```
+//!
+//! # Usage Examples
+//!
+//! ## Connecting to Ledger
+//!
+//! ```no_run
+//! use vaughan::security::hardware::{LedgerWallet, HardwareWalletTrait};
+//!
+//! # async fn example() -> Result<(), Box<dyn std::error::Error>> {
+//! let mut ledger = LedgerWallet::new();
+//! ledger.connect().await?;
+//!
+//! if let Some(info) = ledger.device_info() {
+//!     println!("Connected to: {} {}", info.device_type, info.model);
+//! }
+//! # Ok(())
+//! # }
+//! ```
+//!
+//! ## Signing Transactions
+//!
+//! ```no_run
+//! use alloy::rpc::types::TransactionRequest;
+//! use alloy::primitives::U256;
+//! # use vaughan::security::hardware::{LedgerWallet, HardwareWalletTrait};
+//!
+//! # async fn example() -> Result<(), Box<dyn std::error::Error>> {
+//! # let mut ledger = LedgerWallet::new();
+//! # ledger.connect().await?;
+//! let mut tx = TransactionRequest::default();
+//! tx.value = Some(U256::from(1_000_000_000_000_000_000u64)); // 1 ETH
+//! tx.gas_price = Some(20_000_000_000u128); // 20 gwei
+//! tx.gas = Some(21_000u64);
+//!
+//! // User must confirm on device
+//! let signature = ledger.sign_transaction(&tx, "m/44'/60'/0'/0/0").await?;
+//! # Ok(())
+//! # }
+//! ```
+//!
+//! # Architecture
+//!
+//! This module uses Alloy's native hardware wallet signers, which provide:
+//! - Industry-standard BIP-44 derivation paths
+//! - Constant-time cryptographic operations
+//! - Secure USB HID communication
+//! - Comprehensive error handling
+//!
+//! See the [Phase 0 Security Audit](../../.kiro/specs/professional-wallet-improvement/HARDWARE_WALLET_SECURITY_AUDIT.md)
+//! for detailed security analysis.
 
 #![cfg_attr(not(feature = "hardware-wallets"), allow(dead_code))]
 
@@ -32,11 +102,27 @@ use {
     std::sync::Arc,
 };
 
-/// Hardware wallet types
+/// Hardware wallet types supporting Ledger and Trezor devices
+///
+/// This enum provides a unified interface for different hardware wallet types,
+/// allowing the application to work with multiple device types through a single API.
+///
+/// # Alloy Integration
+///
+/// Both variants use Alloy native signers:
+/// - `Ledger`: Uses [`alloy-signer-ledger`](https://docs.rs/alloy-signer-ledger/)
+/// - `Trezor`: Uses [`alloy-signer-trezor`](https://docs.rs/alloy-signer-trezor/)
+///
+/// # Security
+///
+/// All signing operations happen on the hardware device. Private keys never
+/// leave the device and cannot be extracted by software.
 #[cfg(feature = "hardware-wallets")]
 #[derive(Debug, Clone)]
 pub enum HardwareWallet {
+    /// Ledger hardware wallet (Nano S, Nano S Plus, Nano X)
     Ledger(LedgerWallet),
+    /// Trezor hardware wallet (Model One, Model T)
     Trezor(TrezorWallet),
 }
 
@@ -94,22 +180,105 @@ impl HardwareWallet {
 }
 
 /// Common trait for hardware wallet operations
+///
+/// This trait defines the standard interface that all hardware wallet implementations
+/// must provide. It ensures consistent behavior across different device types.
+///
+/// # Security Guarantees
+///
+/// All implementations must ensure:
+/// - Private keys never leave the hardware device
+/// - User confirmation required for all signing operations
+/// - Secure communication channel (USB HID)
+/// - Thread-safe concurrent access
+///
+/// # Error Handling
+///
+/// Methods return `Result<T>` to handle:
+/// - Device connection failures
+/// - User rejection of operations
+/// - Communication timeouts
+/// - Invalid parameters
 #[async_trait]
 pub trait HardwareWalletTrait: Send + Sync {
+    /// Connect to the hardware device
+    ///
+    /// Establishes a connection to the hardware wallet and retrieves device information.
+    /// This must be called before any other operations.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if:
+    /// - Device is not connected
+    /// - Connection times out (default: 30 seconds)
+    /// - Device is locked or in bootloader mode
     async fn connect(&mut self) -> Result<()>;
+
+    /// Disconnect from the hardware device
+    ///
+    /// Cleanly closes the connection to the hardware wallet and clears device state.
     async fn disconnect(&mut self) -> Result<()>;
+
+    /// Derive multiple addresses from the hardware wallet
+    ///
+    /// # Parameters
+    ///
+    /// - `derivation_path`: BIP-44 path (e.g., "m/44'/60'/0'/0")
+    /// - `count`: Number of addresses to derive (max: 100)
+    ///
+    /// # Security
+    ///
+    /// Address derivation happens on-device. The software never sees private keys.
     async fn get_addresses(&self, derivation_path: &str, count: u32) -> Result<Vec<Address>>;
+
+    /// Sign a transaction with the hardware wallet
+    ///
+    /// # Parameters
+    ///
+    /// - `tx`: Transaction to sign
+    /// - `derivation_path`: BIP-44 path for signing key
+    ///
+    /// # User Interaction
+    ///
+    /// This operation requires the user to:
+    /// 1. Review transaction details on device screen
+    /// 2. Verify recipient address
+    /// 3. Confirm with physical button press
+    ///
+    /// # Security
+    ///
+    /// Signing happens entirely on-device. Only the signature is returned.
     async fn sign_transaction(&self, tx: &TransactionRequest, derivation_path: &str) -> Result<Signature>;
+
+    /// Sign a transaction with a custom timeout
+    ///
+    /// Same as `sign_transaction` but allows specifying a custom timeout
+    /// for user confirmation.
     async fn sign_transaction_with_timeout(
         &self,
         tx: &TransactionRequest,
         derivation_path: &str,
         timeout_secs: u64,
     ) -> Result<Signature>;
+
+    /// Verify an address on the hardware device
+    ///
+    /// Displays the address on the device screen for user verification.
+    /// This helps prevent address substitution attacks.
     async fn verify_address(&self, address: &str, derivation_path: &str) -> Result<bool>;
+
+    /// Check if the device is currently connected
     fn is_connected(&self) -> bool;
+
+    /// Get device information (model, firmware version, etc.)
     fn device_info(&self) -> Option<HardwareWalletInfo>;
+
+    /// Get the timestamp of the last device activity
+    ///
+    /// Used for connection timeout detection.
     fn last_activity(&self) -> Option<Instant>;
+
+    /// Ping the device to check if it's still responsive
     async fn ping(&self) -> Result<()>;
 }
 
@@ -140,7 +309,54 @@ pub struct AddressVerificationResult {
     pub details: Vec<Result<bool>>,
 }
 
-/// Ledger wallet implementation
+/// Ledger hardware wallet implementation using Alloy native signer
+///
+/// This struct provides integration with Ledger hardware wallets (Nano S, Nano S Plus, Nano X)
+/// using the [`alloy-signer-ledger`](https://docs.rs/alloy-signer-ledger/) crate.
+///
+/// # Architecture
+///
+/// - **Alloy Native**: Uses `LedgerSigner` from `alloy-signer-ledger`
+/// - **USB HID**: Direct USB communication (no network)
+/// - **On-Device Signing**: Private keys never leave the device
+/// - **User Confirmation**: Physical button press required
+///
+/// # Connection Lifecycle
+///
+/// 1. Create wallet: `LedgerWallet::new()`
+/// 2. Connect to device: `wallet.connect().await?`
+/// 3. Perform operations (sign, derive addresses)
+/// 4. Disconnect: `wallet.disconnect().await?`
+///
+/// # Example
+///
+/// ```no_run
+/// use vaughan::security::hardware::{LedgerWallet, HardwareWalletTrait};
+///
+/// # async fn example() -> Result<(), Box<dyn std::error::Error>> {
+/// let mut ledger = LedgerWallet::new()
+///     .with_timeout(std::time::Duration::from_secs(60));
+///
+/// ledger.connect().await?;
+///
+/// // Derive addresses
+/// let addresses = ledger.get_addresses("m/44'/60'/0'/0", 5).await?;
+///
+/// // Sign transaction (user must confirm on device)
+/// let signature = ledger.sign_transaction(&tx, "m/44'/60'/0'/0/0").await?;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// # Security
+///
+/// - Private keys stored in secure element
+/// - Signing happens on-device
+/// - Transaction details displayed on screen
+/// - User must physically confirm
+///
+/// See [Phase 0 Security Audit](../../.kiro/specs/professional-wallet-improvement/HARDWARE_WALLET_SECURITY_AUDIT.md)
+/// for detailed security analysis.
 #[cfg(feature = "hardware-wallets")]
 #[derive(Debug, Clone)]
 pub struct LedgerWallet {
@@ -357,7 +573,11 @@ impl HardwareWalletTrait for LedgerWallet {
                 for i in 0..count {
                     // Generate a deterministic mock address based on index
                     let mock_addr_str = format!("0x{:040x}", i + 1);
-                    addresses.push(std::str::FromStr::from_str(&mock_addr_str).unwrap());
+                    #[allow(clippy::expect_used)]
+                    addresses.push(
+                        std::str::FromStr::from_str(&mock_addr_str)
+                            .expect("Mock address format is valid")
+                    );
                 }
                 Ok(addresses)
             } else {
@@ -576,9 +796,8 @@ impl LedgerWallet {
             nonce: tx.nonce.unwrap_or(0u64),
             gas_price: tx
                 .gas_price
-                .map(|g| g.try_into().unwrap_or(20_000_000_000u128))
                 .unwrap_or(20_000_000_000u128),
-            gas_limit: tx.gas.map(|g| g.try_into().unwrap_or(21_000u64)).unwrap_or(21_000u64),
+            gas_limit: tx.gas.unwrap_or(21_000u64),
             to: alloy::primitives::TxKind::Call(to_address),
             value: tx.value.unwrap_or(U256::ZERO),
             input: Bytes::new(),
@@ -588,7 +807,53 @@ impl LedgerWallet {
     }
 }
 
-/// Trezor wallet implementation
+/// Trezor hardware wallet implementation using Alloy native signer
+///
+/// This struct provides integration with Trezor hardware wallets (Model One, Model T)
+/// using the [`alloy-signer-trezor`](https://docs.rs/alloy-signer-trezor/) crate.
+///
+/// # Architecture
+///
+/// - **Alloy Native**: Uses `TrezorSigner` from `alloy-signer-trezor`
+/// - **USB HID**: Direct USB communication (no network)
+/// - **On-Device Signing**: Private keys never leave the device
+/// - **User Confirmation**: Physical button press required
+///
+/// # Connection Lifecycle
+///
+/// 1. Create wallet: `TrezorWallet::new()`
+/// 2. Connect to device: `wallet.connect().await?`
+/// 3. Perform operations (sign, derive addresses)
+/// 4. Disconnect: `wallet.disconnect().await?`
+///
+/// # Example
+///
+/// ```no_run
+/// use vaughan::security::hardware::{TrezorWallet, HardwareWalletTrait};
+///
+/// # async fn example() -> Result<(), Box<dyn std::error::Error>> {
+/// let mut trezor = TrezorWallet::new();
+///
+/// trezor.connect().await?;
+///
+/// // Derive addresses
+/// let addresses = trezor.get_addresses("m/44'/60'/0'/0", 5).await?;
+///
+/// // Sign transaction (user must confirm on device)
+/// let signature = trezor.sign_transaction(&tx, "m/44'/60'/0'/0/0").await?;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// # Security
+///
+/// - Private keys stored in secure element
+/// - Signing happens on-device
+/// - Transaction details displayed on screen
+/// - User must physically confirm
+///
+/// See [Phase 0 Security Audit](../../.kiro/specs/professional-wallet-improvement/HARDWARE_WALLET_SECURITY_AUDIT.md)
+/// for detailed security analysis.
 #[cfg(feature = "hardware-wallets")]
 #[derive(Debug, Clone)]
 pub struct TrezorWallet {
@@ -756,7 +1021,11 @@ impl HardwareWalletTrait for TrezorWallet {
                 let mut addresses = Vec::new();
                 for i in 0..count {
                     let mock_addr_str = format!("0x{:040x}", i + 0xABC);
-                    addresses.push(std::str::FromStr::from_str(&mock_addr_str).unwrap());
+                    #[allow(clippy::expect_used)]
+                    addresses.push(
+                        std::str::FromStr::from_str(&mock_addr_str)
+                            .expect("Mock address format is valid")
+                    );
                 }
                 Ok(addresses)
             } else {
@@ -1010,9 +1279,8 @@ impl TrezorWallet {
             nonce: tx.nonce.unwrap_or(0u64),
             gas_price: tx
                 .gas_price
-                .map(|g| g.try_into().unwrap_or(20_000_000_000u128))
                 .unwrap_or(20_000_000_000u128),
-            gas_limit: tx.gas.map(|g| g.try_into().unwrap_or(21_000u64)).unwrap_or(21_000u64),
+            gas_limit: tx.gas.unwrap_or(21_000u64),
             to: alloy::primitives::TxKind::Call(to_address),
             value: tx.value.unwrap_or(U256::ZERO),
             input: Bytes::new(),
@@ -1132,15 +1400,13 @@ impl HardwareWalletSecurityValidator {
     /// Validate recipient address against allowlist if configured
     fn validate_recipient_security(&self, tx: &TransactionRequest) -> Result<()> {
         if let Some(allowed_recipients) = &self.allowed_recipients {
-            if let Some(to_kind) = &tx.to {
-                if let alloy::primitives::TxKind::Call(addr) = to_kind {
-                    if !allowed_recipients.contains(addr) {
-                        tracing::error!("❌ Recipient address {} not in allowlist", addr);
-                        return Err(HardwareWalletError::InvalidTransaction {
-                            reason: format!("Recipient address {addr} not in allowlist"),
-                        }
-                        .into());
+            if let Some(alloy::primitives::TxKind::Call(addr)) = &tx.to {
+                if !allowed_recipients.contains(addr) {
+                    tracing::error!("❌ Recipient address {} not in allowlist", addr);
+                    return Err(HardwareWalletError::InvalidTransaction {
+                        reason: format!("Recipient address {addr} not in allowlist"),
                     }
+                    .into());
                 }
             }
         }

@@ -1593,10 +1593,10 @@ impl AccountSessionState {
             return false;
         }
 
-        match operation {
-            AccountOperation::SignTransaction | AccountOperation::ExportSecrets => true,
-            _ => false,
-        }
+        matches!(
+            operation,
+            AccountOperation::SignTransaction | AccountOperation::ExportSecrets
+        )
     }
 
     /// Update account settings

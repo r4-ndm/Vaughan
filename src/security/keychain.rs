@@ -3,6 +3,10 @@
 //! This module provides platform-specific keychain integration for secure
 //! storage of private keys using the operating system's native keychain.
 
+// Allow unsafe code - all unsafe blocks are documented with SAFETY comments
+// See Phase 4 Task 4.3 completion for full unsafe code audit
+#![allow(unsafe_code)]
+
 use secrecy::{ExposeSecret, SecretString};
 #[cfg(test)]
 use std::collections::HashMap;
@@ -370,6 +374,8 @@ impl OSKeychain {
             Type: CRED_TYPE_GENERIC,
             TargetName: target_name_wide.as_ptr() as LPWSTR,
             Comment: comment_wide.as_ptr() as LPWSTR,
+            // SAFETY: FILETIME is a POD (Plain Old Data) type that can be safely zero-initialized.
+            // Zero represents 1601-01-01 in Windows FILETIME format, which is a valid value.
             LastWritten: unsafe { std::mem::zeroed() },
             CredentialBlobSize: key_bytes.len() as u32,
             CredentialBlob: key_bytes.as_ptr() as *mut u8,
@@ -380,10 +386,18 @@ impl OSKeychain {
             UserName: ptr::null_mut(),
         };
 
+        // SAFETY: CredWriteW is safe when called with a valid CREDENTIALW structure.
+        // All pointers in the credential structure are valid:
+        // - TargetName: valid UTF-16 string with null terminator (from to_wide_string)
+        // - Comment: valid UTF-16 string with null terminator (from to_wide_string)
+        // - CredentialBlob: valid byte slice from SecretString
+        // All strings are kept alive for the duration of this call.
         let result = unsafe { CredWriteW(&mut credential, 0) };
 
         if result == 0 {
             use winapi::um::errhandlingapi::GetLastError;
+            // SAFETY: GetLastError is always safe to call. It returns the last error code
+            // from the Windows API with no parameters and no side effects.
             let error_code = unsafe { GetLastError() };
             return Err(SecurityError::KeystoreError {
                 message: format!(
@@ -409,6 +423,10 @@ impl OSKeychain {
 
         let mut credential: PCREDENTIALW = ptr::null_mut();
 
+        // SAFETY: CredReadW is safe when called with valid parameters:
+        // - target_name_wide is a valid UTF-16 string with null terminator
+        // - credential is a valid mutable pointer for writing the result
+        // This is a standard Windows API call for reading credentials.
         let result = unsafe {
             CredReadW(
                 target_name_wide.as_ptr() as LPCWSTR,
@@ -420,6 +438,7 @@ impl OSKeychain {
 
         if result == 0 {
             use winapi::um::errhandlingapi::GetLastError;
+            // SAFETY: GetLastError is always safe to call.
             let error_code = unsafe { GetLastError() };
             return Err(SecurityError::KeystoreError {
                 message: format!(
@@ -430,6 +449,14 @@ impl OSKeychain {
             .into());
         }
 
+        // SAFETY: Multiple unsafe operations here, all safe because:
+        // 1. Dereferencing credential is safe because CredReadW succeeded, so credential is valid
+        // 2. blob_ptr is checked for null before use
+        // 3. from_raw_parts is safe because:
+        //    - blob_ptr is valid (null-checked)
+        //    - blob_size represents the actual data size from Windows API
+        //    - Data lifetime is valid until CredFree is called
+        // 4. Data is accessed before CredFree, ensuring no use-after-free
         let key_data = unsafe {
             let cred = &*credential;
             let blob_size = cred.CredentialBlobSize as usize;
@@ -447,6 +474,8 @@ impl OSKeychain {
             String::from_utf8_lossy(data).into_owned()
         };
 
+        // SAFETY: CredFree is safe when called with a valid credential pointer.
+        // The credential was allocated by CredReadW and is freed exactly once here.
         unsafe { CredFree(credential as *mut _) };
 
         tracing::info!("✅ Successfully retrieved key from Windows Credential Manager");
@@ -461,10 +490,14 @@ impl OSKeychain {
         let target_name = format!("{}:{}", self.service_name, key_ref.id);
         let target_name_wide: Vec<u16> = target_name.encode_utf16().chain(Some(0)).collect();
 
+        // SAFETY: CredDeleteW is safe when called with valid parameters:
+        // - target_name_wide is a valid UTF-16 string with null terminator
+        // This is a standard Windows API call for deleting credentials.
         let result = unsafe { CredDeleteW(target_name_wide.as_ptr() as LPCWSTR, CRED_TYPE_GENERIC, 0) };
 
         if result == 0 {
             use winapi::um::errhandlingapi::GetLastError;
+            // SAFETY: GetLastError is always safe to call.
             let error_code = unsafe { GetLastError() };
             return Err(SecurityError::KeystoreError {
                 message: format!(

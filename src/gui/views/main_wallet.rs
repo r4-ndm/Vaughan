@@ -11,6 +11,7 @@ use iced::{
 use crate::gui::{
     safe_calculations::*, theme::styles, utils::create_full_address_display, working_wallet::AppState, GasSpeed,
     Message, StatusMessageColor,
+    services::AssetServiceTrait,
 };
 // use crate::security::SecureAccount; // Not needed since we removed empty PickList
 
@@ -22,15 +23,13 @@ impl AppState {
                 // Header with logo and settings
                 Row::new()
                     .push({
-                        // Clickable logo with theme cycling functionality - using safe dimensions
+                        // Clickable logo with theme cycling functionality - using AssetService
                         let logo_element: Element<Message> =
-                            if std::path::Path::new("assets/vaughan-logo-513x76-thor.png").exists() {
-                                Image::new(iced::widget::image::Handle::from_path(
-                                    "assets/vaughan-logo-513x76-thor.png",
-                                ))
-                                .width(Length::Fixed(safe_dimension(513.0)))
-                                .height(Length::Fixed(safe_dimension(76.0)))
-                                .into()
+                            if let Some(logo_path) = self.services().asset().get_logo_path() {
+                                Image::new(iced::widget::image::Handle::from_path(logo_path))
+                                    .width(Length::Fixed(safe_dimension(513.0)))  // Original size
+                                    .height(Length::Fixed(safe_dimension(76.0)))  // Original size
+                                    .into()
                             } else {
                                 Text::new("VAUGHAN")
                                     .size(24)
@@ -85,9 +84,14 @@ impl AppState {
                     .push(Space::with_width(Length::Fixed(safe_dimension(8.0))))
                     .push(
                         Button::new(
-                            Image::new("assets/hamburger-128.png")
-                                .width(Length::Fixed(safe_dimension(28.0)))
-                                .height(Length::Fixed(safe_dimension(28.0))),
+                            Image::new(
+                                self.services()
+                                    .asset()
+                                    .get_icon_path("hamburger")
+                                    .unwrap_or_else(|| "assets/hamburger-128.png".into())
+                            )
+                            .width(Length::Fixed(safe_dimension(28.0)))
+                            .height(Length::Fixed(safe_dimension(28.0))),
                         )
                         .on_press(Message::ShowAddNetwork)
                         .padding(0)
@@ -186,9 +190,14 @@ impl AppState {
                     .push(Space::with_width(Length::Fixed(safe_dimension(10.0))))
                     .push(
                         Button::new(
-                            Image::new("assets/hamburger-128.png")
-                                .width(Length::Fixed(safe_dimension(26.0)))
-                                .height(Length::Fixed(safe_dimension(26.0)))
+                            Image::new(
+                                self.services()
+                                    .asset()
+                                    .get_icon_path("hamburger")
+                                    .unwrap_or_else(|| "assets/hamburger-128.png".into())
+                            )
+                            .width(Length::Fixed(safe_dimension(26.0)))
+                            .height(Length::Fixed(safe_dimension(26.0)))
                         )
                         .on_press_maybe(if self.current_account_id().is_some() {
                             Some(Message::ShowDeleteAccount)
@@ -235,9 +244,14 @@ impl AppState {
                     .push(Space::with_width(Length::Fixed(safe_dimension(8.0))))
                     .push(
                         Button::new(
-                            Image::new("assets/hamburger-128.png")
-                                .width(Length::Fixed(safe_dimension(26.0)))
-                                .height(Length::Fixed(safe_dimension(26.0)))
+                            Image::new(
+                                self.services()
+                                    .asset()
+                                    .get_icon_path("hamburger")
+                                    .unwrap_or_else(|| "assets/hamburger-128.png".into())
+                            )
+                            .width(Length::Fixed(safe_dimension(26.0)))
+                            .height(Length::Fixed(safe_dimension(26.0)))
                         )
                         .on_press(Message::ShowBalanceAddToken)
                         .padding(0)
@@ -274,12 +288,19 @@ impl AppState {
                 .into()
             }
         } else {
-            PickList::new(
-                &self.available_accounts()[..],
+            // Find the currently selected account
+            let selected_account = if let Some(current_id) = self.current_account_id() {
                 self.available_accounts()
                     .iter()
-                    .find(|a| Some(&a.id) == self.current_account_id().as_ref())
-                    .cloned(),
+                    .find(|a| &a.id == current_id)
+                    .cloned()
+            } else {
+                None
+            };
+
+            PickList::new(
+                &self.available_accounts()[..],
+                selected_account,
                 |account| Message::AccountSelected(account.id),
             )
             .width(Length::Fixed(safe_dimension(200.0)))
@@ -306,9 +327,14 @@ impl AppState {
                         Row::new()
                             .push(
                                 Button::new(
-                                    Image::new("assets/clipboard-128.png")
-                                        .width(Length::Fixed(safe_dimension(24.0)))
-                                        .height(Length::Fixed(safe_dimension(24.0))),
+                                    Image::new(
+                                        self.services()
+                                            .asset()
+                                            .get_icon_path("clipboard")
+                                            .unwrap_or_else(|| "assets/clipboard-128.png".into())
+                                    )
+                                    .width(Length::Fixed(safe_dimension(24.0)))
+                                    .height(Length::Fixed(safe_dimension(24.0))),
                                 )
                                 .on_press(Message::SendPasteAddressFromClipboard)
                                 .padding(0)
@@ -351,9 +377,14 @@ impl AppState {
                         Row::new()
                             .push(
                                 Button::new(
-                                    Image::new("assets/clipboard-128.png")
-                                        .width(Length::Fixed(safe_dimension(24.0)))
-                                        .height(Length::Fixed(safe_dimension(24.0)))
+                                    Image::new(
+                                        self.services()
+                                            .asset()
+                                            .get_icon_path("clipboard")
+                                            .unwrap_or_else(|| "assets/clipboard-128.png".into())
+                                    )
+                                    .width(Length::Fixed(safe_dimension(24.0)))
+                                    .height(Length::Fixed(safe_dimension(24.0)))
                                 )
                                 .on_press(Message::SendPasteAmountFromClipboard)
                                 .padding(0)

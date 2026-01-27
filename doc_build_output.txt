@@ -1,0 +1,308 @@
+﻿cargo :  Documenting vaughan v0.1.0 (C:\Us
+ers\rb3y9\Desktop\Vaughan\Vaughan-main)
+At line:1 char:1
++ cargo doc --no-deps --all-features 2>&1 
+| Out-File -FilePath doc_buil ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecifie 
+   d: ( Documenting va...n\Vaughan-main)  
+  :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeComma 
+   ndError
+ 
+warning: unresolved link to `?value=`
+  --> src\gui\services\qr_service.rs:74:45
+   |
+74 | /// Format: ethereum:<address>[@<chai
+n_id>][?value=<amount>]
+   |                                      
+       ^^^^^^^^^^^^^^^ no item named 
+`?value=` in scope
+   |
+   = help: to escape `[` and `]` 
+characters, add '\' before them like `\[` 
+or `\]`
+   = note: `#[warn(rustdoc::broken_intra_d
+oc_links)]` on by default
+
+warning: unclosed HTML tag `address`
+  --> src\gui\services\qr_service.rs:74:22
+   |
+74 | /// Format: ethereum:<address>[@<chai
+n_id>][?value=<amount>]
+   |                      ^^^^^^^^^
+   |
+   = note: 
+`#[warn(rustdoc::invalid_html_tags)]` on 
+by default
+
+warning: this URL is not a hyperlink
+  --> src\gui\simple_transaction.rs:10:33
+   |
+10 | //! ΓÇó Gas estimation structure: htt
+ps://github.com/MetaMask/metamask-extensio
+n
+   |                                 ^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: bare URLs are not 
+automatically turned into clickable links
+   = note: `#[warn(rustdoc::bare_urls)]` 
+on by default
+help: use an automatic link instead
+   |
+10 | //! ΓÇó Gas estimation structure: <ht
+tps://github.com/MetaMask/metamask-extensi
+on>
+   |                                 +    
+                                          
++
+
+warning: this URL is not a hyperlink
+  --> src\gui\simple_transaction.rs:17:17
+   |
+17 | //! ΓÇó EIP-1559: 
+https://eips.ethereum.org/EIPS/eip-1559
+   |                 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: bare URLs are not 
+automatically turned into clickable links
+help: use an automatic link instead
+   |
+17 | //! ΓÇó EIP-1559: 
+<https://eips.ethereum.org/EIPS/eip-1559>
+   |                 +                    
+                   +
+
+warning: this URL is not a hyperlink
+  --> src\gui\simple_transaction.rs:18:24
+   |
+18 | //! ΓÇó ERC-20 Transfer: 
+https://eips.ethereum.org/EIPS/eip-20
+   |                        
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: bare URLs are not 
+automatically turned into clickable links
+help: use an automatic link instead
+   |
+18 | //! ΓÇó ERC-20 Transfer: 
+<https://eips.ethereum.org/EIPS/eip-20>
+   |                        +             
+                        +
+
+warning: this URL is not a hyperlink
+  --> src\gui\simple_transaction.rs:19:24
+   |
+19 | //! ΓÇó eth_estimateGas: https://ethe
+reum.org/en/developers/docs/apis/json-rpc/
+#eth_estimategas
+   |                        ^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^
+   |
+   = note: bare URLs are not 
+automatically turned into clickable links
+help: use an automatic link instead
+   |
+19 | //! ΓÇó eth_estimateGas: <https://eth
+ereum.org/en/developers/docs/apis/json-rpc
+/#eth_estimategas>
+   |                        +             
+                                          
+               +
+
+warning: this URL is not a hyperlink
+  --> src\gui\simple_transaction.rs:38:33
+   |
+38 | //! ΓÇó Monitor MetaMask updates: htt
+ps://github.com/MetaMask/metamask-extensio
+n/releases
+   |                                 ^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^
+   |
+   = note: bare URLs are not 
+automatically turned into clickable links
+help: use an automatic link instead
+   |
+38 | //! ΓÇó Monitor MetaMask updates: <ht
+tps://github.com/MetaMask/metamask-extensi
+on/releases>
+   |                                 +    
+                                          
+         +
+
+warning: this URL is not a hyperlink
+  --> src\gui\simple_transaction.rs:39:35
+   |
+39 | //! ΓÇó Track Ethereum EIP changes: 
+https://eips.ethereum.org/
+   |                                   
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: bare URLs are not 
+automatically turned into clickable links
+help: use an automatic link instead
+   |
+39 | //! ΓÇó Track Ethereum EIP changes: 
+<https://eips.ethereum.org/>
+   |                                   +  
+                        +
+
+warning: this URL is not a hyperlink
+   --> 
+src\gui\simple_transaction.rs:250:18
+    |
+250 | ///   Reference: https://github.com/
+MetaMask/metamask-extension
+    |                  ^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: bare URLs are not 
+automatically turned into clickable links
+help: use an automatic link instead
+    |
+250 | ///   Reference: <https://github.com
+/MetaMask/metamask-extension>
+    |                  +                  
+                            +
+
+warning: this URL is not a hyperlink
+   --> 
+src\gui\simple_transaction.rs:264:34
+    |
+264 | /// ΓÇó Monitor MetaMask releases: h
+ttps://github.com/MetaMask/metamask-extens
+ion/releases
+    |                                  ^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^
+    |
+    = note: bare URLs are not 
+automatically turned into clickable links
+help: use an automatic link instead
+    |
+264 | /// ΓÇó Monitor MetaMask releases: <
+https://github.com/MetaMask/metamask-exten
+sion/releases>
+    |                                  +  
+                                          
+           +
+
+warning: this URL is not a hyperlink
+   --> 
+src\gui\simple_transaction.rs:265:28
+    |
+265 | /// ΓÇó Track Ethereum EIPs: 
+https://eips.ethereum.org/
+    |                            
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: bare URLs are not 
+automatically turned into clickable links
+help: use an automatic link instead
+    |
+265 | /// ΓÇó Track Ethereum EIPs: 
+<https://eips.ethereum.org/>
+    |                            +        
+                  +
+
+warning: this URL is not a hyperlink
+  --> 
+src\wallet\account_manager\eip712.rs:14:16
+   |
+14 | //! - EIP-712: 
+https://eips.ethereum.org/EIPS/eip-712
+   |                
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: bare URLs are not 
+automatically turned into clickable links
+help: use an automatic link instead
+   |
+14 | //! - EIP-712: 
+<https://eips.ethereum.org/EIPS/eip-712>
+   |                +                     
+                 +
+
+warning: this URL is not a hyperlink
+  --> 
+src\wallet\account_manager\eip712.rs:15:24
+   |
+15 | //! - Alloy SolStruct: 
+https://github.com/alloy-rs/alloy
+   |                        
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: bare URLs are not 
+automatically turned into clickable links
+help: use an automatic link instead
+   |
+15 | //! - Alloy SolStruct: 
+<https://github.com/alloy-rs/alloy>
+   |                        +             
+                    +
+
+warning: this URL is not a hyperlink
+  --> src\wallet\keystore_format.rs:45:5
+   |
+45 | //! https://github.com/ethereum/wiki/
+wiki/Web3-Secret-Storage-Definition
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: bare URLs are not 
+automatically turned into clickable links
+help: use an automatic link instead
+   |
+45 | //! <https://github.com/ethereum/wiki
+/wiki/Web3-Secret-Storage-Definition>
+   |     +                                
+                                    +
+
+warning: this URL is not a hyperlink
+  --> 
+src\wallet\provider\permissions.rs:22:36
+   |
+22 |     /// Origin of the dApp (e.g., 
+"https://app.example.com")
+   |                                    
+^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: bare URLs are not 
+automatically turned into clickable links
+help: use an automatic link instead
+   |
+22 |     /// Origin of the dApp (e.g., 
+"<https://app.example.com>")
+   |                                    + 
+                      +
+
+warning: this URL is not a hyperlink
+  --> 
+src\wallet\transaction\simulator.rs:14:30
+   |
+14 | //! - Alloy Provider call(): 
+https://github.com/alloy-rs/alloy
+   |                              
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: bare URLs are not 
+automatically turned into clickable links
+help: use an automatic link instead
+   |
+14 | //! - Alloy Provider call(): 
+<https://github.com/alloy-rs/alloy>
+   |                              +       
+                          +
+
+warning: `vaughan` (lib doc) generated 16 
+warnings (run `cargo fix --lib -p 
+vaughan` to apply 14 suggestions)
+    Finished `dev` profile [unoptimized + 
+debuginfo] target(s) in 13.43s
+   Generated C:\Users\rb3y9\Desktop\Vaugha
+n\Vaughan-main\target\doc\vaughan\index.ht
+ml

@@ -11,14 +11,15 @@
 //!
 //! # References
 //!
-//! - EIP-712: https://eips.ethereum.org/EIPS/eip-712
-//! - Alloy SolStruct: https://github.com/alloy-rs/alloy
+//! - EIP-712: <https://eips.ethereum.org/EIPS/eip-712>
+//! - Alloy SolStruct: <https://github.com/alloy-rs/alloy>
 
 use alloy::primitives::{Address, B256, U256};
 use alloy::sol;
-use alloy::sol_types::{Eip712Domain, SolStruct};
+use alloy::sol_types::Eip712Domain;
+#[cfg(test)]
+use alloy::sol_types::SolStruct;
 use serde::{Deserialize, Serialize};
-use std::str::FromStr;
 
 // ... imports cleaned up ...
 

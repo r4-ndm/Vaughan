@@ -18,7 +18,7 @@
 //! - `error.rs` - Error handling properties
 
 use proptest::prelude::*;
-use secrecy::{SecretString, SecretVec};
+use secrecy::SecretString;
 
 /// Proptest configuration for memory safety tests (10,000 iterations)
 pub fn memory_safety_config() -> ProptestConfig {
@@ -156,7 +156,7 @@ pub fn contains_sensitive_data(haystack: &[u8], needle: &[u8]) -> bool {
 /// Helper: Generate test wallet with random seed
 #[cfg(test)]
 pub fn create_test_wallet() -> (SecretString, String) {
-    use bip39::{Mnemonic, Language};
+    use bip39::Mnemonic;
     
     // Use a fixed valid mnemonic for testing
     let mnemonic_str = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";

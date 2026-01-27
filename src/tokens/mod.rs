@@ -9,7 +9,6 @@ use crate::network::NetworkId;
 use alloy::primitives::Address;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use std::str::FromStr;
 
 pub mod lists;
 pub mod pricing;
@@ -253,7 +252,7 @@ impl TokenFilter {
     }
 
     /// Sort tokens by relevance (native first, then verified, then search relevance)
-    pub fn sort_by_relevance(&self, tokens: &mut Vec<TokenInfo>) {
+    pub fn sort_by_relevance(&self, tokens: &mut [TokenInfo]) {
         tokens.sort_by(|a, b| {
             // Native tokens first
             match (a.is_native, b.is_native) {
@@ -707,13 +706,8 @@ impl TokenManager {
 
     /// Get Multicall3 address for network
     pub fn get_multicall_address(&self, chain_id: u64) -> Address {
-        match chain_id {
-            1 => Address::from_str("0x5BA1e109517A9Db676D3435833F2FB74ea86faB9").unwrap(), // Ethereum Mainnet
-            56 => Address::from_str("0xcA11bde05977b363a7018c201E3a73A6EcE3C5D5").unwrap(), // BSC
-            137 => Address::from_str("0x910eFc8Ff6c998353354eE51D7942c27F5A8D1EE").unwrap(), // Polygon (corrected)
-            369 => Address::from_str("0xcA11bde05977b363a7018c201E3a73A6EcE3C5D5").unwrap(), // PulseChain (using BSC address)
-            _ => Address::from_str("0x5BA1e109517A9Db676D3435833F2FB74ea86faB9").unwrap(),   // Default to Ethereum
-        }
+        // Use the multicall module's function which handles this properly
+        crate::performance::multicall::get_multicall3_address(chain_id)
     }
 }
 

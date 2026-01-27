@@ -182,9 +182,8 @@ impl IntegratedAccountService {
         let batch_result = self.batch_processor
             .batch_balance_queries(addresses, fetch_fn)
             .await
-            .map_err(|e| {
+            .inspect_err(|e| {
                 self.fail_operation(&span, &e.to_string());
-                e
             })?;
 
         // Convert results to map and update cache
@@ -227,9 +226,8 @@ impl IntegratedAccountService {
         
         let balance = fetch_fn(account.address)
             .await
-            .map_err(|e| {
+            .inspect_err(|e| {
                 self.fail_operation(&span, &e.to_string());
-                e
             })?;
 
         self.update_balance_cache(account.address, balance).await;

@@ -23,7 +23,6 @@ use k256::ecdsa::SigningKey;
 use secrecy::{ExposeSecret, SecretString};
 use std::str::FromStr;
 use uuid::Uuid;
-use zeroize::Zeroizing;
 
 use crate::error::{Result, SecurityError};
 use crate::telemetry::{AccountLogger, OperationSpan, PrivacyMode};
@@ -353,7 +352,7 @@ impl AccountCreator {
             })?;
 
             // Derive key
-            let mut xprv = ExtendedPrivateKey::<SecretKey>::new(seed.clone())
+            let mut xprv = ExtendedPrivateKey::<SecretKey>::new(seed)
                 .map_err(|e| SecurityError::KeyDerivationError {
                     message: format!("Failed to create master key: {e}"),
                 })?;

@@ -1,0 +1,171 @@
+﻿cargo : warning: usage of an `unsafe` 
+block
+At line:1 char:1
++ cargo check --all-features 2>&1 | 
+Out-File -FilePath "phase4_warnings ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecifie 
+   d: (warning: usage of an `unsafe` blo  
+  ck:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeComma 
+   ndError
+ 
+   --> src\security\keychain.rs:373:26
+    |
+373 |             LastWritten: unsafe { 
+std::mem::zeroed() },
+    |                          
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: requested on the command line 
+with `-W unsafe-code`
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:383:22
+    |
+383 |         let result = unsafe { 
+CredWriteW(&mut credential, 0) };
+    |                      
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:387:30
+    |
+387 |             let error_code = unsafe 
+{ GetLastError() };
+    |                              
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:412:22
+    |
+412 |           let result = unsafe {
+    |  ______________________^
+413 | |             CredReadW(
+414 | |                 
+target_name_wide.as_ptr() as LPCWSTR,
+415 | |                 CRED_TYPE_GENERIC,
+...   |
+419 | |         };
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:423:30
+    |
+423 |             let error_code = unsafe 
+{ GetLastError() };
+    |                              
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:433:24
+    |
+433 |           let key_data = unsafe {
+    |  ________________________^
+434 | |             let cred = 
+&*credential;
+435 | |             let blob_size = 
+cred.CredentialBlobSize as usize;
+436 | |             let blob_ptr = 
+cred.CredentialBlob;
+...   |
+447 | |             
+String::from_utf8_lossy(data).into_owned()
+448 | |         };
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:450:9
+    |
+450 |         unsafe { 
+CredFree(credential as *mut _) };
+    |         
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:464:22
+    |
+464 |         let result = unsafe { 
+CredDeleteW(target_name_wide.as_ptr() as 
+LPCWSTR, CRED_TYPE_GENERIC, 0) };
+    |                      ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:468:30
+    |
+468 |             let error_code = unsafe 
+{ GetLastError() };
+    |                              
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+  --> src\security\memory.rs:55:22
+   |
+55 |         let result = unsafe { 
+VirtualLock(addr as *mut 
+winapi::ctypes::c_void, len) };
+   |                      ^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^
+
+warning: usage of an `unsafe` block
+  --> src\security\memory.rs:73:22
+   |
+73 |         let result = unsafe { 
+VirtualUnlock(addr as *mut 
+winapi::ctypes::c_void, len) };
+   |                      ^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:154:19
+    |
+154 |         let ptr = unsafe { 
+std::alloc::alloc_zeroed(layout) };
+    |                   ^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:184:9
+    |
+184 |         unsafe { 
+std::slice::from_raw_parts_mut(self.ptr, 
+self.len) }
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:202:9
+    |
+202 | /         unsafe {
+203 | |             
+ptr::write_bytes(self.ptr, 0, self.len);
+204 | |         }
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:227:9
+    |
+227 | /         unsafe {
+228 | |             let layout = std::allo
+c::Layout::from_size_align_unchecked(self.
+len, 8);
+229 | |             
+std::alloc::dealloc(self.ptr, layout);
+230 | |         }
+    | |_________^
+
+warning: implementation of an `unsafe` 
+trait
+   --> src\security\memory.rs:237:1
+    |
+237 | unsafe impl Send for SecureMemory {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: `vaughan` (lib) generated 16 
+warnings
+    Finished `dev` profile [unoptimized + 
+debuginfo] target(s) in 0.88s

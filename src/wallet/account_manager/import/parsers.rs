@@ -21,6 +21,7 @@ use crate::wallet::account_manager::types::ImportSourceType;
 pub struct ParseResult {
     pub source_type: ImportSourceType,
     pub is_valid: bool,
+    #[allow(dead_code)] // Used in tests
     pub word_count: Option<usize>,
     pub error: Option<String>,
 }
@@ -142,6 +143,7 @@ pub fn parse_seed_phrase(phrase_data: &SecretString) -> Result<String, WalletErr
 /// Extract address from a signer
 ///
 /// Helper function to get the address from an Alloy signer
+#[allow(dead_code)] // Utility function for future use
 pub fn extract_address(signer: &PrivateKeySigner) -> Address {
     signer.address()
 }

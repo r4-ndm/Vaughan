@@ -239,7 +239,7 @@ mod property_31_shamir_round_trip {
 
             let recovered_secret = recovered.unwrap();
             prop_assert_eq!(
-                recovered_secret,
+                &recovered_secret,
                 secret,
                 "Recovered secret must match original"
             );
@@ -268,7 +268,7 @@ mod property_31_shamir_round_trip {
             // Note: sharks library may return Ok with wrong data, so we check both cases
             if let Ok(recovered_secret) = recovered {
                 prop_assert_ne!(
-                    recovered_secret,
+                    &recovered_secret,
                     secret,
                     "Recovery with insufficient shares must not produce correct secret"
                 );
@@ -300,7 +300,7 @@ mod property_31_shamir_round_trip {
 
             let recovered_secret = recovered.unwrap();
             prop_assert_eq!(
-                recovered_secret,
+                &recovered_secret,
                 secret,
                 "Any threshold subset must recover original secret"
             );
@@ -328,7 +328,7 @@ mod property_31_shamir_round_trip {
 
             let recovered_secret = recovered.unwrap();
             prop_assert_eq!(
-                recovered_secret,
+                &recovered_secret,
                 secret,
                 "All shares must recover original secret"
             );

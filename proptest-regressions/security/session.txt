@@ -5,3 +5,4 @@
 # It is recommended to check this file in to source control so that
 # everyone who runs the test benefits from these saved cases.
 cc a6dda5bef3a89892e4d029f6e5412b691397e55644d361c132cf22df5b0af648 # shrinks to timeout_ms = 39
+cc cf25ffa1404f9139d8844ac83d9b77cb5203614382726df6981b6a3b860a0b1a # shrinks to timeout_ms = 62

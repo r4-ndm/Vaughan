@@ -39,12 +39,13 @@ pub mod wallet_storage;
 pub use hardware::*;
 pub use hardware_feedback::*;
 pub use export_auth::*;
-#[allow(ambiguous_glob_reexports)] // encryption module exists in both keystore and seed
 pub use key_cache::*;
 pub use keychain::*;
+#[allow(ambiguous_glob_reexports)] // encryption module exists in both keystore and seed
 pub use keystore::*;
 pub use memory::*;
 pub use password_validator::*;
+#[allow(ambiguous_glob_reexports)] // encryption module exists in both keystore and seed
 pub use seed::*;
 pub use session::*;
 pub use rate_limiter::*;

@@ -11,16 +11,16 @@
 //!
 //! # References
 //!
-//! - Alloy Provider call(): https://github.com/alloy-rs/alloy
+//! - Alloy Provider call(): <https://github.com/alloy-rs/alloy>
 //! - EVM revert selectors from MetaMask error handling
 
-use alloy::primitives::{Address, Bytes, U256};
+use alloy::primitives::{Address, Bytes};
 use alloy::rpc::types::TransactionRequest;
 use serde::{Deserialize, Serialize};
+#[cfg(test)]
 use std::str::FromStr;
 use uuid::Uuid;
 
-use crate::error::{Result, VaughanError, NetworkError};
 
 // ============================================================================
 // Revert Reason Selectors

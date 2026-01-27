@@ -1,0 +1,190 @@
+﻿cargo :     Checking vaughan v0.1.0 (C:\Us
+ers\rb3y9\Desktop\Vaughan\Vaughan-main)
+At line:1 char:1
++ cargo clippy -- -D warnings 2>&1 | 
+Out-File -FilePath clippy_final.tx ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecifie 
+   d: (    Checking va...n\Vaughan-main)  
+  :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeComma 
+   ndError
+ 
+error: used `expect()` on an `Option` 
+value
+  --> src\performance\cache.rs:95:13
+   |
+95 |             
+NonZeroUsize::new(100).expect("100 is 
+non-zero")
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is `None`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#expect_used
+   = note: `-D clippy::expect-used` 
+implied by `-D warnings`
+   = help: to override `-D warnings` add 
+`#[allow(clippy::expect_used)]`
+
+error: used `expect()` on a `Result` value
+  --> src\performance\multicall.rs:89:9
+   |
+89 | /         
+Address::from_str(MULTICALL3_ADDRESS)
+90 | |             
+.expect("MULTICALL3_ADDRESS is a valid 
+constant address")
+   | |____________________________________
+_________________________________^
+   |
+   = note: if this value is an `Err`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#expect_used
+
+error: used `expect()` on a `Result` value
+   --> src\security\hardware.rs:361:25
+    |
+361 | /                         std::str::
+FromStr::from_str(&mock_addr_str)
+362 | |                             
+.expect("Mock address format is valid")
+    | |___________________________________
+________________________________^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#expect_used
+
+error: used `expect()` on a `Result` value
+   --> src\security\hardware.rs:762:25
+    |
+762 | /                         std::str::
+FromStr::from_str(&mock_addr_str)
+763 | |                             
+.expect("Mock address format is valid")
+    | |___________________________________
+________________________________^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#expect_used
+
+error: used `expect()` on an `Option` 
+value
+   --> src\wallet\account_manager\import\v
+alidators.rs:198:15
+    |
+198 |     let obj = 
+parsed.as_object().expect("Checked 
+is_object() above");
+    |               ^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is `None`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#expect_used
+
+error: used `expect()` on a `Result` value
+  --> src\wallet\account_manager\metadata.
+rs:34:18
+   |
+34 |           let re = 
+Regex::new(r"^[a-zA-Z0-9_\-\s]+$")
+   |  __________________^
+35 | |             .expect("Regex pattern 
+is valid");
+   | |____________________________________
+_________^
+   |
+   = note: if this value is an `Err`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#expect_used
+
+error: used `expect()` on a `Result` value
+  --> src\wallet\account_manager\metadata.
+rs:78:20
+   |
+78 |           let seed = <[u8; 
+32]>::try_from(hash.as_slice())
+   |  ____________________^
+79 | |             .expect("SHA256 hash 
+is always 32 bytes");
+   | |____________________________________
+_________________^
+   |
+   = note: if this value is an `Err`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#expect_used
+
+error: used `expect()` on a `Result` value
+   --> src\wallet\manager.rs:352:34
+    |
+352 |           let iv_array: [u8; 16] = 
+iv
+    |  __________________________________^
+353 | |             .try_into()
+354 | |             .expect("IV length is 
+verified to be 16 bytes");
+    | |___________________________________
+________________________^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#expect_used
+
+error: used `expect()` on an `Option` 
+value
+   --> 
+src\wallet\transaction\fees.rs:243:34
+    |
+243 |         let oldest = U256::from(*bas
+e_fees.first().expect("base_fees is 
+non-empty"));
+    |                                  ^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^
+    |
+    = note: if this value is `None`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#expect_used
+
+error: used `expect()` on an `Option` 
+value
+   --> 
+src\wallet\transaction\fees.rs:244:34
+    |
+244 |         let newest = U256::from(*bas
+e_fees.last().expect("base_fees is 
+non-empty"));
+    |                                  ^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^
+    |
+    = note: if this value is `None`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#expect_used
+
+error: could not compile `vaughan` (lib) 
+due to 10 previous errors

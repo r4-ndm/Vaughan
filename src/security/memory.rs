@@ -4,6 +4,10 @@
 //! memory protection mechanisms to prevent sensitive data from being
 //! swapped to disk or accessed by unauthorized processes.
 
+// Allow unsafe code - all unsafe blocks are documented with SAFETY comments
+// See Phase 4 Task 4.3 completion for full unsafe code audit
+#![allow(unsafe_code)]
+
 use crate::error::{Result, SecurityError};
 use std::ptr;
 
@@ -52,6 +56,10 @@ impl MemoryProtection {
     pub fn lock_memory(addr: *mut u8, len: usize) -> Result<()> {
         use winapi::um::memoryapi::VirtualLock;
 
+        // SAFETY: VirtualLock is safe when called with valid memory addresses and lengths.
+        // - addr pointer comes from valid Rust allocations
+        // - len represents the actual allocated size
+        // This is a standard Windows API for preventing memory from being swapped to disk.
         let result = unsafe { VirtualLock(addr as *mut winapi::ctypes::c_void, len) };
 
         if result == 0 {
@@ -70,6 +78,8 @@ impl MemoryProtection {
     pub fn unlock_memory(addr: *mut u8, len: usize) -> Result<()> {
         use winapi::um::memoryapi::VirtualUnlock;
 
+        // SAFETY: VirtualUnlock is safe when called with valid memory addresses and lengths.
+        // This unlocks previously locked memory. Same safety guarantees as VirtualLock.
         let result = unsafe { VirtualUnlock(addr as *mut winapi::ctypes::c_void, len) };
 
         if result == 0 {
@@ -234,6 +244,10 @@ impl Drop for SecureMemory {
 // SecureMemory cannot be cloned for security reasons
 // Rust automatically prevents cloning due to the lack of Clone implementation
 
+// SAFETY: SecureMemory can be safely sent between threads because:
+// - It owns its memory exclusively (no shared references)
+// - All operations are thread-safe
+// - Drop implementation properly cleans up regardless of thread
 unsafe impl Send for SecureMemory {}
 
 /// Initialize memory protection for the application

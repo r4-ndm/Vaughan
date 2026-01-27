@@ -6,7 +6,6 @@ use alloy::primitives::{Address, Bytes, U256};
 use alloy::providers::Provider;
 use alloy::rpc::types::TransactionRequest;
 use alloy::signers::local::MnemonicBuilder;
-use alloy::signers::Signer;
 use async_trait::async_trait;
 use futures_util::future::join_all;
 use std::sync::Arc;

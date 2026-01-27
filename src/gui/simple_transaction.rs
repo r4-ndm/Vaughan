@@ -7,16 +7,16 @@
 //!
 //! Primary Inspiration: MetaMask (ConsenSys)
 //! -----------------------------------------
-//! • Gas estimation structure: https://github.com/MetaMask/metamask-extension
+//! • Gas estimation structure: <https://github.com/MetaMask/metamask-extension>
 //! • ERC-20 transfer approach: Standard MetaMask pattern
 //! • Fallback gas limits: Based on MetaMask's conservative estimates
 //! • Transaction request building: Follows MetaMask's eth_estimateGas pattern
 //!
 //! Industry Standards Documentation:
 //! ----------------------------
-//! • EIP-1559: https://eips.ethereum.org/EIPS/eip-1559
-//! • ERC-20 Transfer: https://eips.ethereum.org/EIPS/eip-20
-//! • eth_estimateGas: https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_estimategas
+//! • EIP-1559: <https://eips.ethereum.org/EIPS/eip-1559>
+//! • ERC-20 Transfer: <https://eips.ethereum.org/EIPS/eip-20>
+//! • eth_estimateGas: <https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_estimategas>
 //!
 //! Additional References:
 //! ---------------------
@@ -35,8 +35,8 @@
 //!
 //! Future Updates:
 //! ---------------
-//! • Monitor MetaMask updates: https://github.com/MetaMask/metamask-extension/releases
-//! • Track Ethereum EIP changes: https://eips.ethereum.org/
+//! • Monitor MetaMask updates: <https://github.com/MetaMask/metamask-extension/releases>
+//! • Track Ethereum EIP changes: <https://eips.ethereum.org/>
 //! • Industry standard evolution: Follow Coinbase, Trust Wallet patterns
 //! • Gas optimization: Monitor Ethereum Gas Tracker recommendations
 //!
@@ -247,7 +247,7 @@ async fn fetch_token_decimals(_contract_address: Address, _rpc_url: &str) -> Res
 /// IMPLEMENTATION INSPIRATION:
 /// ========================
 /// • Primary: MetaMask (ConsenSys) - Industry leading wallet
-///   Reference: https://github.com/MetaMask/metamask-extension
+///   Reference: <https://github.com/MetaMask/metamask-extension>
 /// • Secondary: Coinbase Wallet, Trust Wallet
 /// • Standards: EIP-1559, ERC-20, eth_estimateGas RPC
 ///
@@ -261,8 +261,8 @@ async fn fetch_token_decimals(_contract_address: Address, _rpc_url: &str) -> Res
 ///
 /// FUTURE UPDATE SOURCES:
 /// ====================
-/// • Monitor MetaMask releases: https://github.com/MetaMask/metamask-extension/releases
-/// • Track Ethereum EIPs: https://eips.ethereum.org/
+/// • Monitor MetaMask releases: <https://github.com/MetaMask/metamask-extension/releases>
+/// • Track Ethereum EIPs: <https://eips.ethereum.org/>
 /// • Industry standards: Coinbase, Trust Wallet patterns
 /// • Gas optimization: Ethereum Gas Tracker recommendations
 ///

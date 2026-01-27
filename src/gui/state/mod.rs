@@ -52,6 +52,7 @@ pub use ui_state::UiState;
 pub use wallet_state::WalletState;
 
 use crate::gui::coordinators::{AccountCoordinator, LoadingCoordinator, NetworkCoordinator};
+use crate::gui::services::ServiceRegistry;
 use crate::gui::wallet_types::CancelButtonState;
 use crate::network::{NetworkConfig, NetworkId};
 use std::time::Instant;
@@ -85,6 +86,9 @@ pub struct AppState {
     pub network_coordinator: NetworkCoordinator,
     pub account_coordinator: AccountCoordinator,
     pub loading_coordinator: LoadingCoordinator,
+
+    // Service registry for business logic services
+    services: ServiceRegistry,
 
     // Core application-level fields (kept at top level for compatibility)
     pub is_loading: bool,
@@ -140,6 +144,7 @@ impl Default for AppState {
             network_coordinator: NetworkCoordinator::default(),
             account_coordinator: AccountCoordinator::default(),
             loading_coordinator: LoadingCoordinator::default(),
+            services: ServiceRegistry::new(),
             is_loading: false,
             last_activity: Instant::now(),
             log_entries: Vec::new(),
@@ -438,6 +443,11 @@ impl AppState {
     /// Get mutable access to loading coordinator
     pub fn loading_coordinator_mut(&mut self) -> &mut LoadingCoordinator {
         &mut self.loading_coordinator
+    }
+
+    /// Get the service registry for business logic services
+    pub fn services(&self) -> &ServiceRegistry {
+        &self.services
     }
 
     // Coordinator-based state change methods

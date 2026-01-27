@@ -74,7 +74,228 @@ cargo build --release
 ./tools/build/build.sh
 ```
 
+## Feature Flags
+
+Vaughan uses Cargo feature flags to allow customization of the wallet's capabilities. This enables you to build a minimal wallet or include advanced features based on your needs.
+
+### Available Features
+
+#### Core Features
+
+**`minimal`** (included in default)
+- Core wallet functionality only
+- Account management, transaction signing, balance checking
+- No additional dependencies
+- **Build Time Impact**: Baseline (~2 minutes)
+- **Binary Size**: ~15 MB
+
+**`qr`** (included in default)
+- QR code generation for addresses and payment requests
+- EIP-681 payment request format support
+- Dependencies: `qrcode`, `image`
+- **Build Time Impact**: +10 seconds
+- **Binary Size**: +2 MB
+- **Use Case**: Sharing addresses, mobile wallet integration
+
+**`audio`** (included in default)
+- Audio notifications for incoming transactions
+- Custom alert sound support
+- Dependencies: `rodio`
+- **Build Time Impact**: +15 seconds
+- **Binary Size**: +3 MB
+- **Use Case**: Desktop notifications, accessibility
+
+**`hardware-wallets`** (included in default)
+- Ledger and Trezor hardware wallet support
+- Uses Alloy native signers (`alloy-signer-ledger`, `alloy-signer-trezor`)
+- On-device transaction signing
+- Dependencies: `alloy-signer-ledger`, `alloy-signer-trezor`
+- **Build Time Impact**: +30 seconds
+- **Binary Size**: +5 MB
+- **Use Case**: Maximum security for large holdings
+
+**`professional`** (included in default)
+- Professional network monitoring features
+- Advanced RPC health checking
+- Network performance metrics
+- **Build Time Impact**: Minimal
+- **Binary Size**: +500 KB
+- **Use Case**: Power users, developers
+
+**`custom-tokens`** (included in default)
+- Custom ERC-20 token management
+- Token metadata fetching
+- Token price tracking
+- **Build Time Impact**: Minimal
+- **Binary Size**: +300 KB
+- **Use Case**: DeFi users, token traders
+
+#### Advanced Features
+
+**`shamir`** (not in default)
+- Shamir's Secret Sharing for seed phrase backup
+- Split seed into N shares, require M to recover
+- Dependencies: `sharks`
+- **Build Time Impact**: +5 seconds
+- **Binary Size**: +1 MB
+- **Use Case**: Advanced backup strategies, multi-sig-like recovery
+
+**`telemetry`** (not in default)
+- OpenTelemetry metrics and tracing
+- Performance monitoring
+- Error tracking
+- Dependencies: `opentelemetry`, `opentelemetry_sdk`, `opentelemetry-otlp`, `tracing-opentelemetry`
+- **Build Time Impact**: +45 seconds
+- **Binary Size**: +8 MB
+- **Use Case**: Development, debugging, production monitoring
+
+**`full`**
+- Enables all features: `qr`, `audio`, `hardware-wallets`, `professional`, `custom-tokens`, `shamir`, `telemetry`
+- **Build Time Impact**: +2 minutes
+- **Binary Size**: ~35 MB
+- **Use Case**: Complete feature set for power users
+
+### Feature Combinations
+
+#### Default Build (Recommended)
+```bash
+cargo build --release
+# Includes: minimal, qr, audio, hardware-wallets, professional, custom-tokens
+```
+
+**Best for**: Most users, balanced features and build time
+
+#### Minimal Build (Fastest)
+```bash
+cargo build --release --no-default-features --features minimal
+```
+
+**Best for**: Development, testing, embedded systems
+**Build Time**: ~2 minutes
+**Binary Size**: ~15 MB
+
+#### Full Build (All Features)
+```bash
+cargo build --release --features full
+```
+
+**Best for**: Power users, complete feature set
+**Build Time**: ~4 minutes
+**Binary Size**: ~35 MB
+
+#### Custom Build Examples
+
+**Wallet with hardware support only:**
+```bash
+cargo build --release --no-default-features --features "minimal,hardware-wallets"
+```
+
+**Wallet with QR and audio:**
+```bash
+cargo build --release --no-default-features --features "minimal,qr,audio"
+```
+
+**Development build with telemetry:**
+```bash
+cargo build --release --features "default,telemetry"
+```
+
+### Testing with Features
+
+#### Test All Features
+```bash
+cargo test --all-features
+```
+
+#### Test Specific Feature
+```bash
+cargo test --features hardware-wallets
+```
+
+#### Test Minimal Configuration
+```bash
+cargo test --no-default-features --features minimal
+```
+
+### Feature Dependencies
+
+Some features have dependencies on others:
+
+- `full` → enables all other features
+- `hardware-wallets` → requires platform-specific USB libraries
+- `telemetry` → requires network connectivity for metrics export
+- `audio` → requires audio output device
+
+### Build Time Comparison
+
+| Configuration | Build Time | Binary Size | Features |
+|--------------|------------|-------------|----------|
+| Minimal | ~2 min | ~15 MB | Core only |
+| Default | ~3 min | ~25 MB | Recommended set |
+| Full | ~4 min | ~35 MB | All features |
+
+**Note**: Build times are approximate and depend on your system. Incremental builds are much faster.
+
+### Recommended Configurations
+
+**For End Users:**
+```bash
+cargo build --release
+# Uses default features - best balance
+```
+
+**For Developers:**
+```bash
+cargo build --no-default-features --features "minimal,telemetry"
+# Fast builds with debugging capabilities
+```
+
+**For Maximum Security:**
+```bash
+cargo build --release --features "minimal,hardware-wallets,shamir"
+# Hardware wallet + advanced backup
+```
+
+**For DeFi Users:**
+```bash
+cargo build --release --features "default,shamir"
+# All default features + advanced backup
+```
+
 ## Usage
+
+### First Launch
+
+1. **Create a New Wallet**: Generate a new seed phrase
+2. **Import Existing Wallet**: Use your existing seed phrase or private key
+3. **Connect Hardware Wallet**: Plug in your Ledger or Trezor device
+
+### Managing Networks
+
+Vaughan comes pre-configured with popular networks:
+- Ethereum Mainnet
+- PulseChain Mainnet & Testnet
+- Binance Smart Chain
+- Polygon
+
+You can also add custom networks through the settings.
+
+### Sending Transactions
+
+1. Select your account
+2. Click "Send"
+3. Enter recipient address and amount
+4. Review gas settings
+5. Confirm transaction
+
+### Adding Custom Tokens
+
+1. Go to token management
+2. Enter token contract address
+3. Token details are automatically fetched
+4. Confirm to add
+
+## Configuration
 
 ### First Launch
 

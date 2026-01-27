@@ -1,0 +1,1078 @@
+﻿cargo : warning: used `expect()` on a 
+`Result` value
+At line:1 char:1
++ cargo clippy 2>&1 | Out-File -FilePath 
+clippy_detailed.txt -Encoding  ...
++ ~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecifie 
+   d: (warning: used `... `Result` value  
+  :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeComma 
+   ndError
+ 
+   --> 
+src\blockchain\explorer_apis.rs:153:22
+    |
+153 |           let client = 
+reqwest::Client::builder()
+    |  ______________________^
+154 | |             
+.timeout(self.config.request_timeout)
+155 | |             
+.user_agent("Vaughan-Wallet/1.0")
+156 | |             .build()
+157 | |             .expect("Failed to 
+create HTTP client");
+    | |___________________________________
+________________^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#expect_used
+    = note: requested on the command line 
+with `-W clippy::expect-used`
+
+warning: used `expect()` on a `Result` 
+value
+   --> 
+src\blockchain\explorer_apis.rs:180:22
+    |
+180 |           let client = 
+reqwest::Client::builder()
+    |  ______________________^
+181 | |             
+.timeout(config.request_timeout)
+182 | |             
+.user_agent("Vaughan-Wallet/1.0")
+183 | |             .build()
+184 | |             .expect("Failed to 
+create HTTP client");
+    | |___________________________________
+________________^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#expect_used
+
+warning: used `unwrap()` on an `Option` 
+value
+   --> src\config\api_config.rs:207:21
+    |
+207 |                 && !self.config.mora
+lis.as_ref().unwrap().api_key.is_empty(),
+    |                     
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is `None`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+    = note: requested on the command line 
+with `-W clippy::unwrap-used`
+
+warning: used `unwrap()` on a `Result` 
+value
+  --> src\error\reporting.rs:53:25
+   |
+53 |         let mut stats = 
+self.stats.lock().unwrap();
+   |                         
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+  --> src\error\reporting.rs:67:25
+   |
+67 |         let mut stats = 
+self.stats.lock().unwrap();
+   |                         
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+  --> src\error\reporting.rs:73:25
+   |
+73 |         let mut stats = 
+self.stats.lock().unwrap();
+   |                         
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+  --> src\error\reporting.rs:79:21
+   |
+79 |         let stats = 
+self.stats.lock().unwrap();
+   |                     
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> src\error\reporting.rs:103:25
+    |
+103 |         let mut stats = 
+self.stats.lock().unwrap();
+    |                         
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: match expression looks like 
+`matches!` macro
+   --> src\error.rs:728:9
+    |
+728 | /         match self {
+729 | |             
+VaughanError::Network(_) => true,
+730 | |             
+VaughanError::Configuration(_) => true,
+731 | |             VaughanError::Hardware
+Wallet(HardwareWalletError::DeviceNotFound
+) => true,
+...   |
+744 | |             _ => false,
+745 | |         }
+    | |_________^ help: try: 
+`matches!(self, VaughanError::Network(_) 
+| VaughanError::Configuration(_) | Vaughan
+Error::HardwareWallet(HardwareWalletError:
+:DeviceNotFound) | VaughanError::HardwareW
+allet(HardwareWalletError::ConnectionFaile
+d { .. }) | VaughanError::HardwareWallet(H
+ardwareWalletError::UserCancelled) | Vaugh
+anError::HardwareWallet(HardwareWalletErro
+r::DeviceLocked) | VaughanError::HardwareW
+allet(HardwareWalletError::TransactionReje
+cted) | VaughanError::HardwareWallet(Hardw
+areWalletError::CommunicationError) | Vaug
+hanError::HardwareWallet(HardwareWalletErr
+or::OperationTimeout { .. }) | VaughanErro
+r::HardwareWallet(HardwareWalletError::Con
+firmationRequired) | VaughanError::Hardwar
+eWallet(HardwareWalletError::AppNotOpen { 
+.. }) | VaughanError::HardwareWallet(Hardw
+areWalletError::DeviceNotConnected) | Vaug
+hanError::HardwareWallet(HardwareWalletErr
+or::BlindSigningDisabled) | VaughanError::
+Wallet(WalletError::InsufficientBalance) 
+| VaughanError::Security(SecurityError::Co
+nfirmationRequired))`
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#match_like_matches_ma
+cro
+    = note: `-W 
+clippy::match-like-matches-macro` implied 
+by `-W clippy::all`
+    = help: to override `-W clippy::all` 
+add `#[allow(clippy::match_like_matches_ma
+cro)]`
+
+warning: match expression looks like 
+`matches!` macro
+    --> src\gui\state\auth_state.rs:1596:9
+     |
+1596 | /         match operation {
+1597 | |             
+AccountOperation::SignTransaction | 
+AccountOperation::ExportSecrets => true,
+1598 | |             _ => false,
+1599 | |         }
+     | |_________^ help: try: 
+`matches!(operation, 
+AccountOperation::SignTransaction | 
+AccountOperation::ExportSecrets)`
+     |
+     = help: for further information 
+visit https://rust-lang.github.io/rust-cli
+ppy/rust-1.92.0/index.html#match_like_matc
+hes_macro
+
+warning: used `unwrap()` on a `Result` 
+value
+  --> src\gui\api_service.rs:59:15
+   |
+59 |     let url = 
+rpc_url.parse().unwrap();
+   |               
+^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#unwrap_used
+
+warning: this function has too many 
+arguments (11/10)
+   --> 
+src\gui\transaction_service.rs:146:1
+    |
+146 | / pub fn create_pending_transaction(
+147 | |     tx_hash: String,
+148 | |     nonce: u64,
+149 | |     from: Address,
+...   |
+157 | |     network: NetworkId,
+158 | | ) -> PendingTransaction {
+    | |_______________________^
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#too_many_arguments
+    = note: `-W 
+clippy::too-many-arguments` implied by 
+`-W clippy::all`
+    = help: to override `-W clippy::all` 
+add `#[allow(clippy::too_many_arguments)]`
+
+warning: used `unwrap()` on an `Option` 
+value
+  --> src\gui\components\dialogs\cancel_tr
+ansaction_dialog.rs:15:22
+   |
+15 |     let pending_tx = state.ui().pendi
+ng_cancel_tx.as_ref().unwrap();
+   |                      ^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is `None`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on an `Option` 
+value
+  --> src\gui\components\dialogs\unified_p
+assword_dialog.rs:39:18
+   |
+39 |     let config = 
+dialog_state.config.as_ref().unwrap();
+   |                  
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is `None`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#unwrap_used
+
+warning: match expression looks like 
+`matches!` macro
+   --> src\gui\components\dialogs\unified_
+password_dialog.rs:307:5
+    |
+307 | /     match config {
+308 | |         
+PasswordDialogConfig::WalletSetup { .. } 
+=> false,
+309 | |         _ => true,
+310 | |     }
+    | |_____^ help: try: 
+`!matches!(config, 
+PasswordDialogConfig::WalletSetup { .. })`
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#match_like_matches_ma
+cro
+
+warning: match expression looks like 
+`matches!` macro
+   --> src\gui\components\dialogs\unified_
+password_dialog.rs:314:5
+    |
+314 | /     match config {
+315 | |         
+PasswordDialogConfig::WalletUnlock | 
+PasswordDialogConfig::AccountUnlock { .. 
+} => true,
+316 | |         _ => false,
+317 | |     }
+    | |_____^ help: try: 
+`matches!(config, 
+PasswordDialogConfig::WalletUnlock | 
+PasswordDialogConfig::AccountUnlock { .. 
+})`
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#match_like_matches_ma
+cro
+
+warning: match expression looks like 
+`matches!` macro
+   --> src\gui\components\dialogs\unified_
+password_dialog.rs:321:5
+    |
+321 | /     match config {
+322 | |         
+PasswordDialogConfig::WalletSetup { .. } 
+| PasswordDialogConfig::ChangePassword { 
+.. } => true,
+323 | |         _ => false,
+324 | |     }
+    | |_____^ help: try: 
+`matches!(config, 
+PasswordDialogConfig::WalletSetup { .. } 
+| PasswordDialogConfig::ChangePassword { 
+.. })`
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#match_like_matches_ma
+cro
+
+warning: stripping a prefix manually
+   --> src\gui\utils.rs:220:13
+    |
+220 |             address[2..].to_string()
+    |             ^^^^^^^^^^^^
+    |
+note: the prefix was tested here
+   --> src\gui\utils.rs:219:24
+    |
+219 |         let addr_str = if 
+address.starts_with("0x") {
+    |                        
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#manual_strip
+    = note: `-W clippy::manual-strip` 
+implied by `-W clippy::all`
+    = help: to override `-W clippy::all` 
+add `#[allow(clippy::manual_strip)]`
+help: try using the `strip_prefix` method
+    |
+219 ~         let addr_str = if let 
+Some(<stripped>) = 
+address.strip_prefix("0x") {
+220 ~             <stripped>.to_string()
+    |
+
+warning: this function has too many 
+arguments (13/10)
+  --> src\gui\widgets\transaction.rs:18:1
+   |
+18 | / pub fn transaction_form<'a>(
+19 | |     form_state: 
+&TransactionFormState,
+20 | |     on_address_change: impl 
+Fn(String) -> Message + 'a,
+21 | |     on_amount_change: impl 
+Fn(String) -> Message + 'a,
+...  |
+31 | |     on_paste_from_clipboard: 
+Message,
+32 | | ) -> Element<'a, Message> {
+   | |_________________________^
+   |
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#too_many_arguments
+
+warning: `format!` in `format!` args
+   --> 
+src\gui\widgets\transaction.rs:410:35
+    |
+410 |                           
+Text::new(format!(
+    |  
+___________________________________^
+411 | |                             "{} 
+ΓÇó {}",
+412 | |                             
+format!(
+413 | |                                 
+"{}...{}",
+...   |
+417 | |                             
+format_timestamp(transaction.timestamp)
+418 | |                         ))
+    | |_________________________^
+    |
+    = help: combine the `format!(..)` 
+arguments with the outer `format!(..)` 
+call
+    = help: or consider changing 
+`format!` to `format_args!`
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#format_in_format_args
+    = note: `-W 
+clippy::format-in-format-args` implied by 
+`-W clippy::all`
+    = help: to override `-W clippy::all` 
+add 
+`#[allow(clippy::format_in_format_args)]`
+
+warning: used `unwrap()` on a `Result` 
+value
+  --> src\network\health.rs:22:56
+   |
+22 |     let provider = ProviderBuilder::n
+ew().connect_http(url.parse().unwrap());
+   |                                      
+                  ^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+  --> src\network\health.rs:33:35
+   |
+33 |               let last_block_time = 
+std::time::SystemTime::now()
+   |  ___________________________________^
+34 | |                 
+.duration_since(std::time::UNIX_EPOCH)
+35 | |                 .unwrap()
+   | |_________________________^
+   |
+   = note: if this value is an `Err`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on an `Option` 
+value
+   --> src\network\professional.rs:727:13
+    |
+727 |             networks.get(&network_id
+).unwrap().endpoints.len()
+    |             
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is `None`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: this `if` has identical blocks
+   --> src\network\validation.rs:219:94
+    |
+219 |           if 
+!block_explorer.starts_with("http://") && 
+!block_explorer.starts_with("https://") {
+    |  ___________________________________
+__________________________________________
+_________________^
+220 | |             issues.push(NetworkVal
+idationIssue::InvalidBlockExplorer);
+221 | |         } else if 
+url::Url::parse(block_explorer).is_err() {
+    | |_________^
+    |
+note: same as this
+   --> src\network\validation.rs:221:60
+    |
+221 |           } else if 
+url::Url::parse(block_explorer).is_err() {
+    |  ___________________________________
+_________________________^
+222 | |             issues.push(NetworkVal
+idationIssue::InvalidBlockExplorer);
+223 | |         }
+    | |_________^
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#if_same_then_else
+    = note: `-W 
+clippy::if-same-then-else` implied by `-W 
+clippy::all`
+    = help: to override `-W clippy::all` 
+add `#[allow(clippy::if_same_then_else)]`
+
+warning: used `unwrap()` on an `Option` 
+value
+  --> src\performance\cache.rs:92:57
+   |
+92 |         let cap = NonZeroUsize::new(c
+apacity).unwrap_or(NonZeroUsize::new(100).
+unwrap());
+   |                                      
+                   
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is `None`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+  --> src\performance\multicall.rs:96:13
+   |
+96 |             Address::from_str(MULTICA
+LL3_ADDRESS).unwrap()
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+  --> src\performance\multicall.rs:99:13
+   |
+99 |             Address::from_str(MULTICA
+LL3_ADDRESS).unwrap()
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> src\performance\multicall.rs:102:13
+    |
+102 |             Address::from_str(MULTIC
+ALL3_ADDRESS).unwrap()
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> src\performance\multicall.rs:105:13
+    |
+105 |             Address::from_str(MULTIC
+ALL3_ADDRESS).unwrap()
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> src\performance\multicall.rs:108:13
+    |
+108 |             Address::from_str(MULTIC
+ALL3_ADDRESS).unwrap()
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> src\performance\multicall.rs:111:13
+    |
+111 |             Address::from_str(MULTIC
+ALL3_ADDRESS).unwrap()
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> src\performance\multicall.rs:119:13
+    |
+119 |             Address::from_str(MULTIC
+ALL3_ADDRESS).unwrap()
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> src\security\hardware.rs:360:36
+    |
+360 |                     addresses.push(s
+td::str::FromStr::from_str(&mock_addr_str)
+.unwrap());
+    |                                    ^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> src\security\hardware.rs:758:36
+    |
+758 |                     addresses.push(s
+td::str::FromStr::from_str(&mock_addr_str)
+.unwrap());
+    |                                    ^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> 
+src\security\password_validator.rs:157:24
+    |
+157 |         let lockouts = 
+self.lockouts.lock().unwrap();
+    |                        
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> 
+src\security\password_validator.rs:168:28
+    |
+168 |         let mut attempts = 
+self.attempts.lock().unwrap();
+    |                            
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> 
+src\security\password_validator.rs:192:28
+    |
+192 |         let mut attempts = 
+self.attempts.lock().unwrap();
+    |                            
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> 
+src\security\password_validator.rs:209:28
+    |
+209 |         let mut lockouts = 
+self.lockouts.lock().unwrap();
+    |                            
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> 
+src\security\password_validator.rs:221:28
+    |
+221 |         let mut lockouts = 
+self.lockouts.lock().unwrap();
+    |                            
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> 
+src\security\password_validator.rs:227:28
+    |
+227 |         let mut lockouts = 
+self.lockouts.lock().unwrap();
+    |                            
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> 
+src\security\password_validator.rs:243:24
+    |
+243 |         let lockouts = 
+self.lockouts.lock().unwrap();
+    |                        
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> src\security\rate_limiter.rs:151:27
+    |
+151 |             let buckets = 
+self.buckets.lock().unwrap();
+    |                           
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on an `Option` 
+value
+   --> src\security\rate_limiter.rs:152:26
+    |
+152 |             let bucket = 
+buckets.get(operation).unwrap();
+    |                          
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is `None`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> src\tokens\mod.rs:711:18
+    |
+711 |             1 => Address::from_str("
+0x5BA1e109517A9Db676D3435833F2FB74ea86faB9
+").unwrap(), // Ethereum Mainnet
+    |                  ^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> src\tokens\mod.rs:712:19
+    |
+712 |             56 => Address::from_str(
+"0xcA11bde05977b363a7018c201E3a73A6EcE3C5D
+5").unwrap(), // BSC
+    |                   ^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> src\tokens\mod.rs:713:20
+    |
+713 |             137 => Address::from_str
+("0x910eFc8Ff6c998353354eE51D7942c27F5A8D1
+EE").unwrap(), // Polygon (corrected)
+    |                    ^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> src\tokens\mod.rs:714:20
+    |
+714 |             369 => Address::from_str
+("0xcA11bde05977b363a7018c201E3a73A6EcE3C5
+D5").unwrap(), // PulseChain (using BSC 
+address)
+    |                    ^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> src\tokens\mod.rs:715:18
+    |
+715 |             _ => Address::from_str("
+0x5BA1e109517A9Db676D3435833F2FB74ea86faB9
+").unwrap(),   // Default to Ethereum
+    |                  ^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> src\utils\mod.rs:106:21
+    |
+106 |     let timestamp = SystemTime::now(
+).duration_since(UNIX_EPOCH).unwrap().as_n
+anos();
+    |                     ^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on an `Option` 
+value
+   --> src\wallet\account_manager\import\v
+alidators.rs:197:15
+    |
+197 |     let obj = 
+parsed.as_object().unwrap();
+    |               
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is `None`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+  --> src\wallet\account_manager\metadata.
+rs:33:18
+   |
+33 |         let re = Regex::new(r"^[a-zA-
+Z0-9_\-\s]+$").unwrap();
+   |                  ^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+  --> src\wallet\account_manager\metadata.
+rs:76:20
+   |
+76 |         let seed = <[u8; 
+32]>::try_from(hash.as_slice()).unwrap();
+   |                    ^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#unwrap_used
+
+warning: this `impl` can be derived
+  --> 
+src\wallet\hardware\derivation.rs:79:1
+   |
+79 | / impl Default for 
+DerivationStandard {
+80 | |     fn default() -> Self {
+81 | |         Self::Bip44
+82 | |     }
+83 | | }
+   | |_^
+   |
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#derivable_impls
+   = note: `-W clippy::derivable-impls` 
+implied by `-W clippy::all`
+   = help: to override `-W clippy::all` 
+add `#[allow(clippy::derivable_impls)]`
+help: replace the manual implementation 
+with a derive attribute and mark the 
+default variant
+   |
+64 + #[derive(Default)]
+65 | pub enum DerivationStandard {
+66 |     /// Standard BIP44 Ethereum 
+path: `m/44'/60'/0'/0/{index}`
+67 |     /// Most reliable for 
+cross-wallet compatibility.
+68 ~     #[default]
+69 ~     Bip44,
+   |
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> 
+src\wallet\keystore_format.rs:224:17
+    |
+224 | /                 
+std::time::SystemTime::now()
+225 | |                     
+.duration_since(std::time::UNIX_EPOCH)
+226 | |                     .unwrap()
+    | |_____________________________^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on a `Result` 
+value
+   --> src\wallet\manager.rs:351:34
+    |
+351 |         let iv_array: [u8; 16] = 
+iv.try_into().unwrap();
+    |                                  
+^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on an `Option` 
+value
+   --> 
+src\wallet\transaction\fees.rs:242:34
+    |
+242 |         let oldest = 
+U256::from(*base_fees.first().unwrap());
+    |                                  
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is `None`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: used `unwrap()` on an `Option` 
+value
+   --> 
+src\wallet\transaction\fees.rs:243:34
+    |
+243 |         let newest = 
+U256::from(*base_fees.last().unwrap());
+    |                                  
+^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is `None`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+warning: `vaughan` (lib) generated 57 
+warnings (run `cargo clippy --fix --lib 
+-p vaughan` to apply 1 suggestion)
+    Finished `dev` profile [unoptimized + 
+debuginfo] target(s) in 0.90s

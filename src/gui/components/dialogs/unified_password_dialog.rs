@@ -32,11 +32,14 @@ use crate::gui::{
 pub fn password_dialog_view(state: &AppState) -> Element<'_, Message> {
     let dialog_state = &state.auth().password_dialog;
 
-    if !dialog_state.visible || dialog_state.config.is_none() {
+    if !dialog_state.visible {
         return Space::new(Length::Fixed(0.0), Length::Fixed(0.0)).into();
     }
 
-    let config = dialog_state.config.as_ref().unwrap();
+    let Some(config) = dialog_state.config.as_ref() else {
+        return Space::new(Length::Fixed(0.0), Length::Fixed(0.0)).into();
+    };
+
     let (title, description, input_label, button_text) = get_dialog_content(config);
     let show_cancel = should_show_cancel(config);
     let show_remember = should_show_remember(config);
@@ -304,24 +307,21 @@ fn get_dialog_content(config: &PasswordDialogConfig) -> (String, String, String,
 
 fn should_show_cancel(config: &PasswordDialogConfig) -> bool {
     // Force some flows to be non-cancellable if desired (e.g., initial setup modal that covers screen)
-    match config {
-        PasswordDialogConfig::WalletSetup { .. } => false,
-        _ => true,
-    }
+    !matches!(config, PasswordDialogConfig::WalletSetup { .. })
 }
 
 fn should_show_remember(config: &PasswordDialogConfig) -> bool {
-    match config {
-        PasswordDialogConfig::WalletUnlock | PasswordDialogConfig::AccountUnlock { .. } => true,
-        _ => false,
-    }
+    matches!(
+        config,
+        PasswordDialogConfig::WalletUnlock | PasswordDialogConfig::AccountUnlock { .. }
+    )
 }
 
 fn is_new_password_flow(config: &PasswordDialogConfig) -> bool {
-    match config {
-        PasswordDialogConfig::WalletSetup { .. } | PasswordDialogConfig::ChangePassword { .. } => true,
-        _ => false,
-    }
+    matches!(
+        config,
+        PasswordDialogConfig::WalletSetup { .. } | PasswordDialogConfig::ChangePassword { .. }
+    )
 }
 
 fn is_confirmation_flow(_config: &PasswordDialogConfig) -> bool {

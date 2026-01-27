@@ -8,19 +8,22 @@
 //! - Requirement 11.2: Shamir's Secret Sharing
 //! - Requirement 11.4: Integrity verification
 
-use crate::error::{Result, SecurityError, WalletError, VaughanError};
-use crate::security::{SecureKeystore, SecureExport};
+use crate::error::{Result, SecurityError, WalletError};
+use crate::security::SecureKeystore;
 use aes_gcm::{
     aead::{Aead, KeyInit},
     Aes256Gcm, Nonce,
 };
 use hmac::{Hmac, Mac};
-use secrecy::{ExposeSecret, SecretString, SecretVec};
+use secrecy::SecretString;
 use serde::{Deserialize, Serialize};
 use sha2::Sha256;
 use uuid::Uuid;
-use zeroize::{Zeroize, Zeroizing};
 
+#[cfg(feature = "shamir")]
+use crate::VaughanError;
+#[cfg(feature = "shamir")]
+use secrecy::{ExposeSecret, SecretVec};
 #[cfg(feature = "shamir")]
 use sharks::{Share, Sharks};
 
@@ -288,5 +291,225 @@ mod tests {
         let recovered = BackupManager::recover_from_shares(&partial_shares, 2).unwrap();
         
         assert_eq!(recovered.expose_secret(), b"secret_data_123");
+    }
+}
+
+#[cfg(test)]
+mod property_tests {
+    use super::*;
+    use crate::security::keychain::MockKeychain;
+    use crate::security::SecureKeystoreImpl;
+    use proptest::prelude::*;
+
+    proptest! {
+        #![proptest_config(ProptestConfig::with_cases(100))]
+
+        /// Property 30: Backup Encryption
+        ///
+        /// *For any* backup created, it should be encrypted and require the correct
+        /// password to restore. Wrong passwords should fail.
+        ///
+        /// Validates: Requirements 11.1
+        #[test]
+        fn prop_backup_encryption(
+            password in "[a-zA-Z0-9!@#$%^&*]{8,32}",
+            wrong_password in "[a-zA-Z0-9!@#$%^&*]{8,32}",
+            account_name in "[a-zA-Z0-9_]{3,20}"
+        ) {
+            // Ensure passwords are different
+            prop_assume!(password != wrong_password);
+
+            let rt = tokio::runtime::Runtime::new().unwrap();
+            rt.block_on(async {
+                // Setup keystore with an account
+                let keychain = Box::new(MockKeychain::new());
+                let mut keystore = SecureKeystoreImpl::new(keychain).await.unwrap();
+                let _ = keystore.create_account(account_name.clone()).await.unwrap();
+                
+                let password_secret = SecretString::new(password.clone());
+                let wrong_password_secret = SecretString::new(wrong_password.clone());
+
+                // Create encrypted backup
+                let backup = BackupManager::create_encrypted_backup(&keystore, &password_secret)
+                    .await
+                    .unwrap();
+
+                // Verify backup is encrypted (ciphertext should not contain plaintext account name)
+                let ciphertext_bytes = hex::decode(&backup.ciphertext).unwrap();
+                let ciphertext_str = String::from_utf8_lossy(&ciphertext_bytes);
+                prop_assert!(
+                    !ciphertext_str.contains(&account_name),
+                    "Ciphertext should not contain plaintext account name: {}",
+                    account_name
+                );
+
+                // Verify backup has encryption metadata
+                prop_assert!(!backup.salt.is_empty(), "Backup should have salt");
+                prop_assert!(!backup.nonce.is_empty(), "Backup should have nonce");
+                prop_assert!(!backup.hmac.is_empty(), "Backup should have HMAC");
+
+                // Correct password should restore successfully
+                let restored = BackupManager::restore_from_backup(&backup, &password_secret);
+                prop_assert!(restored.is_ok(), "Correct password should restore backup");
+                
+                let accounts = restored.unwrap();
+                prop_assert_eq!(accounts.len(), 1, "Should restore 1 account");
+                prop_assert_eq!(&accounts[0].name, &account_name, "Account name should match");
+
+                // Wrong password should fail
+                let wrong_restore = BackupManager::restore_from_backup(&backup, &wrong_password_secret);
+                prop_assert!(
+                    wrong_restore.is_err(),
+                    "Wrong password should fail to restore backup"
+                );
+
+                Ok(())
+            }).unwrap();
+        }
+
+        /// Property 32: Backup Integrity Verification
+        ///
+        /// *For any* backup that has been corrupted or tampered with, the restore
+        /// operation should detect the corruption and reject the backup.
+        ///
+        /// Validates: Requirements 11.4
+        #[test]
+        fn prop_backup_integrity_verification(
+            password in "[a-zA-Z0-9!@#$%^&*]{8,32}",
+            account_name in "[a-zA-Z0-9_]{3,20}",
+            corruption_byte_index in 0usize..100,
+            corruption_xor_mask in 1u8..=255u8
+        ) {
+            let rt = tokio::runtime::Runtime::new().unwrap();
+            rt.block_on(async {
+                // Setup keystore with an account
+                let keychain = Box::new(MockKeychain::new());
+                let mut keystore = SecureKeystoreImpl::new(keychain).await.unwrap();
+                let _ = keystore.create_account(account_name.clone()).await.unwrap();
+                
+                let password_secret = SecretString::new(password.clone());
+
+                // Create valid backup
+                let mut backup = BackupManager::create_encrypted_backup(&keystore, &password_secret)
+                    .await
+                    .unwrap();
+
+                // Corrupt the ciphertext
+                let mut ciphertext_bytes = hex::decode(&backup.ciphertext).unwrap();
+                
+                // Only corrupt if we have enough bytes
+                if ciphertext_bytes.len() > corruption_byte_index {
+                    ciphertext_bytes[corruption_byte_index] ^= corruption_xor_mask;
+                    backup.ciphertext = hex::encode(&ciphertext_bytes);
+
+                    // Attempt to restore corrupted backup
+                    let result = BackupManager::restore_from_backup(&backup, &password_secret);
+
+                    // Should fail with integrity error
+                    prop_assert!(
+                        result.is_err(),
+                        "Corrupted backup should be rejected"
+                    );
+
+                    // Verify it's specifically an integrity error
+                    if let Err(e) = result {
+                        let error_msg = format!("{:?}", e);
+                        prop_assert!(
+                            error_msg.contains("Integrity") || error_msg.contains("corrupted") || error_msg.contains("tampered"),
+                            "Error should indicate integrity failure: {}",
+                            error_msg
+                        );
+                    }
+                }
+
+                Ok(())
+            }).unwrap();
+        }
+
+        /// Property: Backup metadata is preserved
+        ///
+        /// *For any* backup created, the metadata (version, timestamp, ID) should be
+        /// preserved and accessible without decryption.
+        #[test]
+        fn prop_backup_metadata_preserved(
+            password in "[a-zA-Z0-9!@#$%^&*]{8,32}",
+            account_name in "[a-zA-Z0-9_]{3,20}"
+        ) {
+            let rt = tokio::runtime::Runtime::new().unwrap();
+            rt.block_on(async {
+                let keychain = Box::new(MockKeychain::new());
+                let mut keystore = SecureKeystoreImpl::new(keychain).await.unwrap();
+                let _ = keystore.create_account(account_name).await.unwrap();
+                
+                let password_secret = SecretString::new(password);
+
+                let backup = BackupManager::create_encrypted_backup(&keystore, &password_secret)
+                    .await
+                    .unwrap();
+
+                // Verify metadata is present and valid
+                prop_assert_eq!(backup.version, 1, "Backup version should be 1");
+                prop_assert!(!backup.id.is_nil(), "Backup ID should not be nil");
+                
+                let now = chrono::Utc::now().timestamp();
+                prop_assert!(
+                    backup.timestamp <= now && backup.timestamp >= now - 60,
+                    "Backup timestamp should be recent (within 60 seconds)"
+                );
+
+                Ok(())
+            }).unwrap();
+        }
+
+        /// Property: Backup salt and nonce are unique
+        ///
+        /// *For any* two backups created, they should have different salts and nonces
+        /// to prevent cryptographic attacks.
+        #[test]
+        fn prop_backup_salt_nonce_unique(
+            password in "[a-zA-Z0-9!@#$%^&*]{8,32}",
+            account_name in "[a-zA-Z0-9_]{3,20}"
+        ) {
+            let rt = tokio::runtime::Runtime::new().unwrap();
+            rt.block_on(async {
+                let keychain1 = Box::new(MockKeychain::new());
+                let mut keystore1 = SecureKeystoreImpl::new(keychain1).await.unwrap();
+                let _ = keystore1.create_account(account_name.clone()).await.unwrap();
+                
+                let keychain2 = Box::new(MockKeychain::new());
+                let mut keystore2 = SecureKeystoreImpl::new(keychain2).await.unwrap();
+                let _ = keystore2.create_account(account_name).await.unwrap();
+                
+                let password_secret = SecretString::new(password);
+
+                // Create two backups
+                let backup1 = BackupManager::create_encrypted_backup(&keystore1, &password_secret)
+                    .await
+                    .unwrap();
+                let backup2 = BackupManager::create_encrypted_backup(&keystore2, &password_secret)
+                    .await
+                    .unwrap();
+
+                // Salts should be different
+                prop_assert_ne!(
+                    backup1.salt, backup2.salt,
+                    "Backup salts should be unique"
+                );
+
+                // Nonces should be different
+                prop_assert_ne!(
+                    backup1.nonce, backup2.nonce,
+                    "Backup nonces should be unique"
+                );
+
+                // IDs should be different
+                prop_assert_ne!(
+                    backup1.id, backup2.id,
+                    "Backup IDs should be unique"
+                );
+
+                Ok(())
+            }).unwrap();
+        }
     }
 }

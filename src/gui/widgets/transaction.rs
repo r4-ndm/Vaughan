@@ -15,6 +15,7 @@ use crate::gui::{
 };
 
 /// Create a professional transaction form with token support
+#[allow(clippy::too_many_arguments)]
 pub fn transaction_form<'a>(
     form_state: &TransactionFormState,
     on_address_change: impl Fn(String) -> Message + 'a,
@@ -407,15 +408,15 @@ pub fn transaction_history_item<'a>(transaction: &TransactionRecord) -> Element<
                         .style(text::primary()),
                     )
                     .push(
-                        Text::new(format!(
-                            "{} • {}",
-                            format!(
+                        Text::new({
+                            let addr_short = format!(
                                 "{}...{}",
                                 &transaction.address[..6],
                                 &transaction.address[transaction.address.len() - 4..]
-                            ),
-                            format_timestamp(transaction.timestamp)
-                        ))
+                            );
+                            let timestamp_str = format_timestamp(transaction.timestamp);
+                            format!("{} • {}", addr_short, timestamp_str)
+                        })
                         .size(11)
                         .style(text::muted()),
                     )

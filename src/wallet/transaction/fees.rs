@@ -13,11 +13,9 @@
 
 use alloy::primitives::U256;
 use alloy::providers::Provider;
-use alloy::transports::Transport;
 use alloy::network::Network;
 use alloy::rpc::types::BlockNumberOrTag;
 use serde::{Deserialize, Serialize};
-use std::sync::Arc;
 use uuid::Uuid;
 use crate::error::{Result, NetworkError, VaughanError};
 
@@ -241,8 +239,11 @@ impl FeeEstimator {
         }
 
         // Compare oldest available vs newest (next block base fee)
-        let oldest = U256::from(*base_fees.first().unwrap());
-        let newest = U256::from(*base_fees.last().unwrap());
+        // base_fees is guaranteed non-empty by the check above
+        #[allow(clippy::expect_used)]
+        let oldest = U256::from(*base_fees.first().expect("base_fees is non-empty"));
+        #[allow(clippy::expect_used)]
+        let newest = U256::from(*base_fees.last().expect("base_fees is non-empty"));
 
         // Simple trend analysis
         // Rising: Newest > Oldest + 10%

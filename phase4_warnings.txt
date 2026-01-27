@@ -1,0 +1,363 @@
+﻿cargo : warning: usage of an `unsafe` 
+block
+At line:1 char:1
++ cargo check --all-features 2>&1 | 
+Out-File -FilePath "phase4_warnings ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecifie 
+   d: (warning: usage of an `unsafe` blo  
+  ck:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeComma 
+   ndError
+ 
+   --> src\security\keychain.rs:373:26
+    |
+373 |             LastWritten: unsafe { 
+std::mem::zeroed() },
+    |                          
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: requested on the command line 
+with `-W unsafe-code`
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:383:22
+    |
+383 |         let result = unsafe { 
+CredWriteW(&mut credential, 0) };
+    |                      
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:387:30
+    |
+387 |             let error_code = unsafe 
+{ GetLastError() };
+    |                              
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:412:22
+    |
+412 |           let result = unsafe {
+    |  ______________________^
+413 | |             CredReadW(
+414 | |                 
+target_name_wide.as_ptr() as LPCWSTR,
+415 | |                 CRED_TYPE_GENERIC,
+...   |
+419 | |         };
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:423:30
+    |
+423 |             let error_code = unsafe 
+{ GetLastError() };
+    |                              
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:433:24
+    |
+433 |           let key_data = unsafe {
+    |  ________________________^
+434 | |             let cred = 
+&*credential;
+435 | |             let blob_size = 
+cred.CredentialBlobSize as usize;
+436 | |             let blob_ptr = 
+cred.CredentialBlob;
+...   |
+447 | |             
+String::from_utf8_lossy(data).into_owned()
+448 | |         };
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:450:9
+    |
+450 |         unsafe { 
+CredFree(credential as *mut _) };
+    |         
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:464:22
+    |
+464 |         let result = unsafe { 
+CredDeleteW(target_name_wide.as_ptr() as 
+LPCWSTR, CRED_TYPE_GENERIC, 0) };
+    |                      ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\keychain.rs:468:30
+    |
+468 |             let error_code = unsafe 
+{ GetLastError() };
+    |                              
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+  --> src\security\memory.rs:55:22
+   |
+55 |         let result = unsafe { 
+VirtualLock(addr as *mut 
+winapi::ctypes::c_void, len) };
+   |                      ^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^
+
+warning: usage of an `unsafe` block
+  --> src\security\memory.rs:73:22
+   |
+73 |         let result = unsafe { 
+VirtualUnlock(addr as *mut 
+winapi::ctypes::c_void, len) };
+   |                      ^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:154:19
+    |
+154 |         let ptr = unsafe { 
+std::alloc::alloc_zeroed(layout) };
+    |                   ^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:184:9
+    |
+184 |         unsafe { 
+std::slice::from_raw_parts_mut(self.ptr, 
+self.len) }
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:202:9
+    |
+202 | /         unsafe {
+203 | |             
+ptr::write_bytes(self.ptr, 0, self.len);
+204 | |         }
+    | |_________^
+
+warning: usage of an `unsafe` block
+   --> src\security\memory.rs:227:9
+    |
+227 | /         unsafe {
+228 | |             let layout = std::allo
+c::Layout::from_size_align_unchecked(self.
+len, 8);
+229 | |             
+std::alloc::dealloc(self.ptr, layout);
+230 | |         }
+    | |_________^
+
+warning: implementation of an `unsafe` 
+trait
+   --> src\security\memory.rs:237:1
+    |
+237 | unsafe impl Send for SecureMemory {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: ambiguous glob re-exports
+  --> src\security\mod.rs:45:9
+   |
+45 | pub use keystore::*;
+   |         ^^^^^^^^^^^ the name 
+`encryption` in the type namespace is 
+first re-exported here
+...
+48 | pub use seed::*;
+   |         ------- but the name 
+`encryption` in the type namespace is 
+also re-exported here
+   |
+   = note: 
+`#[warn(ambiguous_glob_reexports)]` on by 
+default
+
+warning: unused import: 
+`opentelemetry_otlp::WithExportConfig`
+  --> src\telemetry\opentelemetry.rs:11:5
+   |
+11 | use 
+opentelemetry_otlp::WithExportConfig;
+   |     
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` 
+(part of `#[warn(unused)]`) on by default
+
+warning: unused import: `SolStruct`
+  --> 
+src\wallet\account_manager\eip712.rs:19:38
+   |
+19 | use alloy::sol_types::{Eip712Domain, 
+SolStruct};
+   |                                      
+^^^^^^^^^
+
+warning: unused import: 
+`std::str::FromStr`
+  --> 
+src\wallet\transaction\simulator.rs:20:5
+   |
+20 | use std::str::FromStr;
+   |     ^^^^^^^^^^^^^^^^^
+
+warning: unreachable pattern
+  --> 
+src\gui\services\wallet_service.rs:67:60
+   |
+67 |                         
+"vaughan-wallet-encrypted-seeds" | crate::
+security::SERVICE_NAME_ENCRYPTED_SEEDS => 
+{
+   |                         
+--------------------------------   ^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ no 
+value can reach this
+   |                         |
+   |                         matches all 
+the relevant values
+   |
+   = note: 
+`#[warn(unreachable_patterns)]` (part of 
+`#[warn(unused)]`) on by default
+
+warning: unreachable pattern
+  --> 
+src\gui\services\wallet_service.rs:80:44
+   |
+80 |                         
+"vaughan-wallet" | crate::security::SERVIC
+E_NAME_PRIVATE_KEYS => {
+   |                         
+----------------   ^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^ no value can reach 
+this
+   |                         |
+   |                         matches all 
+the relevant values
+
+warning: unused import: 
+`alloy::signers::Signer`
+ --> src\wallet\account_manager\discovery.
+rs:9:5
+  |
+9 | use alloy::signers::Signer;
+  |     ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unreachable pattern
+   --> 
+src\security\keystore\storage.rs:132:69
+    |
+132 |                     crate::security:
+:SERVICE_NAME_ENCRYPTED_SEEDS | 
+"vaughan-wallet-encrypted-seeds" => {
+    |                     ----------------
+-----------------------------   
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ no value 
+can reach this
+    |                     |
+    |                     matches all the 
+relevant values
+
+warning: unreachable pattern
+   --> 
+src\security\keystore\storage.rs:148:66
+    |
+148 |                     crate::security:
+:SERVICE_NAME_PRIVATE_KEYS | 
+"vaughan-wallet" => {
+    |                     ----------------
+--------------------------   
+^^^^^^^^^^^^^^^^ no value can reach this
+    |                     |
+    |                     matches all the 
+relevant values
+
+warning: field `word_count` is never read
+  --> src\wallet\account_manager\import\pa
+rsers.rs:24:9
+   |
+21 | pub struct ParseResult {
+   |            ----------- field in this 
+struct
+...
+24 |     pub word_count: Option<usize>,
+   |         ^^^^^^^^^^
+   |
+   = note: `ParseResult` has derived 
+impls for the traits `Clone` and `Debug`, 
+but these are intentionally ignored 
+during dead code analysis
+   = note: `#[warn(dead_code)]` (part of 
+`#[warn(unused)]`) on by default
+
+warning: function `extract_address` is 
+never used
+   --> src\wallet\account_manager\import\p
+arsers.rs:145:8
+    |
+145 | pub fn extract_address(signer: 
+&PrivateKeySigner) -> Address {
+    |        ^^^^^^^^^^^^^^^
+
+warning: function 
+`validate_derivation_path` is never used
+   --> src\wallet\account_manager\import\v
+alidators.rs:216:8
+    |
+216 | pub fn 
+validate_derivation_path(path: &str) -> 
+Result<(), WalletError> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function 
+`validate_account_index` is never used
+   --> src\wallet\account_manager\import\v
+alidators.rs:255:8
+    |
+255 | pub fn 
+validate_account_index(index: u32) -> 
+Result<(), WalletError> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `legacy_to_account` is 
+never used
+   --> src\wallet\account_manager\import\c
+onverters.rs:188:8
+    |
+188 | pub fn legacy_to_account(
+    |        ^^^^^^^^^^^^^^^^^
+
+warning: field `auto_scan_running` is 
+never read
+   --> src\wallet\hardware\device_manager.
+rs:256:5
+    |
+250 | pub struct DeviceManager {
+    |            ------------- field in 
+this struct
+...
+256 |     auto_scan_running: 
+Arc<RwLock<bool>>,
+    |     ^^^^^^^^^^^^^^^^^
+    |
+    = note: `DeviceManager` has a derived 
+impl for the trait `Debug`, but this is 
+intentionally ignored during dead code 
+analysis
+
+warning: `vaughan` (lib) generated 31 
+warnings (run `cargo fix --lib -p 
+vaughan` to apply 3 suggestions)
+    Finished `dev` profile [unoptimized + 
+debuginfo] target(s) in 0.95s

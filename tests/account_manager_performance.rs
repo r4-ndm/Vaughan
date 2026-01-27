@@ -12,7 +12,7 @@
 
 use vaughan::error::Result;
 use vaughan::gui::services::IntegratedAccountService;
-use vaughan::performance::batch::{BatchConfig, BatchProcessor};
+use vaughan::performance::batch::BatchConfig;
 use vaughan::security::{SecureAccount, KeyReference};
 use alloy::primitives::{Address, U256};
 use std::time::{Duration, Instant};

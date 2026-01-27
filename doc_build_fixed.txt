@@ -1,0 +1,17 @@
+﻿cargo :  Documenting vaughan v0.1.0 (C:\Us
+ers\rb3y9\Desktop\Vaughan\Vaughan-main)
+At line:1 char:1
++ cargo doc --no-deps --all-features 2>&1 
+| Out-File -FilePath doc_buil ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecifie 
+   d: ( Documenting va...n\Vaughan-main)  
+  :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeComma 
+   ndError
+ 
+    Finished `dev` profile [unoptimized + 
+debuginfo] target(s) in 12.05s
+   Generated C:\Users\rb3y9\Desktop\Vaugha
+n\Vaughan-main\target\doc\vaughan\index.ht
+ml

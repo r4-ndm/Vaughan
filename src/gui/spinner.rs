@@ -211,9 +211,9 @@ impl WalletSpinners {
 }
 
 /// Subscription for spinner animation updates
-pub fn spinner_subscription<Message: 'static>() -> iced::Subscription<Message>
+pub fn spinner_subscription<Message>() -> iced::Subscription<Message>
 where
-    Message: Clone,
+    Message: Clone + 'static,
 {
     time::every(Duration::from_millis(100)).map(|_| {
         // This is a placeholder - you'll need to adapt this to your Message type

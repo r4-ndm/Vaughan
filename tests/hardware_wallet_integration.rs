@@ -7,7 +7,6 @@ use alloy::primitives::{Address, U256};
 use alloy::rpc::types::TransactionRequest;
 use std::str::FromStr;
 use std::time::Duration;
-use vaughan::security::hardware::HardwareWallet;
 use vaughan::wallet::{HardwareManager, Vaughan, WalletConfig};
 
 /// Test helper to create a standard test transaction

@@ -64,7 +64,7 @@ pub async fn load_available_accounts() -> Result<Vec<SecureAccount>, String> {
                 if let Ok(address) = address_str.parse::<alloy::primitives::Address>() {
                     // Validate that the key exists in the appropriate keychain
                     let key_exists = match service {
-                        "vaughan-wallet-encrypted-seeds" | crate::security::SERVICE_NAME_ENCRYPTED_SEEDS => {
+                        crate::security::SERVICE_NAME_ENCRYPTED_SEEDS => {
                             // Check encrypted seed keychain
                             if let Ok(seed_keychain) = OSKeychain::new(crate::security::SERVICE_NAME_ENCRYPTED_SEEDS.to_string()) {
                                 let key_ref = KeyReference {
@@ -77,7 +77,7 @@ pub async fn load_available_accounts() -> Result<Vec<SecureAccount>, String> {
                                 false
                             }
                         }
-                        "vaughan-wallet" | crate::security::SERVICE_NAME_PRIVATE_KEYS => {
+                        crate::security::SERVICE_NAME_PRIVATE_KEYS => {
                             // Check private key keychain
                             if let Ok(keychain) = OSKeychain::new(crate::security::SERVICE_NAME_PRIVATE_KEYS.to_string()) {
                                 let key_ref = KeyReference {

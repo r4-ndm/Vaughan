@@ -1,0 +1,26 @@
+﻿cargo :  Documenting vaughan v0.1.0 (C:\Us
+ers\rb3y9\Desktop\Vaughan\Vaughan-main)
+At line:1 char:1
++ cargo doc --no-deps --all-features 2>&1 
+| Out-File -FilePath doc_buil ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecifie 
+   d: ( Documenting va...n\Vaughan-main)  
+  :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeComma 
+   ndError
+ 
+error: unexpected closing delimiter: `}`
+   --> src\error.rs:400:1
+    |
+399 |     IntegrityCheckFailed { message: 
+String },
+    |                          -          
+       - ...matches this closing brace
+    |                          |
+    |                          this 
+opening brace...
+400 | }
+    | ^ unexpected closing delimiter
+
+error: could not document `vaughan`

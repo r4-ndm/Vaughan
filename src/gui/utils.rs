@@ -216,8 +216,8 @@ pub fn create_full_address_display(
             .width(Length::Fixed(440.0)),
         )
     } else {
-        let addr_str = if address.starts_with("0x") {
-            address[2..].to_string()
+        let addr_str = if let Some(stripped) = address.strip_prefix("0x") {
+            stripped.to_string()
         } else {
             address.clone()
         };

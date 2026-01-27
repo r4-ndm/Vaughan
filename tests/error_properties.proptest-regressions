@@ -1,0 +1,7 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc fe438f38e8b7539eb747e51e1d3f18a740d761caca4636daabbfea9daf054d3b # shrinks to scenario = InvalidPassword, account_id = "0aaaa000-0a00-aaa0-00aa-000a0000a00a"

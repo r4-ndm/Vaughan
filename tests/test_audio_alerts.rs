@@ -7,7 +7,7 @@
 fn test_audio_alert_compiles() {
     // This test ensures the audio feature compiles correctly
     use rodio::{OutputStream, Sink};
-    use std::io::Cursor;
+    
 
     // Try to create audio output (this might fail in CI/headless environments)
     if let Ok((_stream, stream_handle)) = OutputStream::try_default() {

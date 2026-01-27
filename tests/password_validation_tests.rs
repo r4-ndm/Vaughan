@@ -10,7 +10,7 @@ use proptest::prelude::*;
 use secrecy::{ExposeSecret, SecretString};
 use std::time::Duration;
 use vaughan::gui::state::auth_state::{AuthState, PasswordError, SessionState};
-use vaughan::security::{KeyReference, PasswordValidator, SecureSeedStorage};
+use vaughan::security::KeyReference;
 
 /// Generate arbitrary password strings
 fn arb_password() -> impl Strategy<Value = String> {

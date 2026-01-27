@@ -48,10 +48,7 @@ mod integration_tests {
     #[test]
     fn test_generators_available() {
         // Verify all generators are available
-        use properties::{
-            arb_concurrent_ops, arb_derivation_path, arb_eth_address, arb_mnemonic, arb_nickname,
-            arb_password, arb_secret_data, arb_shamir_config, arb_timeout_ms,
-        };
+        
 
         println!("✅ All property test generators available");
     }

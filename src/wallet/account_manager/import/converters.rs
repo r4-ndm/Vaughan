@@ -9,7 +9,6 @@
 // Attribution: Conversion logic uses Alloy libraries for all cryptographic operations
 // HD wallet derivation follows BIP32/BIP44 standards
 
-use alloy::primitives::Address;
 use alloy::signers::local::PrivateKeySigner;
 use secrecy::{ExposeSecret, SecretString};
 use std::str::FromStr;
@@ -117,7 +116,7 @@ pub fn keystore_to_account(
     metadata: ImportMetadata,
 ) -> Result<(Account, PrivateKeySigner), WalletError> {
     // Parse keystore JSON
-    let keystore: eth_keystore::EthKeystore = serde_json::from_str(keystore_json)
+    let _keystore: eth_keystore::EthKeystore = serde_json::from_str(keystore_json)
         .map_err(|e| WalletError::WalletError { 
             message: format!("Invalid keystore JSON: {}", e) 
         })?;
@@ -186,6 +185,7 @@ pub fn derive_multiple_accounts(
 ///
 /// Handles migration from older wallet formats
 /// This is a placeholder for future migration needs
+#[allow(dead_code)] // Placeholder for future migration functionality
 pub fn legacy_to_account(
     _legacy_data: &str,
     _metadata: ImportMetadata,

@@ -1,6 +1,6 @@
 
 use vaughan::wallet::account_manager::discovery::{
-    AccountDiscovery, DiscoveredAccount, DiscoveryClient, DiscoveryConfig,
+    AccountDiscovery, DiscoveryClient, DiscoveryConfig,
 };
 use vaughan::error::account::AccountResult;
 use alloy::primitives::{Address, Bytes, U256};

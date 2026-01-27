@@ -19,7 +19,12 @@ pub async fn check_endpoint_health(url: &str) -> Result<EndpointHealth> {
 
     let start_time = Instant::now();
 
-    let provider = ProviderBuilder::new().connect_http(url.parse().unwrap());
+    let parsed_url = url
+        .parse()
+        .map_err(|e| crate::error::VaughanError::Network(crate::error::NetworkError::RpcError {
+            message: format!("Invalid URL: {}", e),
+        }))?;
+    let provider = ProviderBuilder::new().connect_http(parsed_url);
 
     // Test basic connectivity
     match provider.get_block_number().await {
@@ -29,10 +34,10 @@ pub async fn check_endpoint_health(url: &str) -> Result<EndpointHealth> {
             // Mock sync status for now
             let is_syncing = false;
 
-            // Mock block timestamp for now
+            // Get current time safely
             let last_block_time = std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
-                .unwrap()
+                .unwrap_or(std::time::Duration::from_secs(0))
                 .as_secs();
 
             Ok(EndpointHealth {

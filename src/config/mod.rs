@@ -115,61 +115,103 @@ impl Default for ConfigManager {
     }
 }
 
-/// Network configuration structure
+/// Network configuration for EVM-compatible chains
+///
+/// Defines connection parameters and metadata for blockchain networks
+/// like Ethereum, PulseChain, BSC, Polygon, etc.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct NetworkConfig {
+    /// Unique identifier for the network
     pub id: String,
+    /// Human-readable network name (e.g., "Ethereum Mainnet")
     pub name: String,
+    /// EIP-155 chain ID
     pub chain_id: u64,
+    /// RPC endpoint URL for network communication
     pub rpc_url: String,
+    /// Native currency symbol (e.g., "ETH", "PLS")
     pub native_currency: String,
+    /// Block explorer URL (e.g., Etherscan)
     pub explorer_url: String,
+    /// UI color theme for the network
     pub color: String,
+    /// Whether this is a testnet
     pub is_testnet: bool,
+    /// Whether this is a user-added custom network
     pub is_custom: bool,
 }
 
 /// Networks configuration file structure
+///
+/// Contains all configured networks and the default network selection.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct NetworksConfig {
+    /// List of all configured networks
     pub networks: Vec<NetworkConfig>,
+    /// ID of the default network to use
     pub default_network: String,
+    /// Configuration file version
     pub version: String,
 }
 
-/// Custom token structure
+/// Custom ERC-20 token configuration
+///
+/// Represents a user-added custom token with metadata and verification status.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CustomToken {
+    /// Token contract address
     pub address: String,
+    /// Token name (e.g., "Wrapped Ether")
     pub name: String,
+    /// Token symbol (e.g., "WETH")
     pub symbol: String,
+    /// Number of decimal places
     pub decimals: u8,
+    /// Unix timestamp when token was added
     pub added_timestamp: f64,
+    /// Whether the token contract has been verified
     pub verified: bool,
+    /// User-defined tags for organization
     pub tags: Vec<String>,
 }
 
 /// Custom tokens configuration file structure
+///
+/// Stores all user-added custom tokens organized by network.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CustomTokensConfig {
+    /// Configuration file version
     pub version: String,
+    /// Last update timestamp
     pub last_updated: String,
+    /// Tokens mapped by network ID
     pub tokens: std::collections::HashMap<String, Vec<CustomToken>>,
 }
 
-/// User settings structure
+/// User interface preferences
+///
+/// Configures the wallet's appearance and behavior.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UiPreferences {
+    /// UI theme ("light" or "dark")
     pub theme: String,
+    /// Interface language code (e.g., "en", "es")
     pub language: String,
+    /// Whether to show testnet networks in the UI
     pub show_test_networks: bool,
+    /// Auto-refresh interval in seconds
     pub auto_refresh_interval: u32,
+    /// Hide balances below a threshold
     pub hide_small_balances: bool,
+    /// Default gas fee mode ("slow", "normal", "fast")
     pub default_gas_mode: String,
+    /// Path to custom alert sound file
     pub custom_alert_sound_path: Option<String>,
 }
 
-/// Security settings structure
+/// Security settings
+///
+/// Configures wallet security features and authentication requirements.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecuritySettings {
     pub auto_lock_minutes: u32,

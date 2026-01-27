@@ -103,7 +103,10 @@ pub fn format_percentage(percentage: f64) -> String {
 /// Generate a unique ID
 pub fn generate_id() -> String {
     use std::time::{SystemTime, UNIX_EPOCH};
-    let timestamp = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_nanos();
+    let timestamp = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap_or(std::time::Duration::from_secs(0))
+        .as_nanos();
     format!("id_{timestamp}")
 }
 

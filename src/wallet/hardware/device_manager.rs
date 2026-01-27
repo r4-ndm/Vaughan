@@ -253,6 +253,7 @@ pub struct DeviceManager {
     /// Configuration
     config: DeviceManagerConfig,
     /// Whether auto-scan is running
+    #[allow(dead_code)] // Reserved for future auto-scan functionality
     auto_scan_running: Arc<RwLock<bool>>,
 }
 
@@ -528,10 +529,7 @@ impl DeviceManager {
         use alloy_signer_ledger::HDPath as LedgerHDPath;
         use alloy_signer_ledger::LedgerSigner;
 
-        match LedgerSigner::new(LedgerHDPath::LedgerLive(0), None).await {
-            Ok(_) => true,
-            Err(_) => false,
-        }
+        (LedgerSigner::new(LedgerHDPath::LedgerLive(0), None).await).is_ok()
     }
 
     #[cfg(not(feature = "hardware-wallets"))]
@@ -545,10 +543,7 @@ impl DeviceManager {
         use alloy_signer_trezor::HDPath as TrezorHDPath;
         use alloy_signer_trezor::TrezorSigner;
 
-        match TrezorSigner::new(TrezorHDPath::TrezorLive(0), None).await {
-            Ok(_) => true,
-            Err(_) => false,
-        }
+        (TrezorSigner::new(TrezorHDPath::TrezorLive(0), None).await).is_ok()
     }
 
     #[cfg(not(feature = "hardware-wallets"))]

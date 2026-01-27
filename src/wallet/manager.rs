@@ -348,7 +348,11 @@ impl WalletManager {
                 reason: "Invalid IV length".to_string(),
             });
         }
-        let iv_array: [u8; 16] = iv.try_into().unwrap();
+        // IV length is checked above, so this conversion is safe
+        #[allow(clippy::expect_used)]
+        let iv_array: [u8; 16] = iv
+            .try_into()
+            .expect("IV length is verified to be 16 bytes");
 
         let mut cipher = Aes256Ctr::new(&derived_key.into(), &iv_array.into());
         cipher.apply_keystream(&mut plaintext);

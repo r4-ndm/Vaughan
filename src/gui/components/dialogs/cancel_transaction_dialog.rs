@@ -12,7 +12,15 @@ use crate::gui::{state::transaction_state::TransactionType, theme::styles, worki
 
 /// Cancel transaction confirmation dialog
 pub fn cancel_transaction_dialog_view(state: &AppState) -> Element<'_, Message> {
-    let pending_tx = state.ui().pending_cancel_tx.as_ref().unwrap();
+    let Some(pending_tx) = state.ui().pending_cancel_tx.as_ref() else {
+        // Should not happen - dialog should only be shown when pending_cancel_tx is Some
+        return Container::new(Text::new("Error: No pending transaction"))
+            .width(Length::Fill)
+            .height(Length::Fill)
+            .center_x()
+            .center_y()
+            .into();
+    };
 
     // Format transaction hash for display
     let tx_hash_display = if pending_tx.tx_hash.len() > 20 {

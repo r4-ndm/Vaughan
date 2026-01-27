@@ -60,10 +60,11 @@ impl std::error::Error for DerivationPathError {}
 ///
 /// Supports both standard paths (BIP44, Ledger Live, Legacy) and
 /// custom user-defined paths with validation.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Default)]
 pub enum DerivationStandard {
     /// Standard BIP44 Ethereum path: `m/44'/60'/0'/0/{index}`
     /// Most reliable for cross-wallet compatibility.
+    #[default]
     Bip44,
     /// Ledger Live standard: `m/44'/60'/{index}'/0/0`
     /// Used by Ledger Live software.
@@ -77,11 +78,6 @@ pub enum DerivationStandard {
 }
 
 impl DerivationStandard {
-    /// Get the default standard (BIP44)
-    pub fn default() -> Self {
-        Self::Bip44
-    }
-
     /// Create a custom derivation path with validation
     ///
     /// # Arguments

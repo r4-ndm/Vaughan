@@ -100,14 +100,19 @@ impl RateLimiter {
     /// Get default path for rate limit persistence
     fn get_default_path() -> Option<PathBuf> {
         #[cfg(test)]
-        return None;
+        {
+            return None;
+        }
 
-        if let Ok(home_dir) = std::env::var("HOME") {
-             Some(PathBuf::from(home_dir).join(".config").join("vaughan").join("rate_limits.json"))
-        } else if let Ok(appdata_dir) = std::env::var("APPDATA") {
-             Some(PathBuf::from(appdata_dir).join("Vaughan").join("rate_limits.json"))
-        } else {
-             None
+        #[cfg(not(test))]
+        {
+            if let Ok(home_dir) = std::env::var("HOME") {
+                 Some(PathBuf::from(home_dir).join(".config").join("vaughan").join("rate_limits.json"))
+            } else if let Ok(appdata_dir) = std::env::var("APPDATA") {
+                 Some(PathBuf::from(appdata_dir).join("Vaughan").join("rate_limits.json"))
+            } else {
+                 None
+            }
         }
     }
 
@@ -148,8 +153,20 @@ impl RateLimiter {
             // Let's re-acquire read-only or just calculate based on config (approximate).
             // Better: calculate wait time while we had the lock.
             // Refactoring slightly to keep it clean.
-            let buckets = self.buckets.lock().unwrap();
-            let bucket = buckets.get(operation).unwrap();
+            let Ok(buckets) = self.buckets.lock() else {
+                // If mutex is poisoned, deny the request (fail closed for security)
+                return Err(VaughanError::Security(SecurityError::RateLimitExceeded {
+                    operation: operation.to_string(),
+                    wait_time_seconds: 60,
+                }));
+            };
+            let Some(bucket) = buckets.get(operation) else {
+                // Operation not found, deny request
+                return Err(VaughanError::Security(SecurityError::RateLimitExceeded {
+                    operation: operation.to_string(),
+                    wait_time_seconds: 60,
+                }));
+            };
             let wait_time = bucket.time_until_refill(1);
             
             tracing::warn!(%correlation_id, operation, wait_time = ?wait_time, "Rate limit exceeded");
@@ -240,7 +257,7 @@ impl RateLimiter {
     pub fn set_persistence_path(&mut self, path: PathBuf) {
         self.persistence_path = Some(path);
         // Reload from new path
-        if let Err(e) = self.load() {
+        if let Err(_e) = self.load() {
              // Ignore error for tests if file invalid
         }
     }

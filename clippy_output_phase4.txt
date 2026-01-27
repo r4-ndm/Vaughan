@@ -1,0 +1,13 @@
+﻿cargo :     Finished `dev` profile 
+[unoptimized + debuginfo] target(s) in 
+0.89s
+At line:1 char:1
++ cargo clippy --all-features 2>&1 | 
+Out-File -FilePath clippy_output_p ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecifie 
+   d: (    Finished `d...get(s) in 0.89s  
+  :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeComma 
+   ndError
+ 

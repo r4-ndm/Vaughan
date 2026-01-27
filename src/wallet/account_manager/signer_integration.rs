@@ -49,7 +49,7 @@ impl VaughanSigner {
     /// Create a software signer from a private key
     pub fn from_private_key(private_key: B256) -> Result<Self> {
         let signer = PrivateKeySigner::from_bytes(&private_key)
-            .map_err(|e| VaughanError::Wallet(WalletError::InvalidPrivateKey))?;
+            .map_err(|_e| VaughanError::Wallet(WalletError::InvalidPrivateKey))?;
         Ok(Self::PrivateKey(signer))
     }
 

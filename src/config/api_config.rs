@@ -203,8 +203,12 @@ impl ApiConfigManager {
     /// Get all configured APIs summary
     pub fn get_api_summary(&self) -> ApiSummary {
         ApiSummary {
-            moralis_configured: self.config.moralis.is_some()
-                && !self.config.moralis.as_ref().unwrap().api_key.is_empty(),
+            moralis_configured: self
+                .config
+                .moralis
+                .as_ref()
+                .map(|m| !m.api_key.is_empty())
+                .unwrap_or(false),
             moralis_dex_enabled: self.is_moralis_enabled_for_dex(),
             moralis_price_enabled: false, // Price API not configured
             custom_apis: self.config.custom_apis.keys().cloned().collect(),

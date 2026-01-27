@@ -871,7 +871,7 @@ mod interface_tests {
 #[cfg(test)]
 mod property_tests {
     use super::*;
-    use crate::security::{EncryptionType, KeyReference};
+    use crate::security::KeyReference;
     use chrono::Utc;
     use uuid::Uuid;
     use proptest::prelude::*;

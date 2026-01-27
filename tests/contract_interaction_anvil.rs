@@ -38,7 +38,7 @@ async fn test_erc20_contract_interaction() {
     
     // 1. Setup
     let signer = context.get_signer(0);
-    let sender = signer.address();
+    let _sender = signer.address();
     let wallet = EthereumWallet::from(signer);
     let provider = ProviderBuilder::new()
         .wallet(wallet)

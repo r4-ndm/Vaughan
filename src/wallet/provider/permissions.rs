@@ -19,7 +19,7 @@ use serde::{Deserialize, Serialize};
 /// Permission grant for a dApp
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PermissionGrant {
-    /// Origin of the dApp (e.g., "https://app.example.com")
+    /// Origin of the dApp (e.g., `https://app.example.com`)
     pub origin: String,
     /// When the permission was granted
     pub granted_at: DateTime<Utc>,

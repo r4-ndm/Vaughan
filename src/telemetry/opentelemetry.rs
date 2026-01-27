@@ -8,8 +8,6 @@ use opentelemetry::{global, KeyValue};
 #[cfg(feature = "telemetry")]
 use opentelemetry_sdk::{trace as sdktrace, Resource};
 #[cfg(feature = "telemetry")]
-use opentelemetry_otlp::WithExportConfig;
-#[cfg(feature = "telemetry")]
 use tracing_subscriber::{layer::SubscriberExt, Registry};
 
 /// Initialize telemetry if the feature is enabled

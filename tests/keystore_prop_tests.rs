@@ -101,13 +101,13 @@ proptest! {
                 &ks_password
             ).await.expect("Export failed");
             
-            // Import using eth-keystore logic (via import_from_keystore_file)
+            // Import using eth-keystore logic (via import_from_keystore)
             let dir = tempdir().unwrap();
             let file_path = dir.path().join("keystore.json");
             std::fs::write(&file_path, &json).unwrap();
             
-            let (imported_account, imported_signer) = importer.import_from_keystore_file(
-                &file_path,
+            let (imported_account, imported_signer) = importer.import_from_keystore(
+                &json,
                 &ks_password,
                 ImportMetadata::new()
             ).expect("Import failed");

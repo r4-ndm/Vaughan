@@ -1,0 +1,246 @@
+﻿cargo :     Checking vaughan v0.1.0 (C:\Us
+ers\rb3y9\Desktop\Vaughan\Vaughan-main)
+At line:1 char:1
++ cargo clippy -- -D warnings 2>&1 | 
+Out-File -FilePath clippy_remainin ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecifie 
+   d: (    Checking va...n\Vaughan-main)  
+  :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeComma 
+   ndError
+ 
+error: unused import: `std::str::FromStr`
+  --> src\tokens\mod.rs:12:5
+   |
+12 | use std::str::FromStr;
+   |     ^^^^^^^^^^^^^^^^^
+   |
+   = note: `-D unused-imports` implied by 
+`-D warnings`
+   = help: to override `-D warnings` add 
+`#[allow(unused_imports)]`
+
+error: this `if` statement can be 
+collapsed
+   --> src\network\validation.rs:218:5
+    |
+218 | /     if 
+!block_explorer.trim().is_empty() {
+219 | |         if 
+(!block_explorer.starts_with("http://") 
+&& 
+!block_explorer.starts_with("https://"))
+220 | |             || 
+url::Url::parse(block_explorer).is_err()
+...   |
+224 | |     }
+    | |_____^
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#collapsible_if
+    = note: `-D clippy::collapsible-if` 
+implied by `-D warnings`
+    = help: to override `-D warnings` add 
+`#[allow(clippy::collapsible_if)]`
+help: collapse nested if block
+    |
+218 ~     if 
+!block_explorer.trim().is_empty()
+219 ~         && 
+((!block_explorer.starts_with("http://") 
+&& 
+!block_explorer.starts_with("https://"))
+220 ~             || 
+url::Url::parse(block_explorer).is_err())
+221 |         {
+222 |             issues.push(NetworkValid
+ationIssue::InvalidBlockExplorer);
+223 ~         }
+    |
+
+error: used `expect()` on an `Option` 
+value
+  --> src\performance\cache.rs:95:13
+   |
+95 |             
+NonZeroUsize::new(100).expect("100 is 
+non-zero")
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is `None`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#expect_used
+   = note: `-D clippy::expect-used` 
+implied by `-D warnings`
+   = help: to override `-D warnings` add 
+`#[allow(clippy::expect_used)]`
+
+error: used `expect()` on a `Result` value
+  --> src\performance\multicall.rs:89:9
+   |
+89 | /         
+Address::from_str(MULTICALL3_ADDRESS)
+90 | |             
+.expect("MULTICALL3_ADDRESS is a valid 
+constant address")
+   | |____________________________________
+_________________________________^
+   |
+   = note: if this value is an `Err`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#expect_used
+
+error: used `expect()` on a `Result` value
+   --> src\security\hardware.rs:361:25
+    |
+361 | /                         std::str::
+FromStr::from_str(&mock_addr_str)
+362 | |                             
+.expect("Mock address format is valid")
+    | |___________________________________
+________________________________^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#expect_used
+
+error: used `expect()` on a `Result` value
+   --> src\security\hardware.rs:762:25
+    |
+762 | /                         std::str::
+FromStr::from_str(&mock_addr_str)
+763 | |                             
+.expect("Mock address format is valid")
+    | |___________________________________
+________________________________^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#expect_used
+
+error: used `unwrap()` on an `Option` 
+value
+   --> src\wallet\account_manager\import\v
+alidators.rs:197:15
+    |
+197 |     let obj = 
+parsed.as_object().unwrap();
+    |               
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is `None`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+    = note: `-D clippy::unwrap-used` 
+implied by `-D warnings`
+    = help: to override `-D warnings` add 
+`#[allow(clippy::unwrap_used)]`
+
+error: used `unwrap()` on a `Result` value
+  --> src\wallet\account_manager\metadata.
+rs:33:18
+   |
+33 |         let re = Regex::new(r"^[a-zA-
+Z0-9_\-\s]+$").unwrap();
+   |                  ^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#unwrap_used
+
+error: used `unwrap()` on a `Result` value
+  --> src\wallet\account_manager\metadata.
+rs:76:20
+   |
+76 |         let seed = <[u8; 
+32]>::try_from(hash.as_slice()).unwrap();
+   |                    ^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: if this value is an `Err`, it 
+will panic
+   = help: for further information visit h
+ttps://rust-lang.github.io/rust-clippy/rus
+t-1.92.0/index.html#unwrap_used
+
+error: used `unwrap()` on a `Result` value
+   --> 
+src\wallet\keystore_format.rs:224:17
+    |
+224 | /                 
+std::time::SystemTime::now()
+225 | |                     
+.duration_since(std::time::UNIX_EPOCH)
+226 | |                     .unwrap()
+    | |_____________________________^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+error: used `unwrap()` on a `Result` value
+   --> src\wallet\manager.rs:351:34
+    |
+351 |         let iv_array: [u8; 16] = 
+iv.try_into().unwrap();
+    |                                  
+^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is an `Err`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+error: used `unwrap()` on an `Option` 
+value
+   --> 
+src\wallet\transaction\fees.rs:242:34
+    |
+242 |         let oldest = 
+U256::from(*base_fees.first().unwrap());
+    |                                  
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is `None`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+error: used `unwrap()` on an `Option` 
+value
+   --> 
+src\wallet\transaction\fees.rs:243:34
+    |
+243 |         let newest = 
+U256::from(*base_fees.last().unwrap());
+    |                                  
+^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: if this value is `None`, it 
+will panic
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/ru
+st-1.92.0/index.html#unwrap_used
+
+error: could not compile `vaughan` (lib) 
+due to 13 previous errors

@@ -474,7 +474,7 @@ mod tests {
 mod property_tests {
     use super::*;
     use proptest::prelude::*;
-    use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
+    use std::sync::atomic::{AtomicBool, Ordering};
 
     proptest! {
         #![proptest_config(ProptestConfig::with_cases(100))]

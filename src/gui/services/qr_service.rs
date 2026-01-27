@@ -71,7 +71,7 @@ pub fn generate_address_qr_code(address: &str) -> Result<Handle, String> {
 
 /// Generate a QR code for an Ethereum payment request (EIP-681)
 ///
-/// Format: ethereum:<address>[@<chain_id>][?value=<amount>]
+/// Format: `ethereum:<address>[@<chain_id>][?value=<amount>]`
 #[cfg(feature = "qr")]
 pub fn generate_payment_request_qr_code(
     address: &str,

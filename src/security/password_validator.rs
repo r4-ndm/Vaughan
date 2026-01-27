@@ -154,7 +154,9 @@ impl PasswordValidator {
 
     /// Check if account is currently locked out
     fn check_lockout(&self, account_id: &str) -> Option<LockoutState> {
-        let lockouts = self.lockouts.lock().unwrap();
+        let Ok(lockouts) = self.lockouts.lock() else {
+            return None;
+        };
         if let Some(lockout) = lockouts.get(account_id) {
             if lockout.locked_until > Instant::now() {
                 return Some(lockout.clone());
@@ -165,7 +167,10 @@ impl PasswordValidator {
 
     /// Check rate limiting for an account
     fn check_rate_limit(&self, account_id: &str) -> std::result::Result<(), PasswordError> {
-        let mut attempts = self.attempts.lock().unwrap();
+        let Ok(mut attempts) = self.attempts.lock() else {
+            // If mutex is poisoned, allow the attempt (fail open for availability)
+            return Ok(());
+        };
         let now = Instant::now();
 
         // Get recent attempts within the rate limit window
@@ -189,7 +194,9 @@ impl PasswordValidator {
 
     /// Record a password attempt
     fn record_attempt(&self, account_id: &str, success: bool) {
-        let mut attempts = self.attempts.lock().unwrap();
+        let Ok(mut attempts) = self.attempts.lock() else {
+            return;
+        };
         let now = Instant::now();
 
         let account_attempts = attempts.entry(account_id.to_string()).or_default();
@@ -206,7 +213,9 @@ impl PasswordValidator {
 
     /// Increment failure count and return total failures
     fn increment_failures(&self, account_id: &str) -> u32 {
-        let mut lockouts = self.lockouts.lock().unwrap();
+        let Ok(mut lockouts) = self.lockouts.lock() else {
+            return 0;
+        };
         let lockout = lockouts.entry(account_id.to_string()).or_insert_with(|| LockoutState {
             locked_until: Instant::now(),
             total_failures: 0,
@@ -218,13 +227,16 @@ impl PasswordValidator {
 
     /// Clear failure count after successful validation
     fn clear_failures(&self, account_id: &str) {
-        let mut lockouts = self.lockouts.lock().unwrap();
-        lockouts.remove(account_id);
+        if let Ok(mut lockouts) = self.lockouts.lock() {
+            lockouts.remove(account_id);
+        }
     }
 
     /// Lock out an account for the lockout duration
     fn lockout_account(&self, account_id: &str) {
-        let mut lockouts = self.lockouts.lock().unwrap();
+        let Ok(mut lockouts) = self.lockouts.lock() else {
+            return;
+        };
         let lockout = lockouts.entry(account_id.to_string()).or_insert_with(|| LockoutState {
             locked_until: Instant::now(),
             total_failures: MAX_TOTAL_FAILURES,
@@ -240,7 +252,9 @@ impl PasswordValidator {
 
     /// Get remaining attempts before lockout
     pub fn get_remaining_attempts(&self, account_id: &str) -> u32 {
-        let lockouts = self.lockouts.lock().unwrap();
+        let Ok(lockouts) = self.lockouts.lock() else {
+            return MAX_TOTAL_FAILURES;
+        };
         if let Some(lockout) = lockouts.get(account_id) {
             MAX_TOTAL_FAILURES.saturating_sub(lockout.total_failures)
         } else {

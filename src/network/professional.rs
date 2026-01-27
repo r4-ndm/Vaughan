@@ -721,10 +721,10 @@ impl ProfessionalNetworkManager {
 
         networks.insert(network_id, cluster);
 
+        let endpoint_count = networks.get(&network_id).map(|n| n.endpoints.len()).unwrap_or(0);
         info!(
             "📡 Added network cluster for {} with {} endpoints",
-            network_id.0,
-            networks.get(&network_id).unwrap().endpoints.len()
+            network_id.0, endpoint_count
         );
 
         Ok(())

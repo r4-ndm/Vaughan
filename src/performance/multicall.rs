@@ -23,6 +23,7 @@ use alloy::primitives::{Address, Bytes, U256};
 use alloy::sol;
 use alloy::sol_types::SolCall;  // Required for abi_encode
 use std::str::FromStr;
+use std::sync::OnceLock;
 use uuid::Uuid;
 
 use crate::error::{Result, VaughanError, NetworkError};
@@ -79,6 +80,19 @@ sol! {
 /// Standard Multicall3 CREATE2 address (same on all supported chains)
 pub const MULTICALL3_ADDRESS: &str = "0xcA11bde05977b363a7018c201E3a73A6EcE3C5D5";
 
+/// Parsed Multicall3 address (computed once)
+static MULTICALL3_ADDR: OnceLock<Address> = OnceLock::new();
+
+/// Get the parsed Multicall3 address
+fn get_multicall3_addr() -> Address {
+    *MULTICALL3_ADDR.get_or_init(|| {
+        // MULTICALL3_ADDRESS is a hardcoded constant that is always valid
+        #[allow(clippy::expect_used)]
+        Address::from_str(MULTICALL3_ADDRESS)
+            .expect("MULTICALL3_ADDRESS is a valid constant address")
+    })
+}
+
 /// Get the Multicall3 contract address for a given chain ID
 ///
 /// Multicall3 uses CREATE2 deployment, so it has the same address on all
@@ -93,22 +107,22 @@ pub fn get_multicall3_address(chain_id: u64) -> Address {
     // Multicall3 uses CREATE2 and has the same address on all chains
     match chain_id {
         1 | 5 | 11155111 => { // Ethereum Mainnet, Goerli, Sepolia
-            Address::from_str(MULTICALL3_ADDRESS).unwrap()
+            get_multicall3_addr()
         }
         56 | 97 => { // BSC Mainnet, BSC Testnet
-            Address::from_str(MULTICALL3_ADDRESS).unwrap()
+            get_multicall3_addr()
         }
         137 | 80001 => { // Polygon Mainnet, Mumbai
-            Address::from_str(MULTICALL3_ADDRESS).unwrap()
+            get_multicall3_addr()
         }
         42161 | 421613 => { // Arbitrum One, Arbitrum Goerli
-            Address::from_str(MULTICALL3_ADDRESS).unwrap()
+            get_multicall3_addr()
         }
         10 | 420 => { // Optimism, Optimism Goerli
-            Address::from_str(MULTICALL3_ADDRESS).unwrap()
+            get_multicall3_addr()
         }
         369 | 943 => { // PulseChain, PulseChain Testnet
-            Address::from_str(MULTICALL3_ADDRESS).unwrap()
+            get_multicall3_addr()
         }
         _ => {
             // Default to standard address - may not be deployed on all chains
@@ -116,7 +130,7 @@ pub fn get_multicall3_address(chain_id: u64) -> Address {
                 chain_id = chain_id,
                 "Using default Multicall3 address for unknown chain"
             );
-            Address::from_str(MULTICALL3_ADDRESS).unwrap()
+            get_multicall3_addr()
         }
     }
 }

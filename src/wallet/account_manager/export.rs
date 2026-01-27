@@ -206,7 +206,7 @@ mod tests {
         // We must use `authenticate`.
         
         // But authenticate needs a password valid boolean.
-        let valid_token = auth.authenticate(true).await.unwrap();
+        let _valid_token = auth.authenticate(true).await.unwrap();
 
         // Expire it? We can't easily wait 2 mins in test.
         // We can use a manually constructed expired token if fields were public?

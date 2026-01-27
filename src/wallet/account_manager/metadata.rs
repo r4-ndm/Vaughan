@@ -30,7 +30,10 @@ impl MetadataManager {
             return Err(WalletError::Generic("Nickname too long (max 32 chars)".into()).into());
         }
 
-        let re = Regex::new(r"^[a-zA-Z0-9_\-\s]+$").unwrap();
+        // Regex pattern is a constant and will never fail to compile
+        #[allow(clippy::expect_used)]
+        let re = Regex::new(r"^[a-zA-Z0-9_\-\s]+$")
+            .expect("Regex pattern is valid");
         if !re.is_match(name) {
             return Err(WalletError::Generic("Nickname contains invalid characters".into()).into());
         }
@@ -72,8 +75,10 @@ impl MetadataManager {
         hasher.update(address.as_slice());
         let hash = hasher.finalize();
         
-        // Seed RNG with hash
-        let seed = <[u8; 32]>::try_from(hash.as_slice()).unwrap();
+        // Seed RNG with hash (hash is always 32 bytes from SHA256)
+        #[allow(clippy::expect_used)]
+        let seed = <[u8; 32]>::try_from(hash.as_slice())
+            .expect("SHA256 hash is always 32 bytes");
         let mut rng = ChaCha20Rng::from_seed(seed);
 
         // Generate colors (HSL -> RGB hex)
@@ -218,7 +223,7 @@ mod property_tests {
     }
 
     proptest! {
-        #![proptest_config(ProptestConfig::with_cases(100))]
+        #![proptest_config(ProptestConfig::with_cases(500))]
 
         /// Property 33: Nickname Uniqueness and Format
         /// Validates that nicknames meeting criteria are accepted, and invalid ones rejected.

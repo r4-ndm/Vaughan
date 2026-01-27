@@ -119,7 +119,6 @@ impl Default for ExportAuthenticator {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use tokio::time::sleep;
 
     #[tokio::test]
     async fn test_auth_success() {

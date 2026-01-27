@@ -9,7 +9,6 @@
 // Attribution: Validation patterns follow industry standards from MetaMask
 // Alloy and bip39 crates used for cryptographic validation
 
-use secrecy::{ExposeSecret, SecretString};
 use std::str::FromStr;
 
 use crate::error::WalletError;
@@ -67,7 +66,7 @@ impl ValidationResult {
 /// This is the main entry point for validation, detecting format
 /// and applying appropriate validation rules
 pub fn validate_import_data(data: &str) -> ValidationResult {
-    use super::parsers::{detect_import_format, ParseResult};
+    use super::parsers::detect_import_format;
 
     let parse_result = detect_import_format(data);
 
@@ -195,7 +194,9 @@ fn validate_keystore_detailed(json: &str) -> ValidationResult {
         );
     }
 
-    let obj = parsed.as_object().unwrap();
+    // Safe to unwrap because we checked is_object() above
+    #[allow(clippy::expect_used)]
+    let obj = parsed.as_object().expect("Checked is_object() above");
 
     // Check for crypto field (required in EIP-2335)
     if !obj.contains_key("crypto") && !obj.contains_key("Crypto") {
@@ -214,6 +215,7 @@ fn validate_keystore_detailed(json: &str) -> ValidationResult {
 /// - Starts with 'm/'
 /// - Valid path components
 /// - Hardened notation (')
+#[allow(dead_code)] // Duplicate of hardware::derivation::validate_derivation_path
 pub fn validate_derivation_path(path: &str) -> Result<(), WalletError> {
     if !path.starts_with("m/") {
         return Err(WalletError::WalletError {
@@ -253,6 +255,7 @@ pub fn validate_derivation_path(path: &str) -> Result<(), WalletError> {
 /// Validate account index for HD wallet derivation
 ///
 /// Ensures index is within safe range (0 to 2^31 - 1)
+#[allow(dead_code)] // Used in tests
 pub fn validate_account_index(index: u32) -> Result<(), WalletError> {
     // BIP32 hardened keys use indices >= 2^31
     // For account indices, we stay below this threshold

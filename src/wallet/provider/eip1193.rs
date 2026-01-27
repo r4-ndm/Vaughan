@@ -16,16 +16,15 @@
 //!
 //! This implementation follows MetaMask's provider API design.
 
-use alloy::primitives::{Address, Bytes, B256, U256};
+use alloy::primitives::Address;
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::collections::HashMap;
 use std::sync::Arc;
 use tokio::sync::RwLock;
 use uuid::Uuid;
 
-use crate::error::{Result, VaughanError, WalletError};
+use crate::error::Result;
 use super::events::{ProviderEvent, EventEmitter};
 use super::permissions::PermissionManager;
 
@@ -445,8 +444,8 @@ impl VaughanProvider {
             .unwrap_or_default();
 
         // Parse hex chain ID
-        let chain_id = if chain_id_str.starts_with("0x") {
-            u64::from_str_radix(&chain_id_str[2..], 16).unwrap_or(1)
+        let chain_id = if let Some(hex_part) = chain_id_str.strip_prefix("0x") {
+            u64::from_str_radix(hex_part, 16).unwrap_or(1)
         } else {
             chain_id_str.parse().unwrap_or(1)
         };

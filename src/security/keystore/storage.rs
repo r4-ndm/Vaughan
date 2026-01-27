@@ -129,7 +129,7 @@ pub fn load_accounts(
                     stored.key_reference.id
                 );
                 let key_exists = match stored.key_reference.service.as_str() {
-                    crate::security::SERVICE_NAME_ENCRYPTED_SEEDS | "vaughan-wallet-encrypted-seeds" => {
+                    crate::security::SERVICE_NAME_ENCRYPTED_SEEDS => {
                         // For seed-based accounts, check if the encrypted seed exists
                         let seed_keychain =
                             crate::security::keychain::OSKeychain::new(crate::security::SERVICE_NAME_ENCRYPTED_SEEDS.to_string());
@@ -145,7 +145,7 @@ pub fn load_accounts(
                             }
                         }
                     }
-                    crate::security::SERVICE_NAME_PRIVATE_KEYS | "vaughan-wallet" => {
+                    crate::security::SERVICE_NAME_PRIVATE_KEYS => {
                         // For private key accounts, check if the key exists
                         let result = keychain.retrieve(&stored.key_reference).is_ok();
                         tracing::info!(

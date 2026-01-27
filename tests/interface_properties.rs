@@ -15,7 +15,6 @@
 mod properties;
 
 use proptest::prelude::*;
-use secrecy::SecretString;
 use std::sync::Arc;
 
 // Import test utilities
@@ -45,7 +44,7 @@ mod property_1_interface_consistency {
         #![proptest_config(interface_config())]
 
         #[test]
-        fn unlock_then_is_unlocked_returns_true(password in arb_password()) {
+        fn unlock_then_is_unlocked_returns_true(_password in arb_password()) {
             // Setup: Create locked state
             let mut state = AuthState::default();
             prop_assert!(!state.session.is_unlocked);
@@ -79,7 +78,7 @@ mod property_1_interface_consistency {
         }
 
         #[test]
-        fn show_dialog_then_visible_returns_true(nickname in arb_nickname()) {
+        fn show_dialog_then_visible_returns_true(_nickname in arb_nickname()) {
             use vaughan::gui::state::auth_state::PasswordDialogConfig;
 
             // Setup: Create state with hidden dialog
@@ -103,7 +102,7 @@ mod property_1_interface_consistency {
         }
 
         #[test]
-        fn hide_dialog_then_visible_returns_false(nickname in arb_nickname()) {
+        fn hide_dialog_then_visible_returns_false(_nickname in arb_nickname()) {
             use vaughan::gui::state::auth_state::PasswordDialogConfig;
 
             // Setup: Create state with visible dialog
@@ -128,7 +127,7 @@ mod property_1_interface_consistency {
         }
 
         #[test]
-        fn state_transitions_are_consistent(password in arb_password()) {
+        fn state_transitions_are_consistent(_password in arb_password()) {
             // Setup: Create state
             let mut state = AuthState::default();
 

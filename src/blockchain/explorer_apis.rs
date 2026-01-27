@@ -150,11 +150,12 @@ pub struct ExplorerApiManager {
 
 impl Clone for ExplorerApiManager {
     fn clone(&self) -> Self {
+        // HTTP client builder should never fail with these basic settings
         let client = reqwest::Client::builder()
             .timeout(self.config.request_timeout)
             .user_agent("Vaughan-Wallet/1.0")
             .build()
-            .expect("Failed to create HTTP client");
+            .unwrap_or_else(|_| reqwest::Client::new());
 
         let mut manager = Self {
             config: self.config.clone(),
@@ -177,11 +178,12 @@ impl Clone for ExplorerApiManager {
 impl ExplorerApiManager {
     /// Create a new API manager with configuration
     pub fn new(config: ExplorerApiConfig) -> Self {
+        // HTTP client builder should never fail with these basic settings
         let client = reqwest::Client::builder()
             .timeout(config.request_timeout)
             .user_agent("Vaughan-Wallet/1.0")
             .build()
-            .expect("Failed to create HTTP client");
+            .unwrap_or_else(|_| reqwest::Client::new());
 
         let mut manager = Self {
             config,

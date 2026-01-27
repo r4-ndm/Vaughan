@@ -1,0 +1,9 @@
+# Clippy configuration for Vaughan Wallet
+# Professional-grade EVM wallet with security-critical code
+
+# Set reasonable complexity thresholds for wallet code
+cognitive-complexity-threshold = 30
+type-complexity-threshold = 500
+
+# Allow common patterns in cryptographic code
+too-many-arguments-threshold = 10

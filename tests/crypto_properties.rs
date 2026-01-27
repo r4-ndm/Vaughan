@@ -110,17 +110,17 @@ mod property_20_seed_phrase_determinism {
             let mnemonic = SecretString::new(mnemonic_str);
 
             // Action: Derive wallet multiple times (5 times)
-            let addresses: Vec<_> = (0..5)
+            let addresses_result: Result<Vec<_>, _> = (0..5)
                 .map(|_| {
                     derive_wallet_from_seed(&mnemonic, None, Some(&derivation_path))
                         .map(|w| w.address())
                 })
-                .collect::<Result<Vec<_>, _>>();
+                .collect();
 
             // Property: All derivations MUST succeed
-            prop_assert!(addresses.is_ok(), "All derivations must succeed");
+            prop_assert!(addresses_result.is_ok(), "All derivations must succeed");
 
-            let addresses = addresses.unwrap();
+            let addresses = addresses_result.unwrap();
 
             // Property: All addresses MUST be identical
             let first_addr = addresses[0];
@@ -262,18 +262,24 @@ mod property_24_lru_cache_correctness {
             // Setup: Create cache with capacity 10
             let mut cache = LruCache::new(NonZeroUsize::new(10).unwrap());
 
-            // Action: Fill cache
-            for (i, key) in keys.iter().take(10).enumerate() {
+            // Filter to unique keys to ensure we can fill the cache
+            let unique_keys: Vec<u32> = keys.iter().copied().collect::<std::collections::HashSet<_>>().into_iter().collect();
+            
+            // Only test if we have enough unique keys
+            prop_assume!(unique_keys.len() >= 12);
+
+            // Action: Fill cache with first 10 unique keys
+            for (i, key) in unique_keys.iter().take(10).enumerate() {
                 cache.put(*key, i);
             }
 
             // Action: Access first key (making it most recent)
-            let first_key = keys[0];
+            let first_key = unique_keys[0];
             let _ = cache.get(&first_key);
 
             // Action: Add 2 more items (should evict 2nd and 3rd oldest)
-            cache.put(keys[10], 10);
-            cache.put(keys[11], 11);
+            cache.put(unique_keys[10], 10);
+            cache.put(unique_keys[11], 11);
 
             // Property: First key MUST still be in cache (was accessed)
             prop_assert!(

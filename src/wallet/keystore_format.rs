@@ -42,7 +42,7 @@
 //! # Inspiration
 //!
 //! This keystore format is based on MetaMask v3 standard:
-//! https://github.com/ethereum/wiki/wiki/Web3-Secret-Storage-Definition
+//! <https://github.com/ethereum/wiki/wiki/Web3-Secret-Storage-Definition>
 //!
 //! While Alloy provides cryptographic primitives, the keystore format structure
 //! follows the MetaMask/Web3 Secret Storage Definition for compatibility.
@@ -223,7 +223,7 @@ impl MetaMaskKeystore {
             timestamp: Some(
                 std::time::SystemTime::now()
                     .duration_since(std::time::UNIX_EPOCH)
-                    .unwrap()
+                    .unwrap_or(std::time::Duration::from_secs(0))
                     .as_secs(),
             ),
         }

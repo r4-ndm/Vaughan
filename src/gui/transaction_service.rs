@@ -143,6 +143,7 @@ pub async fn check_for_incoming_transactions(
 }
 
 /// Create a pending transaction for tracking cancellation
+#[allow(clippy::too_many_arguments)]
 pub fn create_pending_transaction(
     tx_hash: String,
     nonce: u64,

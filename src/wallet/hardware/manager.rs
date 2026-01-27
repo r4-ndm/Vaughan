@@ -2,6 +2,42 @@
 //!
 //! This module provides integration between the main wallet and hardware wallet devices,
 //! managing device connections and coordinating with the security module.
+//!
+//! # Architecture
+//!
+//! The hardware wallet system has two layers:
+//! - **Security Layer** (`src/security/hardware.rs`): Low-level device communication using Alloy signers
+//! - **Wallet Layer** (this module): High-level device management and user feedback
+//!
+//! # Features
+//!
+//! - Multi-device support (Ledger + Trezor simultaneously)
+//! - Automatic device detection
+//! - Connection recovery with exponential backoff
+//! - Transaction security auditing
+//! - Address verification with user feedback
+//! - Device health monitoring
+//!
+//! # Usage Example
+//!
+//! ```no_run
+//! use vaughan::wallet::hardware::HardwareManager;
+//!
+//! # async fn example() -> Result<(), Box<dyn std::error::Error>> {
+//! let mut manager = HardwareManager::new()?;
+//!
+//! // Detect all connected devices
+//! let devices = manager.detect_wallets().await?;
+//! println!("Found {} hardware wallets", devices.len());
+//!
+//! // Get addresses from first device
+//! let addresses = manager.get_addresses(0, "m/44'/60'/0'/0", 5).await?;
+//!
+//! // Sign transaction with first device
+//! let signature = manager.sign_transaction(0, &tx, "m/44'/60'/0'/0/0").await?;
+//! # Ok(())
+//! # }
+//! ```
 
 use alloy::primitives::Address;
 use alloy::primitives::Signature;
@@ -73,6 +109,53 @@ pub struct HardwareWalletStatus {
 }
 
 /// Hardware wallet manager for the main wallet
+///
+/// This manager provides high-level hardware wallet operations with user feedback,
+/// device management, and security auditing. It coordinates multiple hardware devices
+/// and provides a unified interface for the wallet application.
+///
+/// # Features
+///
+/// - **Multi-Device Support**: Manage Ledger and Trezor simultaneously
+/// - **Auto-Detection**: Automatically detect connected devices
+/// - **Connection Recovery**: Automatic reconnection with exponential backoff
+/// - **Security Auditing**: Validate transactions before signing
+/// - **User Feedback**: Detailed feedback for all operations
+/// - **Thread-Safe**: Safe concurrent access
+///
+/// # Example
+///
+/// ```no_run
+/// use vaughan::wallet::hardware::HardwareManager;
+/// use alloy::rpc::types::TransactionRequest;
+///
+/// # async fn example() -> Result<(), Box<dyn std::error::Error>> {
+/// let mut manager = HardwareManager::new()?;
+///
+/// // Detect devices
+/// let devices = manager.detect_wallets().await?;
+/// for (i, device) in devices.iter().enumerate() {
+///     println!("Device {}: {} {}", i, device.device_type, device.model);
+/// }
+///
+/// // Verify address with feedback
+/// let feedback = manager.verify_address_with_feedback(
+///     0,
+///     "0x742d35cc6c9e4bfe8aa16fd2fde52c74c47b8f18",
+///     "m/44'/60'/0'/0/0"
+/// ).await?;
+/// println!("{}", feedback.user_message);
+///
+/// // Audit transaction before signing
+/// let tx = TransactionRequest::default();
+/// let audit = manager.audit_transaction_with_feedback(&tx, "m/44'/60'/0'/0/0", 0).await?;
+/// if audit.passed {
+///     // Safe to sign
+///     let signature = manager.sign_transaction(0, &tx, "m/44'/60'/0'/0/0").await?;
+/// }
+/// # Ok(())
+/// # }
+/// ```
 #[derive(Debug)]
 pub struct HardwareManager {
     #[cfg(feature = "hardware-wallets")]

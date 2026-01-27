@@ -50,7 +50,11 @@ impl ErrorReporter {
 
     /// Record an error occurrence
     pub fn record_error(&self, error: &VaughanError) {
-        let mut stats = self.stats.lock().unwrap();
+        // Mutex poisoning is extremely rare and indicates a panic in another thread
+        // In that case, we can't reliably update stats anyway
+        let Ok(mut stats) = self.stats.lock() else {
+            return;
+        };
 
         stats.total_errors += 1;
 
@@ -64,19 +68,30 @@ impl ErrorReporter {
 
     /// Record a recovery attempt
     pub fn record_recovery_attempt(&self) {
-        let mut stats = self.stats.lock().unwrap();
-        stats.recovery_attempts += 1;
+        if let Ok(mut stats) = self.stats.lock() {
+            stats.recovery_attempts += 1;
+        }
     }
 
     /// Record a successful recovery
     pub fn record_recovery_success(&self) {
-        let mut stats = self.stats.lock().unwrap();
-        stats.recovery_successes += 1;
+        if let Ok(mut stats) = self.stats.lock() {
+            stats.recovery_successes += 1;
+        }
     }
 
     /// Get current error statistics
     pub fn get_stats(&self) -> ErrorStats {
-        let stats = self.stats.lock().unwrap();
+        let Ok(stats) = self.stats.lock() else {
+            // Return empty stats if mutex is poisoned
+            return ErrorStats {
+                total_errors: 0,
+                errors_by_severity: HashMap::new(),
+                errors_by_category: HashMap::new(),
+                recovery_success_rate: 0.0,
+                most_common_errors: Vec::new(),
+            };
+        };
 
         let recovery_success_rate = if stats.recovery_attempts > 0 {
             stats.recovery_successes as f64 / stats.recovery_attempts as f64
@@ -100,8 +115,9 @@ impl ErrorReporter {
 
     /// Reset all statistics
     pub fn reset_stats(&self) {
-        let mut stats = self.stats.lock().unwrap();
-        *stats = ErrorStatsInternal::default();
+        if let Ok(mut stats) = self.stats.lock() {
+            *stats = ErrorStatsInternal::default();
+        }
     }
 
     /// Generate a human-readable error report

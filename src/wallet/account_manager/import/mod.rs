@@ -96,7 +96,7 @@ impl AccountImporter {
         metadata: ImportMetadata,
     ) -> Result<(Account, PrivateKeySigner), WalletError> {
         // Parse and validate the private key
-        let signer = parsers::parse_private_key(key)?;
+        let _signer = parsers::parse_private_key(key)?;
 
         // Convert to account
         converters::private_key_to_account(key, metadata)
@@ -298,7 +298,7 @@ mod property_tests {
     use proptest::prelude::*;
 
     proptest! {
-        #![proptest_config(ProptestConfig::with_cases(100))]
+        #![proptest_config(ProptestConfig::with_cases(500))]
 
         /// Property 20: Seed Phrase Import Determinism
         ///

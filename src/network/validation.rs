@@ -215,12 +215,11 @@ pub fn validate_custom_network_config(
     }
 
     // Validate block explorer URL if provided
-    if !block_explorer.trim().is_empty() {
-        if !block_explorer.starts_with("http://") && !block_explorer.starts_with("https://") {
-            issues.push(NetworkValidationIssue::InvalidBlockExplorer);
-        } else if url::Url::parse(block_explorer).is_err() {
-            issues.push(NetworkValidationIssue::InvalidBlockExplorer);
-        }
+    if !block_explorer.trim().is_empty()
+        && ((!block_explorer.starts_with("http://") && !block_explorer.starts_with("https://"))
+            || url::Url::parse(block_explorer).is_err())
+    {
+        issues.push(NetworkValidationIssue::InvalidBlockExplorer);
     }
 
     let is_valid = issues.is_empty();
