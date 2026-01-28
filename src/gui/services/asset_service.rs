@@ -249,7 +249,10 @@ mod tests {
     #[test]
     fn test_default_asset_root() {
         let service = AssetService::default();
-        assert_eq!(service.asset_root, PathBuf::from("assets"));
+        // The default service uses intelligent path resolution
+        // It should find assets directory somewhere in the path hierarchy
+        assert!(service.asset_root.ends_with("assets"), 
+            "Asset root should end with 'assets', got: {:?}", service.asset_root);
     }
 }
 

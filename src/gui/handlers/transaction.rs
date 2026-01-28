@@ -24,6 +24,69 @@ impl WorkingWalletApp {
         }
     }
 
+    /// Validate transaction using TransactionFormService (Phase 5 - parallel implementation)
+    ///
+    /// This method runs alongside legacy validation for comparison and gradual rollout.
+    /// When use_transaction_service flag is true, validation errors will block the transaction.
+    ///
+    /// # Returns
+    /// - Ok(()) if validation passes
+    /// - Err(String) with user-friendly error message if validation fails
+    fn validate_transaction_with_service(&self) -> Result<(), String> {
+        use crate::gui::services::TransactionFormServiceTrait;
+        
+        let service = self.state.services().transaction_form();
+        let tx_state = self.state.transaction();
+        
+        // 1. Validate recipient address
+        let recipient = &tx_state.send_to_address;
+        if let Err(e) = service.validate_recipient(recipient) {
+            tracing::warn!("❌ Service validation failed - recipient: {}", e);
+            return Err(format!("Invalid recipient address: {}", e));
+        }
+        tracing::debug!("✅ Service validation passed - recipient");
+        
+        // 2. Validate amount
+        let amount = &tx_state.send_amount;
+        
+        // Get current balance from state
+        let balance = if let Ok(balance_str) = self.state.account_balance.replace(" ETH", "").replace(" ", "").parse::<f64>() {
+            use alloy::primitives::U256;
+            U256::from((balance_str * 1e18) as u128)
+        } else {
+            tracing::warn!("❌ Could not parse balance for validation");
+            return Err("Could not determine account balance".to_string());
+        };
+        
+        // Validate amount (18 decimals for ETH/native tokens)
+        if let Err(e) = service.validate_amount(amount, balance, 18) {
+            tracing::warn!("❌ Service validation failed - amount: {}", e);
+            return Err(format!("Invalid amount: {}", e));
+        }
+        tracing::debug!("✅ Service validation passed - amount");
+        
+        // 3. Validate gas limit if provided
+        if !tx_state.send_gas_limit.is_empty() {
+            if let Err(e) = service.validate_gas_limit(&tx_state.send_gas_limit) {
+                tracing::warn!("❌ Service validation failed - gas limit: {}", e);
+                return Err(format!("Invalid gas limit: {}", e));
+            }
+            tracing::debug!("✅ Service validation passed - gas limit");
+        }
+        
+        // 4. Validate gas price if provided
+        if !tx_state.send_gas_price.is_empty() {
+            if let Err(e) = service.validate_gas_price(&tx_state.send_gas_price) {
+                tracing::warn!("❌ Service validation failed - gas price: {}", e);
+                return Err(format!("Invalid gas price: {}", e));
+            }
+            tracing::debug!("✅ Service validation passed - gas price");
+        }
+        
+        tracing::info!("✅ All service validations passed");
+        Ok(())
+    }
+
     /// Handle gas estimation request
     fn handle_estimate_gas(&mut self) -> Command<Message> {
         if self.state.transaction().estimating_gas {
@@ -225,6 +288,33 @@ impl WorkingWalletApp {
     fn handle_confirm_transaction(&mut self) -> Command<Message> {
         if self.state.transaction_mut().sending_transaction {
             return Command::none();
+        }
+
+        // PHASE 5: Parallel validation with TransactionFormService
+        // Run service validation alongside legacy validation for comparison
+        let service_validation_result = self.validate_transaction_with_service();
+        
+        if self.state.use_transaction_service {
+            // Feature flag enabled: Block transaction if service validation fails
+            if let Err(error_msg) = service_validation_result {
+                tracing::error!("🚫 Transaction blocked by service validation: {}", error_msg);
+                self.state.ui_mut().status_message = error_msg;
+                self.state.ui_mut().status_message_color = StatusMessageColor::Error;
+                self.state.ui_mut().status_message_timer = Some(Instant::now());
+                return Command::none();
+            }
+            tracing::info!("✅ Service validation passed - proceeding with transaction");
+        } else {
+            // Feature flag disabled: Log validation results but don't block
+            match service_validation_result {
+                Ok(()) => {
+                    tracing::info!("✅ [PARALLEL] Service validation passed (not enforced)");
+                }
+                Err(error_msg) => {
+                    tracing::warn!("⚠️ [PARALLEL] Service validation would have failed: {}", error_msg);
+                    tracing::warn!("⚠️ [PARALLEL] Transaction proceeding with legacy validation");
+                }
+            }
         }
 
         // Check if we need master password authentication for seed-based accounts

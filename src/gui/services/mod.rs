@@ -20,6 +20,7 @@
 //! - `asset_service`: Asset loading and availability checks (NEW)
 //! - `account_display_service`: Account formatting and display logic (NEW)
 //! - `network_config_service`: Network validation and configuration (NEW)
+//! - `transaction_form_service`: Transaction validation and preparation (NEW - Phase 5)
 
 // Existing services
 pub mod account_service;
@@ -36,6 +37,7 @@ pub mod wallet_service;
 pub mod asset_service;
 pub mod account_display_service;
 pub mod network_config_service;
+pub mod transaction_form_service;
 
 // Re-exports from existing services
 pub use account_service::*;
@@ -49,6 +51,7 @@ pub use wallet_service::{initialize_wallet, load_available_accounts};
 pub use asset_service::{AssetService, AssetServiceTrait};
 pub use account_display_service::{AccountDisplayService, AccountDisplayServiceTrait, AccountDisplayInfo};
 pub use network_config_service::{NetworkConfigService, NetworkConfigServiceTrait, NetworkValidationError};
+pub use transaction_form_service::{TransactionFormService, TransactionFormServiceTrait, TransactionValidationError, SendFormData};
 
 use std::sync::{Arc, OnceLock};
 
@@ -60,6 +63,7 @@ pub struct ServiceRegistry {
     asset_service: OnceLock<Arc<AssetService>>,
     account_display_service: OnceLock<Arc<AccountDisplayService>>,
     network_config_service: OnceLock<Arc<NetworkConfigService>>,
+    transaction_form_service: OnceLock<Arc<TransactionFormService>>,
 }
 
 impl Clone for ServiceRegistry {
@@ -77,6 +81,7 @@ impl ServiceRegistry {
             asset_service: OnceLock::new(),
             account_display_service: OnceLock::new(),
             network_config_service: OnceLock::new(),
+            transaction_form_service: OnceLock::new(),
         }
     }
 
@@ -98,6 +103,13 @@ impl ServiceRegistry {
     pub fn network_config(&self) -> Arc<NetworkConfigService> {
         self.network_config_service
             .get_or_init(|| Arc::new(NetworkConfigService::new()))
+            .clone()
+    }
+
+    /// Get the transaction form service, creating it if necessary.
+    pub fn transaction_form(&self) -> Arc<TransactionFormService> {
+        self.transaction_form_service
+            .get_or_init(|| Arc::new(TransactionFormService::new()))
             .clone()
     }
 }

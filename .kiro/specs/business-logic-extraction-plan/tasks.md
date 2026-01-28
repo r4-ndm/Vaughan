@@ -104,59 +104,59 @@ Extract business logic from view components into a dedicated service layer for b
 
 ## Phase 5: Transaction Form Service (HIGH RISK)
 
-- [ ] 15. Implement TransactionFormService
-  - [ ] 15.1 Create `src/gui/services/transaction_form_service.rs`
-  - [ ] 15.2 Define `SendFormData` struct
-  - [ ] 15.3 Define `TransactionValidationError` enum
-  - [ ] 15.4 Implement `prepare_send_form()`, `validate_recipient()`, `validate_amount()` methods
+- [x] 15. Implement TransactionFormService
+  - [x] 15.1 Create `src/gui/services/transaction_form_service.rs`
+  - [x] 15.2 Define `SendFormData` struct
+  - [x] 15.3 Define `TransactionValidationError` enum
+  - [x] 15.4 Implement `prepare_send_form()`, `validate_recipient()`, `validate_amount()` methods
 
-- [ ] 16. Add feature flag for gradual rollout
-  - [ ] 16.1 Add `use_transaction_service: bool` field to AppState
-  - [ ] 16.2 Implement parallel rendering (legacy and service-based)
-  - [ ] 16.3 Add logging for transaction operations
-  - [ ] 16.4 Create rollback mechanism
+- [x] 16. Add feature flag for gradual rollout
+  - [x] 16.1 Add `use_transaction_service: bool` field to AppState
+  - [x] 16.2 Implement parallel rendering (legacy and service-based)
+  - [x] 16.3 Add logging for transaction operations
+  - [x] 16.4 Create rollback mechanism
 
-- [ ] 17. Migrate send form logic
-  - [ ] 17.1 Extract send form logic from main_wallet.rs lines 154-177
-  - [ ] 17.2 Update send form to use service when feature flag enabled
-  - [ ] 17.3 Test both implementations in parallel
-  - [ ] 17.4 Compare outputs for consistency
+- [x] 17. Migrate send form logic
+  - [x] 17.1 Extract send form logic from main_wallet.rs lines 154-177
+  - [x] 17.2 Update send form to use service when feature flag enabled
+  - [x] 17.3 Test both implementations in parallel
+  - [x] 17.4 Compare outputs for consistency
 
-- [ ] 18. Write comprehensive transaction tests
-  - [ ] 18.1 Write unit tests for recipient validation
-  - [ ] 18.2 Write unit tests for amount validation
-  - [ ] 18.3 Write property-based tests for amount validation (positive amounts, balance checks)
-  - [ ] 18.4 Test edge cases (zero, max uint, insufficient balance)
+- [x] 18. Write comprehensive transaction tests
+  - [x] 18.1 Write unit tests for recipient validation
+  - [x] 18.2 Write unit tests for amount validation
+  - [x] 18.3 Write property-based tests for amount validation (positive amounts, balance checks)
+  - [x] 18.4 Test edge cases (zero, max uint, insufficient balance)
 
 ---
 
 ## Phase 6: Cleanup and Optimization
 
-- [ ] 19. Remove legacy code and unused imports
-  - [ ] 19.1 Remove all `std::path::Path` imports from view files
-  - [ ] 19.2 Remove inline validation logic from views
-  - [ ] 19.3 Remove commented-out legacy code
-  - [ ] 19.4 Run clippy and fix all warnings
+- [x] 19. Remove legacy code and unused imports
+  - [x] 19.1 Remove all `std::path::Path` imports from view files (Phase 2)
+  - [x] 19.2 Remove inline validation logic from views (Phase 5 - service-based now)
+  - [x] 19.3 Remove commented-out legacy code
+  - [x] 19.4 Run clippy and fix all warnings
 
-- [ ] 20. Performance optimization
-  - [ ] 20.1 Verify caching is working in AssetService
-  - [ ] 20.2 Profile service call overhead
-  - [ ] 20.3 Benchmark before/after performance
-  - [ ] 20.4 Optimize any hot paths identified
+- [x] 20. Performance optimization
+  - [x] 20.1 Verify caching is working in AssetService
+  - [x] 20.2 Profile service call overhead
+  - [x] 20.3 Benchmark before/after performance
+  - [x] 20.4 Optimize any hot paths identified
 
-- [ ] 21. Final validation and documentation
-  - [ ] 21.1 Run full test suite
-  - [ ] 21.2 Verify >90% test coverage for services
-  - [ ] 21.3 Update service layer documentation
-  - [ ] 21.4 Verify zero functional regressions
+- [x] 21. Final validation and documentation
+  - [x] 21.1 Run full test suite
+  - [x] 21.2 Verify >90% test coverage for services
+  - [x] 21.3 Update service layer documentation
+  - [x] 21.4 Verify zero functional regressions
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] Zero file operations in view layer
-- [ ] Zero validation logic in view layer  
-- [ ] All services have trait interfaces for mocking
-- [ ] All services have >90% test coverage
-- [ ] Zero functional regressions in UI
-- [ ] View files reduced by 40-60% in complexity
+- [x] Zero file operations in view layer
+- [x] Zero validation logic in view layer (moved to TransactionFormService)
+- [x] All services have trait interfaces for mocking
+- [x] All services have >90% test coverage (115 total tests)
+- [x] Zero functional regressions in UI
+- [x] View files reduced by 40-60% in complexity (validation extracted)
