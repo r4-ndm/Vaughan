@@ -11,6 +11,7 @@
 
 pub mod blockchain;
 pub mod config;
+pub mod controllers;
 pub mod error;
 pub mod gui;
 pub mod network;
