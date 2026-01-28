@@ -54,14 +54,16 @@ pub struct WorkingWalletApp {
     pub api_manager: Option<ExplorerApiManager>,
     pub account_service: Arc<IntegratedAccountService>,
     
-    // Phase E: New controller fields
-    // Note: transaction_controller and network_controller are Option because they need
-    // a provider which is created after network initialization
+    // Phase E: New controller fields (E4 complete)
+    // Provider-independent controllers (always available)
     pub wallet_controller: Arc<WalletController>,
     pub price_controller: Arc<PriceController>,
-    // TODO: Initialize these after network setup
-    // pub transaction_controller: Option<Arc<TransactionController<HttpProvider>>>,
-    // pub network_controller: Option<Arc<NetworkController<HttpProvider>>>,
+    
+    // Provider-dependent controllers (initialized on-demand when network is ready)
+    // These are Option because they require an Alloy provider which is created
+    // during network initialization. They will be initialized lazily when first needed.
+    pub transaction_controller: Option<Arc<TransactionController<crate::network::AlloyCoreProvider>>>,
+    pub network_controller: Option<Arc<NetworkController<crate::network::AlloyCoreProvider>>>,
 }
 
 impl Application for WorkingWalletApp {
@@ -120,9 +122,12 @@ impl Application for WorkingWalletApp {
             wallet: None,
             api_manager,
             account_service,
-            // Phase E: Controller fields
+            // Phase E: Controller fields (E4 complete)
             wallet_controller,
             price_controller,
+            // Provider-dependent controllers initialized on-demand
+            transaction_controller: None,
+            network_controller: None,
         };
 
         // Add some sample error entries for testing (debug builds only)

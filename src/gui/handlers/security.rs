@@ -225,8 +225,12 @@ impl WorkingWalletApp {
                         self.dispatch_message(Message::StartupAuthenticationComplete)
                     }
                     Some(crate::gui::state::auth_state::PasswordDialogConfig::SignTransaction { .. }) => {
-                        // Proceed with transaction
-                        tracing::info!("🔓 Transaction authenticated, proceeding");
+                        // Set temporary key for transaction signing (one-time use)
+                        // This prevents the password dialog from showing again in handle_confirm_transaction
+                        let security = self.state.auth_mut();
+                        security.session.temporary_key = Some(password.clone());
+                        
+                        tracing::info!("🔓 Transaction authenticated, temporary key set, proceeding");
                         self.dispatch_message(Message::ConfirmTransaction)
                     }
                     Some(crate::gui::state::auth_state::PasswordDialogConfig::WalletExport) => {

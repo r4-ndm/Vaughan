@@ -16,7 +16,8 @@ use tokio::sync::RwLock;
 use crate::error::{NetworkError, Result};
 
 // Type alias for the actual provider type returned by Alloy v1.1
-type AlloyCoreProvider = FillProvider<
+// Made public for use in controllers (Phase E)
+pub type AlloyCoreProvider = FillProvider<
     JoinFill<Identity, JoinFill<GasFiller, JoinFill<BlobGasFiller, JoinFill<NonceFiller, ChainIdFiller>>>>,
     RootProvider,
 >;
