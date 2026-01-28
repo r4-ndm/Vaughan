@@ -1,315 +1,405 @@
-# Priority 2: Advanced Architecture - Task Tracking
+# Priority 2: Controller-Based Architecture - Task Tracking
 
 ## Overview
-Transform Vaughan into enterprise-grade architecture through handler completion, performance optimization, and state management enhancement.
+Transform Vaughan into MetaMask-inspired controller architecture with strict Alloy type integration for headless testing and framework-agnostic business logic.
 
-**Timeline**: 4-7 hours
-**Risk**: 🟢 LOW
+**Architecture**: Controller-View Separation (MetaMask pattern)
+**Type Safety**: Alloy Primitives Only
+**Timeline**: 6-10 hours
+**Risk**: 🟡 MEDIUM (new layer, proven pattern)
 **Status**: 📋 READY TO START
 
 ---
 
-## PHASE D: HANDLER COMPLETION (2-3 hours)
+## PHASE D: CONTROLLER LAYER CREATION (3-4 hours)
 
-### D1: Analyze Current Handler Coverage (30 min)
-- [ ] Read transaction.rs and document coverage
-- [ ] Read network.rs and document coverage
-- [ ] Read security.rs and document coverage
-- [ ] Read ui_state.rs and document coverage
-- [ ] Read wallet_ops.rs and document coverage
-- [ ] Read token_ops.rs and document coverage
-- [ ] Read receive.rs and document coverage
-- [ ] Compare with update() method to find gaps
-- [ ] Create extraction checklist
-- [ ] Document estimated lines per handler
-
-**Deliverable**: Coverage analysis document
-
----
-
-### D2: Complete Transaction Handler (30 min)
-- [ ] Review transaction.rs for completeness
-- [ ] Extract remaining transaction logic from update()
-- [ ] Verify EstimateGas handling
-- [ ] Verify GasEstimated handling
-- [ ] Verify ShowTransactionConfirmation handling
-- [ ] Verify HideTransactionConfirmation handling
-- [ ] Verify ConfirmTransaction handling
-- [ ] Verify SubmitTransaction handling
-- [ ] Verify TransactionSubmitted handling
-- [ ] Verify TransactionMonitoringTick handling
-- [ ] Test transaction flow end-to-end
+### D1: Controller Infrastructure Setup (45 min)
+- [ ] Create `src/controllers/` directory
+- [ ] Create `src/controllers/mod.rs` with exports
+- [ ] Define `ControllerResult<T>` type alias
+- [ ] Define `ControllerError` enum using Alloy errors
+- [ ] Add `thiserror` dependency if needed
+- [ ] Document controller architecture patterns
 - [ ] Run: `cargo check`
-- [ ] Run: `cargo test --lib transaction`
-- [ ] Git commit: "feat(handlers): Complete transaction handler extraction"
+- [ ] Git commit: "feat(controllers): Add controller infrastructure with Alloy types"
 
-**Success**: All transaction messages in transaction.rs
+**Deliverable**: Controller module structure ready
 
 ---
 
-### D3: Complete Network Handler (20 min)
-- [ ] Review network.rs for completeness
-- [ ] Extract remaining network logic from update()
-- [ ] Verify NetworkSelected handling
-- [ ] Verify SmartPollTick handling
-- [ ] Verify BalanceChanged handling
-- [ ] Verify network health monitoring
-- [ ] Test network switching
+### D2: TransactionController Implementation (60 min)
+- [ ] Create `src/controllers/transaction.rs`
+- [ ] Implement `TransactionController` struct
+- [ ] Add `validate_transaction()` method (Alloy types)
+  - [ ] Zero address check (MetaMask pattern)
+  - [ ] Amount validation (positive, non-zero)
+  - [ ] Gas limit validation (21k-30M)
+  - [ ] Balance check (amount + gas)
+- [ ] Add `estimate_gas()` method (Alloy provider)
+- [ ] Add `build_transaction()` method (Alloy `TransactionRequest`)
+- [ ] Add `submit_transaction()` method (Alloy provider)
+- [ ] Add `get_transaction_receipt()` method
+- [ ] Write unit tests for zero address rejection
+- [ ] Write unit tests for insufficient balance
+- [ ] Write unit tests for gas limit validation
+- [ ] Write unit tests for transaction building
 - [ ] Run: `cargo check`
-- [ ] Run: `cargo test --lib network`
-- [ ] Git commit: "feat(handlers): Complete network handler extraction"
+- [ ] Run: `cargo test --lib controllers::transaction`
+- [ ] Git commit: "feat(controllers): Implement TransactionController with Alloy types"
 
-**Success**: All network messages in network.rs
+**Success**: TransactionController with pure Alloy types, headless testable
 
 ---
 
-### D4: Complete Security Handler (30 min)
-- [ ] Review security.rs for completeness
-- [ ] Extract remaining security logic from update()
-- [ ] Verify ShowPasswordDialog handling
-- [ ] Verify HidePasswordDialog handling
-- [ ] Verify PasswordInputChanged handling
-- [ ] Verify SubmitPassword handling
-- [ ] Verify ConnectHardwareWallet handling
-- [ ] Verify SessionLocked handling
-- [ ] Verify SessionUnlocked handling
-- [ ] Verify ManualLock handling
-- [ ] Test authentication flows
+### D3: NetworkController Implementation (45 min)
+- [ ] Create `src/controllers/network.rs`
+- [ ] Implement `NetworkController` struct
+- [ ] Add `new()` method (create Alloy provider)
+- [ ] Add `get_chain_id()` method (Alloy provider)
+- [ ] Add `check_network_health()` method
+- [ ] Add `get_balance()` method (Address → U256)
+- [ ] Add `switch_network()` method
+  - [ ] Create new provider
+  - [ ] Verify chain ID matches
+  - [ ] Update internal state
+- [ ] Write unit tests for network creation
+- [ ] Write unit tests for chain ID validation
+- [ ] Write unit tests for balance fetching
 - [ ] Run: `cargo check`
-- [ ] Run: `cargo test --lib security`
-- [ ] Git commit: "feat(handlers): Complete security handler extraction"
+- [ ] Run: `cargo test --lib controllers::network`
+- [ ] Git commit: "feat(controllers): Implement NetworkController with Alloy providers"
 
-**Success**: All security messages in security.rs
+**Success**: NetworkController with Alloy providers, headless testable
 
 ---
 
-### D5: Complete UI State Handler (20 min)
-- [ ] Review ui_state.rs for completeness
-- [ ] Extract remaining UI state logic from update()
-- [ ] Verify ShowCreateDialog / HideCreateDialog handling
-- [ ] Verify ShowImportDialog / HideImportDialog handling
-- [ ] Verify SendToAddressChanged handling
-- [ ] Verify SendAmountChanged handling
-- [ ] Verify SetStatusMessage handling
-- [ ] Verify ClearStatusMessage handling
-- [ ] Test UI state transitions
+### D4: WalletController Implementation (60 min)
+- [ ] Create `src/controllers/wallet.rs`
+- [ ] Implement `WalletController` struct
+- [ ] Add `new()` method
+- [ ] Add `add_account()` method (private key → LocalWallet)
+  - [ ] Use `secrecy::Secret` for private key
+  - [ ] Create Alloy `LocalWallet`
+  - [ ] Store in HashMap
+  - [ ] Return Address
+- [ ] Add `get_current_address()` method
+- [ ] Add `sign_message()` method (Alloy signer)
+- [ ] Add `switch_account()` method
+- [ ] Add `remove_account()` method
+- [ ] Write unit tests for account creation
+- [ ] Write unit tests for account switching
+- [ ] Write unit tests for signing
 - [ ] Run: `cargo check`
-- [ ] Run: `cargo test --lib ui_state`
-- [ ] Git commit: "feat(handlers): Complete UI state handler extraction"
+- [ ] Run: `cargo test --lib controllers::wallet`
+- [ ] Git commit: "feat(controllers): Implement WalletController with secure keyring"
 
-**Success**: All UI state messages in ui_state.rs
+**Success**: WalletController with secure keyring, headless testable
 
 ---
 
-### D6: Complete Wallet Operations Handler (30 min)
-- [ ] Review wallet_ops.rs for completeness
-- [ ] Extract remaining wallet ops logic from update()
-- [ ] Verify CreateAccount handling
-- [ ] Verify AccountCreated handling
-- [ ] Verify ImportAccount handling
-- [ ] Verify AccountImported handling
-- [ ] Verify AccountSelected handling
-- [ ] Verify DeleteAccount handling
-- [ ] Verify RefreshBalance handling
-- [ ] Verify BalanceRefreshed handling
-- [ ] Test wallet operations
+### D5: PriceController Implementation (30 min)
+- [ ] Create `src/controllers/price.rs`
+- [ ] Implement `PriceController` struct
+- [ ] Add `new()` method (optional API key)
+- [ ] Add `fetch_eth_price()` method
+- [ ] Add `get_cached_price()` method
+- [ ] Add price caching logic
+- [ ] Write unit tests for price fetching
+- [ ] Write unit tests for caching
 - [ ] Run: `cargo check`
-- [ ] Run: `cargo test --lib wallet_ops`
-- [ ] Git commit: "feat(handlers): Complete wallet ops handler extraction"
+- [ ] Run: `cargo test --lib controllers::price`
+- [ ] Git commit: "feat(controllers): Implement PriceController"
 
-**Success**: All wallet ops messages in wallet_ops.rs
-
----
-
-### D7: Complete Token Operations Handler (20 min)
-- [ ] Review token_ops.rs for completeness
-- [ ] Extract remaining token ops logic from update()
-- [ ] Verify AddCustomToken handling
-- [ ] Verify RemoveCustomToken handling
-- [ ] Verify FetchTokenInfo handling
-- [ ] Verify TokenInfoFetched handling
-- [ ] Verify BalanceTokenSelected handling
-- [ ] Test token operations
-- [ ] Run: `cargo check`
-- [ ] Run: `cargo test --lib token_ops`
-- [ ] Git commit: "feat(handlers): Complete token ops handler extraction"
-
-**Success**: All token ops messages in token_ops.rs
+**Success**: PriceController for token prices
 
 ---
 
-### D8: Clean Up update() Method (30 min)
-- [ ] Remove all inline message handling from update()
-- [ ] Ensure every message routes to a handler
-- [ ] Remove helper methods that belong in handlers
-- [ ] Add comprehensive documentation to update()
-- [ ] Simplify routing logic
-- [ ] Run: `cargo check --all-features`
-- [ ] Run: `cargo test --lib`
-- [ ] Run: `cargo clippy -- -D warnings`
-- [ ] Measure file size: `wc -l src/gui/working_wallet.rs`
-- [ ] Verify: working_wallet.rs <1,500 lines (from 4,100)
-- [ ] Verify: update() method <300 lines (from 2,902)
-- [ ] Git commit: "refactor(handlers): Clean up update() method - pure routing only"
+### D6: Controller Integration & Testing (45 min)
+- [ ] Update `src/controllers/mod.rs` with all exports
+- [ ] Export all controller types
+- [ ] Export `ControllerResult` and `ControllerError`
+- [ ] Create `tests/controllers/` directory
+- [ ] Create `tests/controllers/transaction_tests.rs`
+- [ ] Create `tests/controllers/network_tests.rs`
+- [ ] Create `tests/controllers/wallet_tests.rs`
+- [ ] Write integration test: full transaction flow
+- [ ] Write integration test: network switching
+- [ ] Write integration test: account management
+- [ ] Run: `cargo test --lib controllers`
+- [ ] Run: `cargo test --test controllers`
+- [ ] Verify: All controller tests passing
+- [ ] Git commit: "test(controllers): Add comprehensive controller tests"
 
-**Success**: update() is pure routing logic (<300 lines)
+**Deliverable**: Fully integrated controller layer with tests
 
 ---
 
 ### Phase D Validation
-- [ ] Run full test suite: `cargo test --all-features`
-- [ ] Check compilation: `cargo check --all-features`
-- [ ] Run clippy: `cargo clippy -- -D warnings`
-- [ ] Format check: `cargo fmt --check`
-- [ ] Verify zero functional regressions
-- [ ] Verify all tests passing
-- [ ] Git commit: "feat(phase-d): Complete handler extraction - Phase D done"
+- [ ] Run: `cargo test --all-features`
+- [ ] Run: `cargo check --all-features`
+- [ ] Run: `cargo clippy -- -D warnings`
+- [ ] Verify: All controllers use Alloy types only
+- [ ] Verify: No iced dependency in controllers
+- [ ] Verify: 100% controller test coverage
+- [ ] Git commit: "feat(phase-d): Complete controller layer creation"
 
 **Phase D Success Criteria**:
-- ✅ update() method <300 lines (from 2,902)
-- ✅ working_wallet.rs <1,500 lines (from 4,100)
-- ✅ All message handling in handlers
-- ✅ Zero inline business logic in update()
-- ✅ All tests passing
+- ✅ `src/controllers/` directory created
+- ✅ All 4 controllers implemented
+- ✅ Pure Alloy types (no strings)
+- ✅ Zero iced dependency
+- ✅ 100% test coverage
+- ✅ Headless testable
 
 ---
 
-## PHASE E: PERFORMANCE OPTIMIZATION (1-2 hours)
+## PHASE E: HANDLER BRIDGE REFACTORING (2-3 hours)
 
-### E1: Dependency Analysis (30 min)
-- [ ] Run: `cargo tree --duplicates > dependency_duplicates.txt`
-- [ ] Run: `cargo tree -e features > dependency_features.txt`
-- [ ] Run: `cargo bloat --release --crates > dependency_bloat.txt`
-- [ ] Run: `cargo clean && cargo build --timings`
-- [ ] Analyze compilation bottlenecks from HTML report
-- [ ] Identify duplicate dependencies
-- [ ] Identify unused features
-- [ ] Identify heavy dependencies
-- [ ] Create optimization checklist
-- [ ] Document findings in optimization plan
-
-**Deliverable**: Dependency optimization checklist
-
----
-
-### E2: Module Dependency Optimization (45 min)
-- [ ] Analyze import patterns in handlers
-- [ ] Identify circular dependencies
-- [ ] Reduce cross-module dependencies
-- [ ] Use trait objects for loose coupling
-- [ ] Implement lazy initialization where possible
-- [ ] Optimize feature flags in Cargo.toml
-- [ ] Remove unused dependencies
-- [ ] Consolidate duplicate dependencies
+### E1: Transaction Handler Bridge (45 min)
+- [ ] Open `src/gui/handlers/transaction.rs`
+- [ ] Add `use crate::controllers::TransactionController;`
+- [ ] Add `use alloy::primitives::{Address, U256};`
+- [ ] Create `parse_ether_amount()` helper function
+- [ ] Update `Message::ConfirmTransaction` handler:
+  - [ ] Parse UI string → Address (with error handling)
+  - [ ] Parse UI string → U256 (with error handling)
+  - [ ] Call `controller.validate_transaction()` with Alloy types
+  - [ ] Return appropriate UI message on success/error
+- [ ] Update `Message::SubmitTransaction` handler:
+  - [ ] Build transaction with controller
+  - [ ] Get signer from wallet controller
+  - [ ] Submit with controller
+  - [ ] Return transaction hash or error
+- [ ] Remove inline business logic (moved to controller)
 - [ ] Run: `cargo check`
-- [ ] Measure compilation time: `cargo clean && time cargo build`
-- [ ] Compare with baseline (target: 20-30% faster)
-- [ ] Git commit: "perf(deps): Optimize module dependencies and feature flags"
+- [ ] Run: `cargo test --lib handlers::transaction`
+- [ ] Manual test: Send transaction in GUI
+- [ ] Git commit: "refactor(handlers): Convert transaction handler to thin bridge"
 
-**Success**: 20-30% faster compilation time
+**Success**: Transaction handler is thin bridge (UI → Controller)
 
 ---
 
-### E3: Runtime Performance Optimization (45 min)
-- [ ] Profile message handling performance
-- [ ] Identify hot paths in handlers
-- [ ] Reduce unnecessary clones
-- [ ] Optimize state update patterns
-- [ ] Optimize async command chains
-- [ ] Use references instead of clones where possible
-- [ ] Parallelize independent commands
-- [ ] Run: `cargo bench` (if benchmarks exist)
-- [ ] Profile with: `cargo flamegraph --bin vaughan` (optional)
-- [ ] Verify performance improvements
-- [ ] Git commit: "perf(runtime): Optimize hot paths and async operations"
+### E2: Network Handler Bridge (30 min)
+- [ ] Open `src/gui/handlers/network.rs`
+- [ ] Add `use crate::controllers::NetworkController;`
+- [ ] Update `Message::NetworkSelected` handler:
+  - [ ] Get RPC URL and chain ID
+  - [ ] Call `controller.switch_network()`
+  - [ ] Return success/error message
+- [ ] Update `Message::RefreshBalance` handler:
+  - [ ] Get current address (Address type)
+  - [ ] Call `controller.get_balance()`
+  - [ ] Return balance or error
+- [ ] Remove inline business logic
+- [ ] Run: `cargo check`
+- [ ] Run: `cargo test --lib handlers::network`
+- [ ] Manual test: Switch networks in GUI
+- [ ] Git commit: "refactor(handlers): Convert network handler to thin bridge"
 
-**Success**: Measurable runtime performance improvement
+**Success**: Network handler is thin bridge
+
+---
+
+### E3: Wallet Handler Bridge (30 min)
+- [ ] Open `src/gui/handlers/wallet_ops.rs`
+- [ ] Add `use crate::controllers::WalletController;`
+- [ ] Update `Message::ImportAccount` handler:
+  - [ ] Get private key as Secret
+  - [ ] Call `controller.add_account()`
+  - [ ] Return address or error
+- [ ] Update `Message::AccountSelected` handler:
+  - [ ] Call `controller.switch_account()`
+  - [ ] Return success/error
+- [ ] Remove inline business logic
+- [ ] Run: `cargo check`
+- [ ] Run: `cargo test --lib handlers::wallet_ops`
+- [ ] Manual test: Import account in GUI
+- [ ] Git commit: "refactor(handlers): Convert wallet handler to thin bridge"
+
+**Success**: Wallet handler is thin bridge
+
+---
+
+### E4: Update WorkingWalletApp Structure (45 min)
+- [ ] Open `src/gui/working_wallet.rs`
+- [ ] Add controller imports
+- [ ] Add controller fields to `WorkingWalletApp`:
+  - [ ] `transaction_controller: Arc<TransactionController>`
+  - [ ] `network_controller: Arc<NetworkController>`
+  - [ ] `wallet_controller: Arc<WalletController>`
+  - [ ] `price_controller: Arc<PriceController>`
+- [ ] Update `Application::new()`:
+  - [ ] Initialize NetworkController
+  - [ ] Initialize WalletController
+  - [ ] Initialize TransactionController
+  - [ ] Initialize PriceController
+- [ ] Keep legacy fields for now (gradual migration)
+- [ ] Run: `cargo check`
+- [ ] Run: `cargo build`
+- [ ] Git commit: "refactor(app): Add controller fields to WorkingWalletApp"
+
+**Success**: WorkingWalletApp has controller fields
+
+---
+
+### E5: Clean Up update() Method (30 min)
+- [ ] Open `src/gui/working_wallet.rs`
+- [ ] Review update() method
+- [ ] Ensure all messages route to handlers
+- [ ] Remove any remaining inline business logic
+- [ ] Simplify routing logic
+- [ ] Add documentation comments
+- [ ] Run: `cargo check`
+- [ ] Run: `cargo build`
+- [ ] Measure file size: `wc -l src/gui/working_wallet.rs`
+- [ ] Verify: <2,000 lines (from 4,100)
+- [ ] Git commit: "refactor(app): Simplify update() to pure routing"
+
+**Success**: update() is pure routing logic
 
 ---
 
 ### Phase E Validation
-- [ ] Run full test suite: `cargo test --all-features`
-- [ ] Measure final compilation time
-- [ ] Compare with baseline (target: 2-3x faster)
-- [ ] Verify zero functional regressions
-- [ ] Verify all tests passing
-- [ ] Git commit: "feat(phase-e): Complete performance optimization - Phase E done"
+- [ ] Run: `cargo test --all-features`
+- [ ] Run: `cargo check --all-features`
+- [ ] Run: `cargo clippy -- -D warnings`
+- [ ] Verify: Handlers are thin bridges only
+- [ ] Verify: All business logic in controllers
+- [ ] Verify: GUI still works (manual test)
+- [ ] Git commit: "feat(phase-e): Complete handler bridge refactoring"
 
 **Phase E Success Criteria**:
-- ✅ 20-30% faster compilation time
-- ✅ Zero duplicate dependencies
-- ✅ Optimized feature flags
-- ✅ Hot paths optimized
-- ✅ Benchmarks show improvement
+- ✅ All handlers converted to thin bridges
+- ✅ Handlers only do: UI string → Alloy type → Controller
+- ✅ No business logic in handlers
+- ✅ WorkingWalletApp has controller fields
+- ✅ update() simplified
+- ✅ All tests passing
+- ✅ GUI functional
 
 ---
 
-## PHASE F: STATE MANAGEMENT ENHANCEMENT (1.5-2 hours)
+## PHASE F: TESTING & VALIDATION (1-3 hours)
 
-### F1: State Architecture Design (45 min)
-- [ ] Design StateManager interface
-- [ ] Define StateEvent enum for all state changes
-- [ ] Create state validation rules
-- [ ] Design state query methods
-- [ ] Document state transition rules
-- [ ] Create state management design document
-- [ ] Review design for completeness
-- [ ] Get feedback (if working with team)
+### F1: Headless Controller Tests (60 min)
+- [ ] Create `tests/controllers/transaction_tests.rs`
+- [ ] Write test: `test_validate_zero_address_rejected()`
+- [ ] Write test: `test_validate_insufficient_balance()`
+- [ ] Write test: `test_validate_gas_limit_too_low()`
+- [ ] Write test: `test_validate_gas_limit_too_high()`
+- [ ] Write test: `test_build_transaction_with_alloy_types()`
+- [ ] Create `tests/controllers/transaction_properties.rs`
+- [ ] Write proptest: `test_any_valid_address_accepted()`
+- [ ] Write proptest: `test_amount_plus_gas_never_overflows()`
+- [ ] Write proptest: `test_gas_limit_bounds_enforced()`
+- [ ] Create `tests/controllers/network_tests.rs`
+- [ ] Write test: `test_network_controller_creation()`
+- [ ] Write test: `test_chain_id_validation()`
+- [ ] Write test: `test_balance_fetching()`
+- [ ] Create `tests/controllers/wallet_tests.rs`
+- [ ] Write test: `test_wallet_controller_creation()`
+- [ ] Write test: `test_add_account_from_private_key()`
+- [ ] Write test: `test_switch_account()`
+- [ ] Run: `cargo test --lib controllers`
+- [ ] Run: `cargo test --test controllers`
+- [ ] Verify: 100% controller test coverage
+- [ ] Git commit: "test(controllers): Add comprehensive headless tests"
 
-**Deliverable**: State management design document
-
----
-
-### F2: Core State Manager Implementation (60 min)
-- [ ] Create `src/gui/state/manager.rs`
-- [ ] Implement StateManager struct
-- [ ] Implement StateEvent enum
-- [ ] Implement state update methods
-- [ ] Add state validation logic
-- [ ] Add state event logging
-- [ ] Create StateValidator trait
-- [ ] Implement basic validators
-- [ ] Add comprehensive documentation
-- [ ] Write unit tests for StateManager
-- [ ] Run: `cargo check`
-- [ ] Run: `cargo test state::manager`
-- [ ] Git commit: "feat(state): Implement centralized StateManager"
-
-**Success**: StateManager implemented and tested
+**Success**: 100% controller test coverage, all headless
 
 ---
 
-### F3: Handler Integration & Testing (45 min)
-- [ ] Update handlers to use StateManager
-- [ ] Replace direct state mutations with StateManager calls
-- [ ] Add state transition tests
-- [ ] Test invalid state transitions
-- [ ] Validate state consistency
-- [ ] Add integration tests
-- [ ] Run: `cargo test --lib state`
-- [ ] Run: `cargo test --lib handlers`
-- [ ] Verify all state updates go through StateManager
-- [ ] Git commit: "feat(state): Integrate StateManager with handlers"
+### F2: Integration Tests (45 min)
+- [ ] Create `tests/integration/transaction_flow.rs`
+- [ ] Write test: `test_complete_transaction_flow_headless()`
+  - [ ] Create controllers (no GUI)
+  - [ ] Add account
+  - [ ] Get balance
+  - [ ] Validate transaction
+  - [ ] Build transaction
+  - [ ] Verify all steps work
+- [ ] Create `tests/integration/network_flow.rs`
+- [ ] Write test: `test_network_switching_flow()`
+- [ ] Create `tests/integration/wallet_flow.rs`
+- [ ] Write test: `test_account_management_flow()`
+- [ ] Run: `cargo test --test integration`
+- [ ] Verify: All integration tests passing
+- [ ] Git commit: "test(integration): Add headless integration tests"
 
-**Success**: All handlers use StateManager
+**Success**: Full flows testable without GUI
+
+---
+
+### F3: UI Regression Testing (30 min)
+- [ ] Run: `cargo run --bin vaughan`
+- [ ] Manual test: Import account
+- [ ] Manual test: Switch networks
+- [ ] Manual test: Send transaction
+- [ ] Manual test: Check balance
+- [ ] Manual test: View transaction history
+- [ ] Verify: All UI features work
+- [ ] Verify: Spinners show correctly
+- [ ] Verify: Error messages display
+- [ ] Verify: Success messages display
+- [ ] Document any issues found
+- [ ] Fix any regressions
+- [ ] Git commit: "test(ui): Verify UI regression testing complete"
+
+**Success**: Zero UI regressions
+
+---
+
+### F4: Performance Validation (30 min)
+- [ ] Create `benches/controller_benchmarks.rs`
+- [ ] Add benchmark: `benchmark_transaction_validation()`
+- [ ] Add benchmark: `benchmark_network_balance_fetch()`
+- [ ] Add benchmark: `benchmark_wallet_signing()`
+- [ ] Run: `cargo bench`
+- [ ] Compare with baseline (if available)
+- [ ] Verify: No performance regression
+- [ ] Document performance results
+- [ ] Git commit: "perf(controllers): Add controller benchmarks"
+
+**Success**: Performance maintained or improved
+
+---
+
+### F5: Documentation & Completion (30 min)
+- [ ] Create `docs/architecture/CONTROLLER_ARCHITECTURE.md`
+- [ ] Document controller pattern
+- [ ] Document Alloy type usage
+- [ ] Document headless testing approach
+- [ ] Add controller usage examples
+- [ ] Update README with controller info
+- [ ] Create migration guide (handlers → controllers)
+- [ ] Run: `cargo doc --no-deps --open`
+- [ ] Verify: Documentation builds correctly
+- [ ] Git commit: "docs(controllers): Add controller architecture documentation"
+
+**Deliverable**: Complete controller documentation
 
 ---
 
 ### Phase F Validation
-- [ ] Run full test suite: `cargo test --all-features`
-- [ ] Verify state consistency
-- [ ] Test state transitions
-- [ ] Verify state event logging works
-- [ ] Verify zero functional regressions
-- [ ] Verify all tests passing
-- [ ] Git commit: "feat(phase-f): Complete state management enhancement - Phase F done"
+- [ ] Run: `cargo test --all-features`
+- [ ] Run: `cargo check --all-features`
+- [ ] Run: `cargo clippy -- -D warnings`
+- [ ] Run: `cargo fmt --check`
+- [ ] Run: `cargo bench`
+- [ ] Verify: 100% test pass rate
+- [ ] Verify: Zero functional regressions
+- [ ] Verify: Performance maintained
+- [ ] Verify: Documentation complete
+- [ ] Git commit: "feat(phase-f): Complete testing and validation"
 
 **Phase F Success Criteria**:
-- ✅ StateManager implemented and tested
-- ✅ All state updates centralized
-- ✅ State validation in place
-- ✅ State event logging working
-- ✅ Handlers integrated with StateManager
+- ✅ 100% controller test coverage
+- ✅ Headless tests working
+- ✅ Integration tests passing
+- ✅ Zero UI regressions
+- ✅ Performance validated
+- ✅ Documentation complete
 
 ---
 
@@ -320,24 +410,25 @@ Transform Vaughan into enterprise-grade architecture through handler completion,
 - [ ] Run: `cargo check --all-features`
 - [ ] Run: `cargo clippy -- -D warnings`
 - [ ] Run: `cargo fmt --check`
-- [ ] Verify: working_wallet.rs <1,500 lines
-- [ ] Verify: update() method <300 lines
-- [ ] Verify: All handlers complete
-- [ ] Verify: Performance improved 2-3x
-- [ ] Verify: StateManager working
+- [ ] Run: `cargo build --release`
+- [ ] Verify: Controllers are framework-agnostic
+- [ ] Verify: All business logic uses Alloy types
+- [ ] Verify: Handlers are thin bridges only
+- [ ] Verify: Headless testing works
+- [ ] Verify: GUI functions correctly
 - [ ] Verify: Zero functional regressions
-- [ ] Verify: All tests passing (100%)
+- [ ] Verify: 100% test pass rate
 
 ### Documentation
-- [ ] Update architecture documentation
-- [ ] Document handler organization
-- [ ] Document StateManager usage
-- [ ] Update PRIORITY_2_PROFESSIONAL_PLAN.md status
+- [ ] Update `docs/architecture/CONTROLLER_ARCHITECTURE.md`
+- [ ] Update `docs/architecture/PRIORITY_2_PROFESSIONAL_PLAN.md` status
 - [ ] Create completion summary document
-- [ ] Update README if needed
+- [ ] Update README with controller architecture
+- [ ] Document MetaMask patterns used
+- [ ] Document Alloy integration
 
 ### Git & GitHub
-- [ ] Final commit: "feat(priority-2): Complete advanced architecture - all phases done"
+- [ ] Final commit: "feat(priority-2): Complete controller-based architecture"
 - [ ] Merge feature branch to main
 - [ ] Push to GitHub: `git push origin main`
 - [ ] Verify push successful
@@ -348,22 +439,27 @@ Transform Vaughan into enterprise-grade architecture through handler completion,
 ## SUCCESS METRICS
 
 ### Code Quality
-- ✅ working_wallet.rs: 4,100 → <1,500 lines (63% reduction)
-- ✅ update() method: 2,902 → <300 lines (90% reduction)
-- ✅ Handler organization: Complete and professional
-- ✅ Zero compilation warnings
-- ✅ Zero clippy warnings
-
-### Performance
-- ✅ Compilation time: 2-3x faster
-- ✅ Runtime performance: Optimized hot paths
-- ✅ Developer experience: 10x faster navigation
+- ✅ Controllers: ~2,500 lines (pure business logic)
+- ✅ Handlers: <400 lines (thin bridges)
+- ✅ working_wallet.rs: <2,000 lines (from 4,100)
+- ✅ update() method: <500 lines (from 2,902)
+- ✅ Zero iced dependency in controllers
+- ✅ 100% Alloy type usage in controllers
 
 ### Architecture
-- ✅ Centralized state management
-- ✅ Predictable state updates
-- ✅ Enterprise-grade patterns
-- ✅ Fully tested and validated
+- ✅ Framework-agnostic business logic
+- ✅ Headless testable (no GUI needed)
+- ✅ Type-safe with Alloy primitives
+- ✅ Reusable in CLI/API/mobile
+- ✅ MetaMask patterns implemented
+- ✅ Security-critical code isolated
+
+### Testing
+- ✅ 100% controller test coverage
+- ✅ Property-based tests for controllers
+- ✅ Integration tests (headless)
+- ✅ Zero UI regressions
+- ✅ Performance validated
 
 ---
 
@@ -378,4 +474,6 @@ Transform Vaughan into enterprise-grade architecture through handler completion,
 ---
 
 *Task tracking created: January 28, 2026*
+*Architecture: MetaMask-inspired Controller Pattern*
+*Type Safety: Alloy Primitives*
 *Ready to begin execution*
