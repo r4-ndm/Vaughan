@@ -49,14 +49,35 @@ impl WorkingWalletApp {
         // 2. Validate amount
         let amount = &tx_state.send_amount;
         
-        // Get current balance from state
-        let balance = if let Ok(balance_str) = self.state.account_balance.replace(" ETH", "").replace(" ", "").parse::<f64>() {
+        // Get current balance from state - try multiple sources
+        let balance_str = self.state.account_balance.clone();
+        tracing::debug!("🔍 Raw balance string for validation: '{}'", balance_str);
+        
+        // Parse balance - handle various formats
+        let balance = if let Ok(balance_f64) = balance_str
+            .replace(" ETH", "")
+            .replace(" tPLS", "")
+            .replace(" BNB", "")
+            .replace(" ", "")
+            .replace(",", "")
+            .trim()
+            .parse::<f64>()
+        {
             use alloy::primitives::U256;
-            U256::from((balance_str * 1e18) as u128)
+            tracing::debug!("✅ Parsed balance: {} (as f64)", balance_f64);
+            U256::from((balance_f64 * 1e18) as u128)
         } else {
-            tracing::warn!("❌ Could not parse balance for validation");
-            return Err("Could not determine account balance".to_string());
+            // Balance parsing failed - check if it's an error state
+            if balance_str.contains("Error") || balance_str.contains("loading") || balance_str.is_empty() {
+                tracing::warn!("❌ Balance is in error state: '{}'", balance_str);
+                return Err("Unable to verify balance. Please refresh your balance and try again.".to_string());
+            }
+            
+            tracing::warn!("❌ Could not parse balance for validation: '{}'", balance_str);
+            return Err("Could not determine account balance. Please refresh and try again.".to_string());
         };
+        
+        tracing::debug!("💰 Balance for validation: {} wei", balance);
         
         // Validate amount (18 decimals for ETH/native tokens)
         if let Err(e) = service.validate_amount(amount, balance, 18) {
