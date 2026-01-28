@@ -1,7 +1,7 @@
-# Priority 2: Advanced Architecture - Overview
+# Priority 2: Controller-Based Architecture - Overview
 
 ## 🎯 Mission
-Transform Vaughan wallet into enterprise-grade architecture through systematic handler extraction, performance optimization, and state management enhancement.
+Transform Vaughan wallet into MetaMask-inspired controller architecture with strict Alloy type integration for headless testing and framework-agnostic business logic.
 
 ---
 
@@ -9,49 +9,91 @@ Transform Vaughan wallet into enterprise-grade architecture through systematic h
 
 ### Current State
 ```
-working_wallet.rs: 4,100 lines
-├── update() method: 2,902 lines (71% of file!) ⚠️
+working_wallet.rs:        4,100 lines total
+├── update() method:      2,902 lines (71% of file!) ⚠️
 │   └── Problem: Monolithic, hard to navigate, risky to modify
-├── view() method: ~400 lines
-└── Helper methods: ~800 lines
+├── view() method:        ~400 lines
+└── Helper methods:       ~800 lines
+
+handlers/ (exist but coupled to iced):
+├── transaction.rs        ❌ Coupled to UI framework
+├── network.rs            ❌ Coupled to UI framework
+├── security.rs           ❌ Coupled to UI framework
+└── ... other handlers    ❌ Hard to test without GUI
 ```
 
 ### The Problem
 - **Massive update() method**: 2,902 lines is unmaintainable
-- **Mixed concerns**: Business logic scattered throughout
-- **Hard to test**: Can't test handlers in isolation
-- **Slow navigation**: Finding code takes minutes
-- **Risky changes**: Modifications can break unrelated features
+- **Framework coupling**: Handlers depend on iced (can't test without GUI)
+- **String-based validation**: Runtime errors instead of compile-time safety
+- **Not reusable**: Can't use wallet logic in CLI/API/mobile
+- **Hard to test**: Requires GUI to test business logic
 
 ---
 
-## 🚀 The Solution
+## 🚀 The Solution: MetaMask-Inspired Controllers
+
+### Architecture Vision
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    VIEW LAYER (GUI)                         │
+│  - Pure UI rendering (iced framework)                       │
+│  - String formatting, user input                            │
+│  - NO business logic                                        │
+└─────────────────────────────────────────────────────────────┘
+                            ↓ UI Messages
+┌─────────────────────────────────────────────────────────────┐
+│                  HANDLER BRIDGE LAYER                       │
+│  - Convert UI strings → Alloy types                         │
+│  - Route to appropriate controller                          │
+│  - Convert controller results → UI commands                 │
+└─────────────────────────────────────────────────────────────┘
+                            ↓ Alloy Types
+┌─────────────────────────────────────────────────────────────┐
+│                  CONTROLLER LAYER (NEW)                     │
+│  - Pure business logic (framework-agnostic)                 │
+│  - Alloy types only (Address, U256, ChainId)                │
+│  - Headless testable (no GUI dependency)                    │
+│  - MetaMask patterns for security                           │
+└─────────────────────────────────────────────────────────────┘
+                            ↓ State Updates
+┌─────────────────────────────────────────────────────────────┐
+│                     STATE LAYER                             │
+│  - Pure data structures                                     │
+│  - Domain-specific modules                                  │
+│  - Secrecy-wrapped sensitive data                           │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ### Three-Phase Transformation
 
-#### **Phase D: Handler Completion** (2-3 hours)
-Extract remaining logic from update() into specialized handlers
+#### **Phase D: Controller Layer Creation** (3-4 hours)
+Create framework-agnostic controllers with pure Alloy types
 
 **Result**:
-- update() method: 2,902 → <300 lines (90% reduction)
-- working_wallet.rs: 4,100 → <1,500 lines (63% reduction)
-- All business logic in focused handler modules
+- TransactionController: Pure Alloy-based transaction logic
+- NetworkController: Alloy provider management
+- WalletController: Secure keyring with Alloy signers
+- PriceController: Token price fetching
+- 100% headless testable (no GUI dependency)
 
-#### **Phase E: Performance Optimization** (1-2 hours)
-Optimize dependencies and runtime performance
-
-**Result**:
-- 2-3x faster compilation time
-- Optimized module dependencies
-- Improved developer experience
-
-#### **Phase F: State Management** (1.5-2 hours)
-Implement enterprise-grade state management patterns
+#### **Phase E: Handler Bridge Refactoring** (2-3 hours)
+Convert handlers to thin bridges (UI → Controller)
 
 **Result**:
-- Centralized state updates
-- Predictable state transitions
-- State validation and logging
+- Handlers become type converters only
+- String → Alloy type conversion in handlers
+- All business logic moved to controllers
+- GUI still works, but logic is reusable
+
+#### **Phase F: Testing & Validation** (1-3 hours)
+Comprehensive headless testing and validation
+
+**Result**:
+- 100% controller test coverage
+- Property-based tests for controllers
+- Integration tests (no GUI required)
+- Zero functional regressions
 
 ---
 
@@ -60,13 +102,14 @@ Implement enterprise-grade state management patterns
 ### 📘 [plan.md](./plan.md)
 **Comprehensive execution plan** with detailed steps for all three phases.
 
-**Use this for**: Understanding the full strategy, detailed implementation steps, and validation criteria.
+**Use this for**: Understanding the full controller architecture strategy, detailed implementation steps, and validation criteria.
 
 **Sections**:
+- MetaMask-inspired controller pattern
 - Current state analysis
-- Phase D: Handler completion (8 substeps)
-- Phase E: Performance optimization (3 substeps)
-- Phase F: State management (3 substeps)
+- Phase D: Controller layer creation (6 substeps)
+- Phase E: Handler bridge refactoring (5 substeps)
+- Phase F: Testing & validation (5 substeps)
 - Risk mitigation strategies
 - Expected outcomes
 
@@ -89,8 +132,8 @@ Implement enterprise-grade state management patterns
 
 **Includes**:
 - Quick start commands
-- Testing commands
-- Performance measurement
+- Controller testing commands
+- Headless testing examples
 - Common issues & solutions
 - Pro tips
 
@@ -99,7 +142,7 @@ Implement enterprise-grade state management patterns
 ## 🎯 Quick Start
 
 ### 1. Read the Plan
-Start with [plan.md](./plan.md) to understand the full strategy.
+Start with [plan.md](./plan.md) to understand the controller architecture strategy.
 
 ### 2. Follow the Tasks
 Use [tasks.md](./tasks.md) to track your progress step-by-step.
@@ -110,24 +153,24 @@ Keep [quick-reference.md](./quick-reference.md) open for commands and tips.
 ### 4. Execute Phase by Phase
 ```bash
 # Create feature branch
-git checkout -b feature/priority-2-advanced-architecture
+git checkout -b feature/controller-architecture
 
 # Baseline measurements
 cargo test --all-features > baseline_tests.txt
 cargo clean && time cargo build > baseline_build.txt
 
-# Start Phase D
-# Follow tasks.md D1 → D2 → D3 → ... → D8
+# Start Phase D: Controller Layer Creation
+# Follow tasks.md D1 → D2 → D3 → D4 → D5 → D6
 
-# Then Phase E
-# Follow tasks.md E1 → E2 → E3
+# Then Phase E: Handler Bridge Refactoring
+# Follow tasks.md E1 → E2 → E3 → E4 → E5
 
-# Finally Phase F
-# Follow tasks.md F1 → F2 → F3
+# Finally Phase F: Testing & Validation
+# Follow tasks.md F1 → F2 → F3 → F4 → F5
 
 # Merge when complete
 git checkout main
-git merge feature/priority-2-advanced-architecture
+git merge feature/controller-architecture
 git push origin main
 ```
 
@@ -139,30 +182,33 @@ git push origin main
 ```
 METRIC                    BEFORE    AFTER     IMPROVEMENT
 ────────────────────────────────────────────────────────────
-working_wallet.rs size    4,100     <1,500    ⬇️ 63% reduction
-update() method size      2,902     <300      ⬇️ 90% reduction
-Handler organization      Partial   Complete  ✅ Professional
-Code navigation           Slow      Instant   ⭐ Perfect
+working_wallet.rs size    4,100     <2,000    ⬇️ 51% reduction
+update() method size      2,902     <500      ⬇️ 83% reduction
+Controllers (new)         0         ~2,500    ✅ Framework-agnostic
+Handler size              Mixed     <400      ✅ Thin bridges
+Test coverage             Good      Excellent ✅ Headless tests
 ```
 
-### Performance
-```
-METRIC                    BEFORE    AFTER     IMPROVEMENT
-────────────────────────────────────────────────────────────
-Compilation time          Baseline  -25%      🚀 Faster
-Development velocity      1x        5-10x     🎯 Revolutionary
-Bug location time         15 min    30 sec    ⚡ 30x faster
-Feature addition          Risky     Safe      🛡️ Bulletproof
-```
-
-### Architecture
+### Architecture Quality
 ```
 ASPECT                    BEFORE    AFTER     IMPROVEMENT
 ────────────────────────────────────────────────────────────
-Separation of concerns    Mixed     Clean     ✅ Professional
-State management          Scattered Central   ✅ Enterprise-grade
-Testability               Hard      Easy      ✅ Isolated
-Maintainability           Poor      Excellent ✅ Sustainable
+Framework coupling        High      Low       ✅ Alloy-only
+Testability               Hard      Easy      ✅ Headless
+Type safety               Runtime   Compile   ✅ Alloy types
+Reusability               Low       High      ✅ CLI/API ready
+Security                  Good      Excellent ✅ MetaMask patterns
+```
+
+### Developer Experience
+```
+TASK                      BEFORE    AFTER     MULTIPLIER
+────────────────────────────────────────────────────────────
+Test transaction logic    GUI req   Headless  🚀 10x faster
+Add new feature           Risky     Safe      🛡️ Type-safe
+Debug issues              Hard      Easy      ⚡ Isolated
+Code review               Slow      Fast      📚 Clear separation
+Modify business logic     Scary     Confident 🎯 No UI impact
 ```
 
 ---
@@ -170,29 +216,38 @@ Maintainability           Poor      Excellent ✅ Sustainable
 ## ✅ Success Criteria
 
 ### Phase D Complete When:
-- [ ] update() method <300 lines (from 2,902)
-- [ ] working_wallet.rs <1,500 lines (from 4,100)
-- [ ] All message handling in handlers
-- [ ] Zero inline business logic in update()
-- [ ] All tests passing
+- [ ] `src/controllers/` directory created
+- [ ] TransactionController implemented with Alloy types
+- [ ] NetworkController implemented with Alloy providers
+- [ ] WalletController implemented with secure keyring
+- [ ] PriceController implemented
+- [ ] 100% controller test coverage
+- [ ] Zero iced dependency in controllers
 
 ### Phase E Complete When:
-- [ ] 20-30% faster compilation time
-- [ ] Zero duplicate dependencies
-- [ ] Optimized feature flags
-- [ ] Hot paths optimized
+- [ ] Transaction handler converted to thin bridge
+- [ ] Network handler converted to thin bridge
+- [ ] Wallet handler converted to thin bridge
+- [ ] WorkingWalletApp has controller fields
+- [ ] update() method simplified to routing
+- [ ] All handlers call controllers (not business logic)
 - [ ] All tests passing
 
 ### Phase F Complete When:
-- [ ] StateManager implemented and tested
-- [ ] All state updates centralized
-- [ ] State validation working
-- [ ] State event logging functional
-- [ ] All tests passing
+- [ ] Headless controller tests (100% coverage)
+- [ ] Property-based tests for controllers
+- [ ] Integration tests (full flows, no GUI)
+- [ ] UI regression tests (manual)
+- [ ] Performance benchmarks (no regression)
+- [ ] Documentation complete
 
 ### Overall Success When:
-- [ ] All three phases complete
-- [ ] Zero functional regressions
+- [ ] Controllers are framework-agnostic
+- [ ] Handlers are thin bridges only
+- [ ] All business logic uses Alloy types
+- [ ] Headless testing works
+- [ ] GUI still functions correctly
+- [ ] Performance maintained or improved
 - [ ] 100% test pass rate
 - [ ] Clean compilation (zero warnings)
 - [ ] Documentation updated
@@ -203,7 +258,8 @@ Maintainability           Poor      Excellent ✅ Sustainable
 ## 🛡️ Safety Features
 
 ### Low Risk Approach
-- ✅ **Handlers already exist** - Infrastructure in place
+- ✅ **MetaMask pattern** - Battle-tested in production wallets
+- ✅ **Alloy types** - Compile-time safety, no runtime errors
 - ✅ **Incremental execution** - Small, tested steps
 - ✅ **Git checkpoints** - Commit after each substep
 - ✅ **Continuous testing** - Test after each change
@@ -213,7 +269,7 @@ Maintainability           Poor      Excellent ✅ Sustainable
 ```bash
 # After each substep
 cargo check
-cargo test --lib <module>
+cargo test --lib controllers::<module>
 
 # After each phase
 cargo test --all-features
@@ -222,6 +278,7 @@ cargo clippy -- -D warnings
 # Final validation
 cargo build --release
 cargo test --release
+cargo bench
 ```
 
 ### Rollback Plan
@@ -245,46 +302,46 @@ git reset --hard origin/main
 1. **Check quick-reference.md** for common issues
 2. **Read the error message** carefully
 3. **Run cargo check** for detailed errors
-4. **Test the specific module**: `cargo test --lib <module>`
+4. **Test the specific module**: `cargo test --lib controllers::<module>`
 5. **Check git diff**: `git diff HEAD`
 6. **Rollback if needed**: `git reset --soft HEAD~1`
 
 ### Common Issues
-- Compilation errors → Check imports and visibility
+- Compilation errors → Check imports and Alloy types
 - Tests failing → Run with `--nocapture` to see output
-- Handler not receiving messages → Check routing in update()
-- State not updating → Check you're using `_mut()` accessors
+- Controller not working → Check Alloy type conversions
+- Handler not routing → Check update() method routing
 
 ---
 
 ## 🎊 Why This Matters
 
 ### For You (Developer)
-- **10x faster** code navigation
-- **30x faster** bug location
-- **Stress-free** modifications
-- **Confident** refactoring
-- **Enjoyable** development
+- **10x faster** testing (no GUI required)
+- **Type-safe** with Alloy (compile-time validation)
+- **Stress-free** modifications (isolated controllers)
+- **Confident** refactoring (framework-agnostic)
+- **Enjoyable** development (clean architecture)
 
 ### For the Project
-- **Enterprise-ready** architecture
-- **Team-scalable** codebase
-- **Maintainable** long-term
-- **Professional** standards
-- **Production-grade** quality
+- **Enterprise-ready** architecture (MetaMask pattern)
+- **Reusable** logic (CLI/API/mobile ready)
+- **Maintainable** long-term (clear separation)
+- **Professional** standards (Alloy types)
+- **Production-grade** quality (battle-tested)
 
 ### For Users
-- **Faster** feature delivery
-- **Fewer** bugs
-- **Better** performance
-- **More reliable** wallet
-- **Continuous** improvements
+- **Faster** feature delivery (easier development)
+- **Fewer** bugs (compile-time safety)
+- **Better** performance (optimized controllers)
+- **More reliable** wallet (MetaMask patterns)
+- **Continuous** improvements (testable architecture)
 
 ---
 
 ## 🚀 Ready to Begin?
 
-1. **Read**: [plan.md](./plan.md) - Understand the strategy
+1. **Read**: [plan.md](./plan.md) - Understand the controller strategy
 2. **Track**: [tasks.md](./tasks.md) - Follow step-by-step
 3. **Reference**: [quick-reference.md](./quick-reference.md) - Quick commands
 4. **Execute**: Start with Phase D, task D1
@@ -302,21 +359,22 @@ git reset --hard origin/main
 - **Overall**: ⬜ Not Started
 
 ### Timeline
-- **Estimated**: 4-7 hours total
+- **Estimated**: 6-10 hours total
 - **Started**: Not yet
 - **Completed**: Not yet
 
 ### Metrics
-- **working_wallet.rs**: 4,100 lines (target: <1,500)
-- **update() method**: 2,902 lines (target: <300)
-- **Compilation time**: Baseline (target: -25%)
-- **Test pass rate**: 100% (maintain)
+- **working_wallet.rs**: 4,100 lines (target: <2,000)
+- **update() method**: 2,902 lines (target: <500)
+- **Controllers**: 0 lines (target: ~2,500)
+- **Test coverage**: Good (target: Excellent with headless tests)
 
 ---
 
 *Plan created: January 28, 2026*
+*Architecture: MetaMask-inspired Controller Pattern*
+*Type Safety: Alloy Primitives*
 *Status: READY FOR EXECUTION*
-*Risk Level: LOW*
-*Confidence: HIGH*
+*Risk Level: MEDIUM (new layer, proven pattern)*
 
-**Let's build something amazing!** 🚀
+**Let's build enterprise-grade, security-critical wallet architecture!** 🚀
