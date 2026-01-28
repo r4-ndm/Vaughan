@@ -74,26 +74,26 @@ Transform Vaughan into MetaMask-inspired controller architecture with strict All
 ---
 
 ### D4: WalletController Implementation (60 min)
-- [ ] Create `src/controllers/wallet.rs`
-- [ ] Implement `WalletController` struct
-- [ ] Add `new()` method
-- [ ] Add `add_account()` method (private key → LocalWallet)
-  - [ ] Use `secrecy::Secret` for private key
-  - [ ] Create Alloy `LocalWallet`
-  - [ ] Store in HashMap
-  - [ ] Return Address
-- [ ] Add `get_current_address()` method
-- [ ] Add `sign_message()` method (Alloy signer)
-- [ ] Add `switch_account()` method
-- [ ] Add `remove_account()` method
-- [ ] Write unit tests for account creation
-- [ ] Write unit tests for account switching
-- [ ] Write unit tests for signing
-- [ ] Run: `cargo check`
-- [ ] Run: `cargo test --lib controllers::wallet`
-- [ ] Git commit: "feat(controllers): Implement WalletController with secure keyring"
+- [X] Create `src/controllers/wallet.rs`
+- [X] Implement `WalletController` struct
+- [X] Add `new()` method
+- [X] Add `add_account()` method (private key → LocalWallet)
+  - [X] Use `secrecy::Secret` for private key
+  - [X] Create Alloy `PrivateKeySigner`
+  - [X] Store in HashMap
+  - [X] Return Address
+- [X] Add `get_current_address()` method
+- [X] Add `sign_message()` method (Alloy signer)
+- [X] Add `switch_account()` method
+- [X] Add `remove_account()` method
+- [X] Write unit tests for account creation
+- [X] Write unit tests for account switching
+- [X] Write unit tests for signing
+- [X] Run: `cargo check`
+- [X] Run: `cargo test --lib controllers::wallet`
+- [X] Git commit: "feat(controllers): Implement WalletController with secure keyring"
 
-**Success**: WalletController with secure keyring, headless testable
+**Success**: WalletController with secure keyring, headless testable ✅
 
 ---
 
