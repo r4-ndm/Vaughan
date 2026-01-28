@@ -3526,20 +3526,36 @@ impl WorkingWalletApp {
         base_tickers.push(native_ticker.to_string());
 
         // Add tokens with contract addresses using the same format as send tokens
+        // Addresses verified from official sources (Etherscan, BSCScan, PolygonScan)
         let tokens_with_addresses = match network_id.0 {
+            // Ethereum Mainnet - verified addresses
             1 => vec![
-                ("USDC", "0xA0b86a33E6443B9e3d5e563C780384aA470A37d2"),
+                ("USDC", "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"), // Fixed: correct USDC address
                 ("USDT", "0xdAC17F958D2ee523a2206206994597C13D831ec7"),
                 ("WETH", "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"),
             ],
+            // PulseChain Mainnet - TODO: verify these addresses on PulseChain
+            // Note: PulseChain has its own token ecosystem, not Ethereum tokens
             369 => vec![
-                ("WETH", "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"),
-                ("USDC", "0xA0b86a33E6443B9e3d5e563C780384aA470A37d2"),
-                ("WPLS", "0xA1077a294dDE1B09bB078844df40758a5D0f9a27"),
+                // Temporarily disabled until correct PulseChain addresses are verified
+                // ("WPLS", "0xA1077a294dDE1B09bB078844df40758a5D0f9a27"),
             ],
+            // PulseChain Testnet v4 - verified working addresses
             943 => vec![
                 ("USD", "0x3e0Ad60c6D427191D66B6D168ddeF82A66F573B0"),
                 ("WPLS", "0xcF1Fc503CA35618E9b4C08b7847980b3e10FB53B"),
+            ],
+            // BSC - verified addresses from BSCScan
+            56 => vec![
+                ("USDT", "0x55d398326f99059fF775485246999027B3197955"), // BSC-USD (Binance-Peg USDT)
+                ("BUSD", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"), // Binance-Peg BUSD
+                ("CAKE", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82"), // PancakeSwap Token
+            ],
+            // Polygon - verified addresses from PolygonScan
+            137 => vec![
+                ("USDC", "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"), // USD Coin (PoS)
+                ("USDT", "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"), // Tether USD (PoS)
+                ("WETH", "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619"), // Wrapped Ether (PoS)
             ],
             _ => vec![],
         };
@@ -3586,9 +3602,9 @@ impl WorkingWalletApp {
     /// This ensures all popular tokens are available for balance refresh
     pub fn initialize_token_balances_for_network(&mut self, network_id: NetworkId) {
         let tokens = match network_id.0 {
-            // Ethereum Mainnet (Chain ID 1)
+            // Ethereum Mainnet (Chain ID 1) - verified addresses from Etherscan
             1 => vec![
-                ("USDC", "USD Coin", "0xA0b86a33E6443B9e3d5e563C780384aA470A37d2", 6),
+                ("USDC", "USD Coin", "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", 6), // Fixed: correct USDC
                 ("USDT", "Tether USD", "0xdAC17F958D2ee523a2206206994597C13D831ec7", 6),
                 (
                     "WETH",
@@ -3603,25 +3619,12 @@ impl WorkingWalletApp {
                     18,
                 ),
             ],
-            // PulseChain Mainnet (Chain ID 369)
+            // PulseChain Mainnet (Chain ID 369) - TODO: verify correct PulseChain addresses
             369 => vec![
-                (
-                    "WETH",
-                    "Wrapped Ether",
-                    "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-                    18,
-                ),
-                ("USDC", "USD Coin", "0xA0b86a33E6443B9e3d5e563C780384aA470A37d2", 6),
-                ("USDT", "Tether USD", "0xdAC17F958D2ee523a2206206994597C13D831ec7", 6),
-                (
-                    "DAI",
-                    "Dai Stablecoin",
-                    "0x6B175474E89094C44Da98b954EedeAC495271d0F",
-                    18,
-                ),
-                ("WPLS", "Wrapped PLS", "0xA1077a294dDE1B09bB078844df40758a5D0f9a27", 18),
+                // Temporarily disabled until correct PulseChain addresses are verified
+                // PulseChain has its own token ecosystem, not Ethereum tokens
             ],
-            // PulseChain Testnet (Chain ID 943)
+            // PulseChain Testnet v4 (Chain ID 943) - verified working addresses
             943 => vec![
                 (
                     "USD",
@@ -3630,6 +3633,18 @@ impl WorkingWalletApp {
                     18,
                 ), // Real testnet USD token
                 ("WPLS", "Wrapped PLS", "0xcF1Fc503CA35618E9b4C08b7847980b3e10FB53B", 18), // Real testnet WPLS
+            ],
+            // BSC (Chain ID 56) - verified addresses from BSCScan
+            56 => vec![
+                ("USDT", "Tether USD", "0x55d398326f99059fF775485246999027B3197955", 18), // BSC-USD
+                ("BUSD", "Binance USD", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", 18), // Binance-Peg BUSD
+                ("CAKE", "PancakeSwap Token", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", 18),
+            ],
+            // Polygon (Chain ID 137) - verified addresses from PolygonScan
+            137 => vec![
+                ("USDC", "USD Coin (PoS)", "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174", 6),
+                ("USDT", "Tether USD (PoS)", "0xc2132D05D31c914a87C6611C10748AEb04B58e8F", 6),
+                ("WETH", "Wrapped Ether (PoS)", "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619", 18),
             ],
             _ => vec![], // Other networks don't have predefined tokens yet
         };
