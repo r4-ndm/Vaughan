@@ -78,6 +78,11 @@ where
         Self { provider, chain_id }
     }
 
+    /// Get current chain ID
+    pub fn chain_id(&self) -> ChainId {
+        self.chain_id
+    }
+
     /// Validate transaction parameters (Alloy types only)
     ///
     /// Implements MetaMask validation rules:

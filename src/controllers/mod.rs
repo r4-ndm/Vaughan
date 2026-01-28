@@ -35,7 +35,7 @@ pub mod price;
 pub use transaction::TransactionController;
 pub use network::NetworkController;
 pub use wallet::WalletController;
-pub use price::PriceController;
+pub use price::{PriceController, TokenPrice};
 
 // Re-export common types
 use alloy::primitives::{Address, U256};
