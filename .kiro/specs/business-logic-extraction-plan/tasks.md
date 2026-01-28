@@ -61,44 +61,44 @@ Extract business logic from view components into a dedicated service layer for b
 
 ## Phase 3: Account Display Migration
 
-- [ ] 9. Migrate account selector logic
-  - [ ] 9.1 Extract account selection logic from main_wallet.rs lines 58-84
-  - [ ] 9.2 Update account selector to use `services.account.format_account_display()`
-  - [ ] 9.3 Replace inline address formatting with `services.account.format_address_short()`
-  - [ ] 9.4 Test account switching with multiple account types
+- [x] 9. Migrate account selector logic
+  - [x] 9.1 Extract account selection logic from main_wallet.rs lines 58-84
+  - [x] 9.2 Update account selector to use `services.account.format_account_display()`
+  - [x] 9.3 Replace inline address formatting with `services.account.format_address_short()`
+  - [x] 9.4 Test account switching with multiple account types
 
-- [ ] 10. Migrate address display throughout views
-  - [ ] 10.1 Find all inline address formatting in views
-  - [ ] 10.2 Replace with service calls
-  - [ ] 10.3 Ensure consistent formatting across all views
-  - [ ] 10.4 Test with various address lengths and edge cases
+- [x] 10. Migrate address display throughout views
+  - [x] 10.1 Find all inline address formatting in views
+  - [x] 10.2 Replace with service calls
+  - [x] 10.3 Ensure consistent formatting across all views
+  - [x] 10.4 Test with various address lengths and edge cases
 
-- [ ] 11. Write property-based tests for account display
-  - [ ] 11.1 Write proptest for address formatting (any valid hex address)
-  - [ ] 11.2 Test that short address always contains "..."
-  - [ ] 11.3 Test that short address length is always <= original length
+- [x] 11. Write property-based tests for account display
+  - [x] 11.1 Write proptest for address formatting (any valid hex address)
+  - [x] 11.2 Test that short address always contains "..."
+  - [x] 11.3 Test that short address length is always <= original length
 
 ---
 
 ## Phase 4: Network Configuration Service
 
-- [ ] 12. Implement NetworkConfigService
-  - [ ] 12.1 Create `src/gui/services/network_config_service.rs`
-  - [ ] 12.2 Define `NetworkValidationError` enum (InvalidRpcUrl, InvalidChainId, InvalidExplorerUrl, DuplicateNetwork)
-  - [ ] 12.3 Define `NetworkConfigServiceTrait` with validation methods
-  - [ ] 12.4 Implement `validate_network_config()`, `is_network_name_unique()`, `sanitize_rpc_url()` methods
+- [x] 12. Implement NetworkConfigService
+  - [x] 12.1 Create `src/gui/services/network_config_service.rs`
+  - [x] 12.2 Define `NetworkValidationError` enum (InvalidRpcUrl, InvalidChainId, InvalidExplorerUrl, DuplicateNetwork)
+  - [x] 12.3 Define `NetworkConfigServiceTrait` with validation methods
+  - [x] 12.4 Implement `validate_network_config()`, `is_network_name_unique()`, `sanitize_rpc_url()` methods
 
-- [ ] 13. Migrate network validation from dialogs
-  - [ ] 13.1 Extract validation logic from dialogs.rs lines 1149-1216
-  - [ ] 13.2 Update network configuration dialog to use service
-  - [ ] 13.3 Test network creation with valid and invalid data
-  - [ ] 13.4 Verify error messages are user-friendly
+- [x] 13. Migrate network validation from dialogs
+  - [x] 13.1 Extract validation logic from dialogs.rs lines 1149-1216
+  - [x] 13.2 Update network configuration dialog to use service
+  - [x] 13.3 Test network creation with valid and invalid data
+  - [x] 13.4 Verify error messages are user-friendly
 
-- [ ] 14. Write tests for network validation
-  - [ ] 14.1 Test RPC URL validation (http/https required)
-  - [ ] 14.2 Test chain ID validation (non-zero)
-  - [ ] 14.3 Test duplicate network detection
-  - [ ] 14.4 Write property-based tests for URL sanitization
+- [x] 14. Write tests for network validation
+  - [x] 14.1 Test RPC URL validation (http/https required)
+  - [x] 14.2 Test chain ID validation (non-zero)
+  - [x] 14.3 Test duplicate network detection
+  - [x] 14.4 Write property-based tests for URL sanitization
 
 ---
 

@@ -54,7 +54,39 @@ impl AssetService {
 
 impl Default for AssetService {
     fn default() -> Self {
-        Self::new(PathBuf::from("assets"))
+        // Use absolute path from current exe location or fallback to relative
+        let asset_path = if let Ok(exe_path) = std::env::current_exe() {
+            if let Some(exe_dir) = exe_path.parent() {
+                // Try exe directory first (for release builds)
+                let exe_assets = exe_dir.join("assets");
+                if exe_assets.exists() {
+                    tracing::info!("Using assets from exe directory: {:?}", exe_assets);
+                    exe_assets
+                } else {
+                    // Try parent directories (for dev builds in target/debug or target/release)
+                    let mut current = exe_dir;
+                    for _ in 0..3 {
+                        if let Some(parent) = current.parent() {
+                            let assets = parent.join("assets");
+                            if assets.exists() {
+                                tracing::info!("Using assets from parent directory: {:?}", assets);
+                                return Self::new(assets);
+                            }
+                            current = parent;
+                        }
+                    }
+                    // Fallback to relative path
+                    tracing::warn!("Assets not found near exe, using relative path");
+                    PathBuf::from("assets")
+                }
+            } else {
+                PathBuf::from("assets")
+            }
+        } else {
+            PathBuf::from("assets")
+        };
+        
+        Self::new(asset_path)
     }
 }
 
@@ -111,7 +143,7 @@ impl AssetServiceTrait for AssetService {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::fs::{self, File};
+    use std::fs::File;
     use tempfile::TempDir;
 
     fn setup_test_assets() -> (TempDir, AssetService) {

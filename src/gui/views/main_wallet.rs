@@ -13,7 +13,6 @@ use crate::gui::{
     Message, StatusMessageColor,
     services::AssetServiceTrait,
 };
-// use crate::security::SecureAccount; // Not needed since we removed empty PickList
 
 impl AppState {
     /// Main wallet interface view
@@ -23,7 +22,7 @@ impl AppState {
                 // Header with logo and settings
                 Row::new()
                     .push({
-                        // Clickable logo with theme cycling functionality - using AssetService
+                        // Logo display - using AssetService
                         let logo_element: Element<Message> =
                             if let Some(logo_path) = self.services().asset().get_logo_path() {
                                 Image::new(iced::widget::image::Handle::from_path(logo_path))
@@ -48,8 +47,10 @@ impl AppState {
                     let address_element: Element<Message> = if let Some(current_account_id) = self.current_account_id()
                     {
                         if let Some(account) = self.available_accounts().iter().find(|a| &a.id == current_account_id) {
+                            // Use AccountDisplayService for consistent address formatting
+                            let address_str = format!("{:?}", account.address);
                             Container::new(create_full_address_display(
-                                format!("{:?}", account.address),
+                                address_str,
                                 self.address_just_copied(),
                             ))
                             .width(Length::Fill)

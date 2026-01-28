@@ -19,6 +19,7 @@
 //! - `integrated_account_service`: Unified account service with telemetry
 //! - `asset_service`: Asset loading and availability checks (NEW)
 //! - `account_display_service`: Account formatting and display logic (NEW)
+//! - `network_config_service`: Network validation and configuration (NEW)
 
 // Existing services
 pub mod account_service;
@@ -34,6 +35,7 @@ pub mod wallet_service;
 // New services for business logic extraction
 pub mod asset_service;
 pub mod account_display_service;
+pub mod network_config_service;
 
 // Re-exports from existing services
 pub use account_service::*;
@@ -46,6 +48,7 @@ pub use wallet_service::{initialize_wallet, load_available_accounts};
 // Re-exports from new services
 pub use asset_service::{AssetService, AssetServiceTrait};
 pub use account_display_service::{AccountDisplayService, AccountDisplayServiceTrait, AccountDisplayInfo};
+pub use network_config_service::{NetworkConfigService, NetworkConfigServiceTrait, NetworkValidationError};
 
 use std::sync::{Arc, OnceLock};
 
@@ -56,6 +59,7 @@ use std::sync::{Arc, OnceLock};
 pub struct ServiceRegistry {
     asset_service: OnceLock<Arc<AssetService>>,
     account_display_service: OnceLock<Arc<AccountDisplayService>>,
+    network_config_service: OnceLock<Arc<NetworkConfigService>>,
 }
 
 impl Clone for ServiceRegistry {
@@ -72,6 +76,7 @@ impl ServiceRegistry {
         Self {
             asset_service: OnceLock::new(),
             account_display_service: OnceLock::new(),
+            network_config_service: OnceLock::new(),
         }
     }
 
@@ -86,6 +91,13 @@ impl ServiceRegistry {
     pub fn account_display(&self) -> Arc<AccountDisplayService> {
         self.account_display_service
             .get_or_init(|| Arc::new(AccountDisplayService::new()))
+            .clone()
+    }
+
+    /// Get the network configuration service, creating it if necessary.
+    pub fn network_config(&self) -> Arc<NetworkConfigService> {
+        self.network_config_service
+            .get_or_init(|| Arc::new(NetworkConfigService::new()))
             .clone()
     }
 }

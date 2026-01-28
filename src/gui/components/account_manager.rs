@@ -2,6 +2,7 @@
 //!
 //! This module contains the account management UI component.
 
+use crate::gui::services::AccountDisplayServiceTrait;
 use crate::gui::wallet_messages::Message;
 use crate::gui::working_wallet::AppState;
 use iced::widget::{Button, Column, Container, Row, Space, Text};
@@ -91,8 +92,9 @@ impl AccountManager {
                                 .push(Text::new(&account.name).size(14))
                                 .push(
                                     Text::new({
+                                        // Use AccountDisplayService for consistent address formatting
                                         let address_str = format!("{:#x}", account.address);
-                                        format!("{}...{}", &address_str[0..6], &address_str[address_str.len() - 4..])
+                                        state.services().account_display().format_address_short(&address_str)
                                     })
                                     .size(12)
                                     .style(Color::from_rgb(0.6, 0.6, 0.6)),
