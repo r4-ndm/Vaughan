@@ -51,7 +51,10 @@ impl WorkingWalletApp {
             // Clipboard operations for tokens
             Message::PasteTokenAddress => self.handle_paste_token_address(),
             Message::SendPasteFromClipboard => self.handle_send_paste_from_clipboard(),
-            Message::SendPasteAddressFromClipboard => self.handle_send_paste_address_from_clipboard(),
+            Message::SendPasteAddressFromClipboard => {
+                tracing::info!("📋 SendPasteAddressFromClipboard message received in handler");
+                self.handle_send_paste_address_from_clipboard()
+            }
             Message::SendPasteAmountFromClipboard => self.handle_send_paste_amount_from_clipboard(),
 
             // Token persistence
@@ -580,16 +583,28 @@ impl WorkingWalletApp {
     }
 
     fn handle_send_paste_address_from_clipboard(&mut self) -> Command<Message> {
+        tracing::info!("📋 Paste address button clicked - attempting to read clipboard");
         Command::perform(
             async {
+                tracing::info!("📋 Inside async clipboard read task");
                 match arboard::Clipboard::new().and_then(|mut clipboard| clipboard.get_text()) {
-                    Ok(text) => Ok(text.trim().to_string()),
-                    Err(e) => Err(format!("Failed to access clipboard: {e}")),
+                    Ok(text) => {
+                        tracing::info!("📋 Successfully read from clipboard: {}", text);
+                        Ok(text.trim().to_string())
+                    }
+                    Err(e) => {
+                        tracing::error!("📋 Failed to access clipboard: {}", e);
+                        Err(format!("Failed to access clipboard: {e}"))
+                    }
                 }
             },
             |result| match result {
-                Ok(text) => Message::SendAddressChanged(text),
-                Err(_) => {
+                Ok(text) => {
+                    tracing::info!("📋 Sending SendToAddressChanged message with: {}", text);
+                    Message::SendToAddressChanged(text)
+                }
+                Err(e) => {
+                    tracing::error!("📋 Clipboard error: {}", e);
                     Message::SetStatusMessage("Failed to paste from clipboard".to_string(), StatusMessageColor::Error)
                 }
             },

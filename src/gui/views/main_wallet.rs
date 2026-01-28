@@ -348,7 +348,7 @@ impl AppState {
             .push(Space::with_width(Length::Fixed(safe_dimension(4.0))))
             .push(
                 TextInput::new("Recipient address (0x...)", send_to_address)
-                    .on_input(Message::SendAddressChanged)
+                    .on_input(Message::SendToAddressChanged)
                     .padding(10)
                     .width(Length::Fill)
                     .style(styles::black_grey_text_input()),
