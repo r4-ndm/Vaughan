@@ -368,22 +368,32 @@ impl WorkingWalletApp {
                 None
             };
 
-            if let Some((account_id, account_name)) = needs_master_password {
+            if let Some((_account_id, account_name)) = needs_master_password {
                 // Need to prompt for master password
                 tracing::info!("🔐 Seed-based account needs master password - showing dialog");
 
                 // Clear any existing transaction state
                 self.state.transaction_mut().show_transaction_confirmation = false;
 
-                // Show unified password dialog with config
+                // Build transaction details string for password dialog
+                let to_address = &self.state.transaction().send_to_address;
+                let amount = &self.state.transaction().send_amount;
+                let token = &self.state.transaction().send_selected_token;
+                let tx_details = format!(
+                    "From: {}\nTo: {}\nAmount: {} {}",
+                    account_name,
+                    to_address,
+                    amount,
+                    token
+                );
+
+                // Show unified password dialog with SignTransaction config
+                // This ensures the transaction proceeds after password validation
                 use crate::gui::state::auth_state::PasswordDialogConfig;
                 self.state
                     .auth_mut()
                     .password_dialog
-                    .show(PasswordDialogConfig::AccountUnlock {
-                        account_id,
-                        account_name,
-                    });
+                    .show(PasswordDialogConfig::SignTransaction { tx_details });
                 return Command::none();
             }
         }
