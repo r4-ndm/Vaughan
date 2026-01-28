@@ -98,19 +98,22 @@ Transform Vaughan into MetaMask-inspired controller architecture with strict All
 ---
 
 ### D5: PriceController Implementation (30 min)
-- [ ] Create `src/controllers/price.rs`
-- [ ] Implement `PriceController` struct
-- [ ] Add `new()` method (optional API key)
-- [ ] Add `fetch_eth_price()` method
-- [ ] Add `get_cached_price()` method
-- [ ] Add price caching logic
-- [ ] Write unit tests for price fetching
-- [ ] Write unit tests for caching
-- [ ] Run: `cargo check`
-- [ ] Run: `cargo test --lib controllers::price`
-- [ ] Git commit: "feat(controllers): Implement PriceController"
+- [X] Create `src/controllers/price.rs`
+- [X] Implement `PriceController` struct
+- [X] Add `new()` method (optional API key)
+- [X] Add `fetch_native_token_price()` method
+- [X] Add `fetch_token_price()` method
+- [X] Add price caching logic (LRU cache)
+- [X] Add `clear_cache()` method
+- [X] Add `cache_stats()` method
+- [X] Write unit tests for price fetching
+- [X] Write unit tests for caching
+- [X] Write unit tests for cache expiration
+- [X] Run: `cargo check`
+- [X] Run: `cargo test --lib controllers::price`
+- [X] Git commit: "feat(controllers): Implement PriceController"
 
-**Success**: PriceController for token prices
+**Success**: PriceController for token prices ✅
 
 ---
 
