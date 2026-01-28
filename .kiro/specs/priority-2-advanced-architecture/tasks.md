@@ -28,48 +28,48 @@ Transform Vaughan into MetaMask-inspired controller architecture with strict All
 ---
 
 ### D2: TransactionController Implementation (60 min)
-- [ ] Create `src/controllers/transaction.rs`
-- [ ] Implement `TransactionController` struct
-- [ ] Add `validate_transaction()` method (Alloy types)
-  - [ ] Zero address check (MetaMask pattern)
-  - [ ] Amount validation (positive, non-zero)
-  - [ ] Gas limit validation (21k-30M)
-  - [ ] Balance check (amount + gas)
-- [ ] Add `estimate_gas()` method (Alloy provider)
-- [ ] Add `build_transaction()` method (Alloy `TransactionRequest`)
-- [ ] Add `submit_transaction()` method (Alloy provider)
-- [ ] Add `get_transaction_receipt()` method
-- [ ] Write unit tests for zero address rejection
-- [ ] Write unit tests for insufficient balance
-- [ ] Write unit tests for gas limit validation
-- [ ] Write unit tests for transaction building
-- [ ] Run: `cargo check`
-- [ ] Run: `cargo test --lib controllers::transaction`
-- [ ] Git commit: "feat(controllers): Implement TransactionController with Alloy types"
+- [X] Create `src/controllers/transaction.rs`
+- [X] Implement `TransactionController` struct
+- [X] Add `validate_transaction()` method (Alloy types)
+  - [X] Zero address check (MetaMask pattern)
+  - [X] Amount validation (positive, non-zero)
+  - [X] Gas limit validation (21k-30M)
+  - [X] Balance check (amount + gas)
+- [X] Add `estimate_gas()` method (Alloy provider)
+- [X] Add `build_transaction()` method (Alloy `TransactionRequest`)
+- [X] Add `submit_transaction()` method (Alloy provider)
+- [X] Add `get_transaction_receipt()` method
+- [X] Write unit tests for zero address rejection
+- [X] Write unit tests for insufficient balance
+- [X] Write unit tests for gas limit validation
+- [X] Write unit tests for transaction building
+- [X] Run: `cargo check`
+- [X] Run: `cargo test --lib controllers::transaction`
+- [X] Git commit: "feat(controllers): Implement TransactionController with Alloy types"
 
-**Success**: TransactionController with pure Alloy types, headless testable
+**Success**: TransactionController with pure Alloy types, headless testable ✅
 
 ---
 
 ### D3: NetworkController Implementation (45 min)
-- [ ] Create `src/controllers/network.rs`
-- [ ] Implement `NetworkController` struct
-- [ ] Add `new()` method (create Alloy provider)
-- [ ] Add `get_chain_id()` method (Alloy provider)
-- [ ] Add `check_network_health()` method
-- [ ] Add `get_balance()` method (Address → U256)
-- [ ] Add `switch_network()` method
-  - [ ] Create new provider
-  - [ ] Verify chain ID matches
-  - [ ] Update internal state
-- [ ] Write unit tests for network creation
-- [ ] Write unit tests for chain ID validation
-- [ ] Write unit tests for balance fetching
-- [ ] Run: `cargo check`
-- [ ] Run: `cargo test --lib controllers::network`
-- [ ] Git commit: "feat(controllers): Implement NetworkController with Alloy providers"
+- [X] Create `src/controllers/network.rs`
+- [X] Implement `NetworkController` struct
+- [X] Add `new()` method (create Alloy provider)
+- [X] Add `get_chain_id()` method (Alloy provider)
+- [X] Add `check_network_health()` method
+- [X] Add `get_balance()` method (Address → U256)
+- [X] Add `switch_network()` method
+  - [X] Create new provider
+  - [X] Verify chain ID matches
+  - [X] Update internal state
+- [X] Write unit tests for network creation
+- [X] Write unit tests for chain ID validation
+- [X] Write unit tests for balance fetching
+- [X] Run: `cargo check`
+- [X] Run: `cargo test --lib controllers::network`
+- [X] Git commit: "feat(controllers): Implement NetworkController with Alloy providers"
 
-**Success**: NetworkController with Alloy providers, headless testable
+**Success**: NetworkController with Alloy providers, headless testable ✅
 
 ---
 
