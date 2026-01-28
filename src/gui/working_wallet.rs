@@ -37,15 +37,31 @@ use crate::gui::services::network_service::{
 use crate::gui::services::{initialize_wallet, load_available_accounts};
 // Remove checksum import for now - will implement later if needed
 
+// Phase E: Import controllers (E4 - WorkingWalletApp structure)
+use crate::controllers::{
+    NetworkController, PriceController, TransactionController, WalletController,
+};
+
 // New decomposed AppState using domain-specific modules
 pub type AppState = NewAppState;
 
 // Main wallet application
+// Phase E: Added controller fields (E4 - WorkingWalletApp structure)
 pub struct WorkingWalletApp {
+    // Existing fields (kept for gradual migration)
     pub state: AppState,
     pub wallet: Option<Arc<tokio::sync::RwLock<crate::wallet::Vaughan>>>,
     pub api_manager: Option<ExplorerApiManager>,
     pub account_service: Arc<IntegratedAccountService>,
+    
+    // Phase E: New controller fields
+    // Note: transaction_controller and network_controller are Option because they need
+    // a provider which is created after network initialization
+    pub wallet_controller: Arc<WalletController>,
+    pub price_controller: Arc<PriceController>,
+    // TODO: Initialize these after network setup
+    // pub transaction_controller: Option<Arc<TransactionController<HttpProvider>>>,
+    // pub network_controller: Option<Arc<NetworkController<HttpProvider>>>,
 }
 
 impl Application for WorkingWalletApp {
@@ -91,11 +107,22 @@ impl Application for WorkingWalletApp {
         let account_service = Arc::new(IntegratedAccountService::new());
         tracing::info!("✅ Integrated Account Service initialized");
 
+        // Phase E: Initialize controllers (E4 - WorkingWalletApp structure)
+        // Initialize controllers that don't need a provider
+        let wallet_controller = Arc::new(WalletController::new());
+        let price_controller = Arc::new(PriceController::new(None)); // No Moralis API key yet
+        tracing::info!("✅ Controllers initialized (wallet, price)");
+        // Note: transaction_controller and network_controller will be initialized
+        // after network setup when provider is available
+
         let mut wallet_app = Self {
             state,
             wallet: None,
             api_manager,
             account_service,
+            // Phase E: Controller fields
+            wallet_controller,
+            price_controller,
         };
 
         // Add some sample error entries for testing (debug builds only)

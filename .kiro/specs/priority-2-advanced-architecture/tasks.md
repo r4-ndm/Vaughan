@@ -231,24 +231,24 @@ Transform Vaughan into MetaMask-inspired controller architecture with strict All
 ---
 
 ### E4: Update WorkingWalletApp Structure (45 min)
-- [ ] Open `src/gui/working_wallet.rs`
-- [ ] Add controller imports
-- [ ] Add controller fields to `WorkingWalletApp`:
-  - [ ] `transaction_controller: Arc<TransactionController>`
-  - [ ] `network_controller: Arc<NetworkController>`
-  - [ ] `wallet_controller: Arc<WalletController>`
-  - [ ] `price_controller: Arc<PriceController>`
-- [ ] Update `Application::new()`:
-  - [ ] Initialize NetworkController
-  - [ ] Initialize WalletController
-  - [ ] Initialize TransactionController
-  - [ ] Initialize PriceController
-- [ ] Keep legacy fields for now (gradual migration)
-- [ ] Run: `cargo check`
-- [ ] Run: `cargo build`
-- [ ] Git commit: "refactor(app): Add controller fields to WorkingWalletApp"
+- [X] Open `src/gui/working_wallet.rs`
+- [X] Add controller imports
+- [X] Add controller fields to `WorkingWalletApp`:
+  - [X] `wallet_controller: Arc<WalletController>`
+  - [X] `price_controller: Arc<PriceController>`
+  - [ ] `transaction_controller: Option<Arc<TransactionController>>` (TODO: after network init)
+  - [ ] `network_controller: Option<Arc<NetworkController>>` (TODO: after network init)
+- [X] Update `Application::new()`:
+  - [X] Initialize WalletController
+  - [X] Initialize PriceController
+  - [ ] Initialize TransactionController (TODO: needs provider)
+  - [ ] Initialize NetworkController (TODO: needs provider)
+- [X] Keep legacy fields for now (gradual migration)
+- [X] Run: `cargo check`
+- [X] Run: `cargo build`
+- [X] Git commit: "refactor(app): Add controller fields to WorkingWalletApp"
 
-**Success**: WorkingWalletApp has controller fields
+**Success**: WorkingWalletApp has controller fields ✅ (partial - provider-dependent controllers TODO)
 
 ---
 
