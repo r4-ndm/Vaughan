@@ -430,6 +430,22 @@ pub async fn estimate_gas(
         }
         Err(e) => {
             tracing::error!("❌ Gas estimation failed: {}", e);
+            tracing::error!("❌ Error details: {:?}", e);
+            
+            // Check if this is a balance-related error
+            let error_string = e.to_string().to_lowercase();
+            if error_string.contains("balance") || error_string.contains("insufficient") {
+                tracing::error!("💰 Balance check failed - this may indicate:");
+                tracing::error!("   1. Insufficient native token (tPLS) for gas fees");
+                tracing::error!("   2. Insufficient token balance for transfer");
+                tracing::error!("   3. RPC provider unable to read balance");
+                tracing::error!("   From address: {:#x}", from);
+                tracing::error!("   To address: {:#x}", to);
+                tracing::error!("   Amount: {}", amount);
+                if let Some(contract) = token_contract {
+                    tracing::error!("   Token contract: {:#x}", contract);
+                }
+            }
 
             // META MASK FALLBACK: Conservative gas limits (industry standard)
             // INSPIRED BY: MetaMask's DEFAULT_GAS_LIMITS
